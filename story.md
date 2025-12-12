@@ -39,6 +39,11 @@ Sound of Bleeding is the file "bleeding.ogg".
 Sound of WoundClose is the file "wound_close.ogg".
 Sound of PrisonerWake is the file "prisoner_wake.ogg".
 Sound of TrapFail is the file "trap_fail.ogg".
+Sound of PlateRed is the file "plate_red.ogg".
+Sound of PlateBlue is the file "plate_blue.ogg".
+Sound of PlateYellow is the file "plate_yellow.ogg".
+Sound of PlateGreen is the file "plate_green.ogg".
+Sound of Screaming is the file "screaming.ogg".
 
 
 
@@ -671,6 +676,7 @@ Chapter 23 - Puzzle Activation
 
 To activate the puzzle:
 	now Puzzle-activated is true;
+	display the Figure of PressurePlatesImage;
 	play the sound of PuzzleActivate;
 	say "[paragraph break]BZZZZT!
 
@@ -705,21 +711,25 @@ Check stepping on:
 
 Carry out stepping on the red plate:
 	add "red" to Plate-sequence;
+	play the sound of ButtonPress;
 	say "You step on the RED plate. It glows brighter and emits a low tone.";
 	check the sequence.
 
 Carry out stepping on the blue plate:
 	add "blue" to Plate-sequence;
+	play the sound of ButtonPress;
 	say "You step on the BLUE plate. It glows brighter and emits a low tone.";
 	check the sequence.
 
 Carry out stepping on the green plate:
 	add "green" to Plate-sequence;
+	play the sound of ButtonPress;
 	say "You step on the GREEN plate. It glows brighter and emits a low tone.";
 	check the sequence.
 
 Carry out stepping on the yellow plate:
 	add "yellow" to Plate-sequence;
+	play the sound of ButtonPress;
 	say "You step on the YELLOW plate. It glows brighter and emits a low tone.";
 	check the sequence.
 
@@ -741,6 +751,7 @@ To check the sequence:
 			play the sound of TrapFail;
 			if Limb-type is "":
 				now Limb-type is "left hand";
+				play the sound of Screaming;
 				say "[paragraph break]WRONG!
 
 The mechanical device LUNGES forward with terrifying speed. Before you can react, it clamps onto your left hand.
@@ -754,6 +765,7 @@ The pain is unbearable, but you're still alive.";
 					say "[paragraph break]Marcus screams: 'NO! Oh God, your hand! Try again, but be careful!'";
 			otherwise if Limb-type is "left hand":
 				now Limb-type is "right hand";
+				play the sound of Screaming;
 				say "[paragraph break]WRONG AGAIN!
 
 The machine strikes once more. This time it takes your right hand.
@@ -763,6 +775,7 @@ The counter updates: 'SPECIMENS: 5 / 6'";
 				if the other prisoner is conscious:
 					say "[paragraph break]Marcus is crying: 'Please, you have to get this right! One more mistake and...'";
 			otherwise:
+				play the sound of Screaming;
 				say "[paragraph break]WRONG FOR THE LAST TIME!
 
 The machine grabs you by the neck, pulling you into its blades.
