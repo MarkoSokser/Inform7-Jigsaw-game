@@ -15,7 +15,7 @@ Ceiling-pending is a truth state that varies.
 Ceiling-pending is false.
 
 Turns-remaining is a number that varies.
-Turns-remaining is 5.
+Turns-remaining is 6.
 
 Player-cut is a truth state that varies.
 Player-cut is false.
@@ -33,6 +33,7 @@ Sound of CeilingMove is the file "ceiling_move.ogg".
 Sound of SelfCut is the file "self_cut.ogg".
 Sound of NPCCut is the file "npc_cut.ogg".
 Sound of DeathCrush is the file "death_crush.ogg".
+Sound of Idea is the file "idea.ogg".
 
 
 
@@ -49,6 +50,19 @@ The air reeks of metal, mold, and something far worse.
 There are no windows.  
 No mercy.  
 Only waiting.";
+
+After looking in the Cell:
+	say "[paragraph break]You can see:";
+	if the other prisoner is in the Cell:
+		say "[line break]- The unconscious man chained beside you";
+	if the chain is in the Cell:
+		say "[line break]- The heavy iron chain binding you both";
+	if the glowing button is in the Cell:
+		say "[line break]- A glowing button on the wall";
+	if the hand saw is in the Cell:
+		say "[line break]- A rusty hand saw";
+	if the exit door is revealed:
+		say "[line break]- An exit door to the north".
 
 The Exit Hall is a room.
 The description of the Exit Hall is
@@ -178,7 +192,7 @@ Instead of pushing the glowing button:
 	otherwise:
 		now Game-started is true;
 		now Ceiling-pending is true;
-		now Turns-remaining is 5;
+		now Turns-remaining is 6;
 		now the hand saw is in the Cell;
 		now the exit door is revealed;
 		say "You press the button.[paragraph break]";
@@ -237,6 +251,27 @@ Carry out cutting yourself:
 The pain is indescribable.
 You collapse - but the chain falls away.".
 
+
+
+
+Chapter 12b - Trying to Cut the Chain
+
+Cutting the chain is an action applying to one thing.
+Understand "cut [something]" or "cut through [something]" or "saw [something]" or "saw through [something]" as cutting the chain.
+
+Check cutting the chain:
+	if the noun is not the chain:
+		say "That's not something you can cut." instead;
+	if the hand saw is not carried by the player:
+		say "You have nothing to cut with." instead.
+
+Carry out cutting the chain:
+	play the sound of Idea;
+	say "You press the blade against the thick iron chain and start sawing desperately.
+
+The metal barely scratches.
+
+The chain is far too thick. There isn't enough time.".
 
 
 
