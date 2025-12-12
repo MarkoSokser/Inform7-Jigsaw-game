@@ -15,7 +15,13 @@ Ceiling-pending is a truth state that varies.
 Ceiling-pending is false.
 
 Turns-remaining is a number that varies.
-Turns-remaining is 4.
+Turns-remaining is 5.
+
+Player-cut is a truth state that varies.
+Player-cut is false.
+
+Prisoner-cut is a truth state that varies.
+Prisoner-cut is false.
 
 
 
@@ -172,7 +178,7 @@ Instead of pushing the glowing button:
 	otherwise:
 		now Game-started is true;
 		now Ceiling-pending is true;
-		now Turns-remaining is 4;
+		now Turns-remaining is 5;
 		now the hand saw is in the Cell;
 		now the exit door is revealed;
 		say "You press the button.[paragraph break]";
@@ -225,6 +231,7 @@ Check cutting yourself:
 
 Carry out cutting yourself:
 	now the chain is nowhere;
+	now Player-cut is true;
 	play the sound of SelfCut;
 	say "You bite down and force the saw through bone and flesh.
 The pain is indescribable.
@@ -248,10 +255,37 @@ Check cutting the prisoner:
 
 Carry out cutting the prisoner:
 	now the chain is nowhere;
+	now Prisoner-cut is true;
 	play the sound of NPCCut;
 	say "You saw through his ankle.
 His body jerks violently, but he remains unconscious.
 The chain finally drops.".
+
+
+
+Chapter 13b - Dragging the Prisoner
+
+The other prisoner can be being-dragged or not-dragged.
+The other prisoner is not-dragged.
+
+Dragging is an action applying to one thing.
+Understand "save [someone]" or "drag [someone]" or 
+"pull [someone]" or "carry [someone]" as dragging.
+
+Check dragging:
+	if the noun is not the other prisoner:
+		say "That makes no sense." instead;
+	if Player-cut is true:
+		say "You are losing too much blood. You can barely stand.
+You don't have the strength to drag him.
+You need to get out before you bleed out completely." instead;
+	if Prisoner-cut is false:
+		say "He is still chained. You cannot move him." instead.
+
+Carry out dragging:
+	now the other prisoner is being-dragged;
+	say "You grab him under the arms and begin dragging his limp body.
+Every second counts.".
 
 
 
@@ -261,11 +295,19 @@ Chapter 14 - Endings
 Instead of going through the exit door when the chain is in the Cell:
 	say "The chain prevents you from reaching the door.".
 
+Before going through the exit door:
+	if the other prisoner is being-dragged:
+		now the other prisoner is in the Exit Hall.
+
 Instead of going through the exit door:
 	now Ceiling-descending is false;
 	now the exit door is collapsed;
-	say "You throw yourself through the doorway as the ceiling crashes down behind you.";
-	say "You survived - at a terrible cost.";
+	if the other prisoner is being-dragged:
+		say "You throw yourself through the doorway, dragging him with you, as the ceiling crashes down behind you.";
+		say "You both survived - at a terrible cost.";
+	otherwise:
+		say "You throw yourself through the doorway as the ceiling crashes down behind you.";
+		say "You survived - at a terrible cost.";
 	continue the action.
 
 Instead of going south from the Exit Hall when the exit door is collapsed:
