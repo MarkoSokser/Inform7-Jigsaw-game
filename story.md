@@ -44,6 +44,7 @@ Sound of PlateBlue is the file "plate_blue.ogg".
 Sound of PlateYellow is the file "plate_yellow.ogg".
 Sound of PlateGreen is the file "plate_green.ogg".
 Sound of Screaming is the file "screaming.ogg".
+Sound of GameOver is the file "gameover.ogg".
 
 
 
@@ -332,6 +333,7 @@ Check cutting yourself:
 Carry out cutting yourself:
 	now the chain is nowhere;
 	now Player-cut is true;
+	display the Figure of CutLegImage;
 	play the sound of SelfCut;
 	say "You bite down and force the saw through bone and flesh.
 The pain is indescribable.
@@ -775,7 +777,6 @@ The counter updates: 'SPECIMENS: 5 / 6'";
 				if the other prisoner is conscious:
 					say "[paragraph break]Marcus is crying: 'Please, you have to get this right! One more mistake and...'";
 			otherwise:
-				play the sound of Screaming;
 				say "[paragraph break]WRONG FOR THE LAST TIME!
 
 The machine grabs you by the neck, pulling you into its blades.
@@ -784,7 +785,9 @@ There is no escape.
 The counter updates: 'SPECIMENS: 6 / 6'
 
 Everything goes black.";
-				end the story.
+				play the sound of Screaming;
+				play the sound of GameOver;
+				end the story finally.
 
 
 
@@ -810,6 +813,7 @@ Chapter 27 - Visual and Audio Cues
 Figure of MedicalChamberImage is the file "medical_chamber.png".
 Figure of MarcusBleedingImage is the file "marcus_bleeding.png".
 Figure of PressurePlatesImage is the file "pressure_plates.png".
+Figure of CutLegImage is the file "cut_leg.png".
 
 
 
