@@ -20,6 +20,15 @@ Turns-remaining is 6.
 Player-cut is a truth state that varies.
 Player-cut is false.
 
+Player-bleeding is a truth state that varies.
+Player-bleeding is false.
+
+Player-bandaged is a truth state that varies.
+Player-bandaged is false.
+
+Player-bleeding-turns is a number that varies.
+Player-bleeding-turns is 0.
+
 Prisoner-cut is a truth state that varies.
 Prisoner-cut is false.
 
@@ -109,6 +118,18 @@ Above them, a digital counter reads: 'SPECIMENS: 3 / 6'
 The walls are lined with cabinets, some open, revealing medical supplies in various states of decay.
 
 To the east, you can see a heavy metal door with a complex locking mechanism.".
+
+Rule for listing nondescript items when the location is the Medical Chamber:
+	if the other prisoner is marked for listing:
+		now the other prisoner is not marked for listing.
+
+After looking in the Medical Chamber:
+	if the other prisoner is in the Medical Chamber:
+		say "[paragraph break][description of the other prisoner]";
+	if Puzzle-activated is true:
+		say "[paragraph break]Four colored pressure plates (RED, BLUE, GREEN, and YELLOW) glow ominously on the floor near the exit door.";
+	if the bloody note is in the Medical Chamber:
+		say "[paragraph break]You can see a bloody note on the floor.".
 
 
 
@@ -398,10 +419,13 @@ Understand "save [someone]" or "drag [someone]" or
 Check dragging:
 	if the noun is not the other prisoner:
 		say "That makes no sense." instead;
-	if Player-cut is true:
+	if Player-cut is true and Player-bleeding is true:
 		say "You are losing too much blood. You can barely stand.
 You don't have the strength to drag him.
-You need to get out before you bleed out completely." instead;
+You need to stop your bleeding first!" instead;
+	if Player-cut is true and Player-bandaged is false:
+		say "You are weak from blood loss. You can barely stand.
+You don't have the strength to drag him." instead;
 	if Prisoner-cut is false:
 		say "He is still chained. You cannot move him." instead.
 
@@ -547,12 +571,26 @@ Chapter 17 - Entering Medical Chamber
 
 After going to the Medical Chamber for the first time:
 	display the Figure of MedicalChamberImage;
-	now the other prisoner is in the Medical Chamber;
-	now the other prisoner is bleeding;
-	now Prisoner-bleeding-turns is 0;
-	play the sound of Bleeding;
-	say "[paragraph break]As you enter the chamber, you notice [prisoner-name-possessive] severed ankle is bleeding heavily. Blood pools beneath him, spreading across the floor.
-You need to do something quickly, or he won't make it.".
+	if Prisoner-cut is true:
+		now the other prisoner is in the Medical Chamber;
+		now the other prisoner is bleeding;
+		now Prisoner-bleeding-turns is 0;
+		play the sound of Bleeding;
+		if Player-cut is true:
+			now Player-bleeding is true;
+			now Player-bleeding-turns is 0;
+			say "[paragraph break]As you enter the chamber, you notice both your severed ankle and [prisoner-name-possessive] severed ankle are bleeding heavily. Blood pools beneath you both, spreading across the floor.
+You need to stop the bleeding quickly, or neither of you will make it.";
+		otherwise:
+			say "[paragraph break]As you enter the chamber, you notice [prisoner-name-possessive] severed ankle is bleeding heavily. Blood pools beneath him, spreading across the floor.
+You need to do something quickly, or he won't make it.";
+	otherwise if Player-cut is true:
+		now Player-bleeding is true;
+		now Player-bleeding-turns is 0;
+		play the sound of Bleeding;
+		say "[paragraph break]As you enter the chamber, you notice your severed ankle is bleeding heavily. Blood pools beneath you, spreading across the floor.
+You need to stop the bleeding quickly, or you won't make it.
+[paragraph break]You are alone. The other prisoner... you left him behind.".
 
 
 
@@ -577,17 +615,58 @@ Every turn when the player is in the Medical Chamber:
 			now the other prisoner is dead;
 			say "[paragraph break][prisoner-name-possessive] chest stops moving. The blood has stopped flowing because his heart has stopped beating. He is dead.
 You failed to save him.";
+	if Player-bleeding is true and Player-bandaged is false:
+		increase Player-bleeding-turns by 1;
+		if Player-bleeding-turns is 1:
+			say "[paragraph break]Blood continues to pour from your severed ankle. You feel dizzy and weak.";
+		otherwise if Player-bleeding-turns is 2:
+			say "[paragraph break]Your vision blurs. The pool of blood beneath you is growing rapidly. You need to stop the bleeding now!";
+		otherwise if Player-bleeding-turns is 3:
+			say "[paragraph break]Your breathing becomes shallow. You're losing too much blood!";
+		otherwise if Player-bleeding-turns is 4:
+			say "[paragraph break]Your body is going into shock. Your pulse is fading. This is your last chance!";
+		otherwise if Player-bleeding-turns is 5:
+			say "[paragraph break]Your lips are turning blue. Everything is getting darker. You're dying!";
+		otherwise if Player-bleeding-turns is 6:
+			play the sound of Bleeding;
+			say "[paragraph break]Your vision goes black. The blood has stopped flowing because your heart has stopped beating.
+You are dead.";
+			end the story;
 	if Chamber-turns-elapsed is 10 and Puzzle-activated is false:
 		activate the puzzle.
 
 
 
 
-Chapter 19 - Bandaging Marcus
+Chapter 19 - Bandaging
 
 Bandaging is an action applying to one thing.
 Understand "bandage [someone]" or "wrap [someone]" or "stop bleeding of [someone]" or 
 "use gauze on [someone]" or "apply gauze to [someone]" or "close wound of [someone]" as bandaging.
+
+Bandaging yourself is an action applying to nothing.
+Understand "bandage myself" or "bandage me" or "wrap myself" or "stop my bleeding" or 
+"use gauze on myself" or "apply gauze to myself" or "close my wound" or "bandage my ankle" or "wrap my ankle" as bandaging yourself.
+
+Check bandaging yourself:
+	if Player-bleeding is false:
+		say "You're not bleeding." instead;
+	if the player does not carry the medical gauze:
+		say "You need something to stop the bleeding with." instead.
+
+Carry out bandaging yourself:
+	if the player carries the medical tape:
+		now Player-bandaged is true;
+		now Player-bleeding is false;
+		now the medical gauze is nowhere;
+		now the medical tape is nowhere;
+		display the Figure of MarcusBleedingImage;
+		play the sound of WoundClose;
+		say "You grit your teeth and wrap the gauze around your severed ankle, securing it tightly with the medical tape.
+The bleeding slows and finally stops.
+Your breathing stabilizes slightly. You might actually survive this.";
+	otherwise:
+		say "The gauze alone won't hold. You need something to secure it with.".
 
 Check bandaging:
 	if the noun is not the other prisoner:
