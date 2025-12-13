@@ -54,6 +54,8 @@ Sound of PlateYellow is the file "plate_yellow.ogg".
 Sound of PlateGreen is the file "plate_green.ogg".
 Sound of Screaming is the file "screaming.ogg".
 Sound of GameOver is the file "gameover.ogg".
+Sound of BodyFall is the file "body_fall.ogg".
+Sound of GameOverMusic is the file "game_over_music.ogg".
 
 
 
@@ -477,6 +479,15 @@ Player-lost-limb is false.
 Limb-type is text that varies.
 Limb-type is "".
 
+Medical-supplies-used is a number that varies.
+Medical-supplies-used is 0.
+
+Player-wrist-bleeding is a truth state that varies.
+Player-wrist-bleeding is false.
+
+Player-wrist-bleeding-turns is a number that varies.
+Player-wrist-bleeding-turns is 0.
+
 
 
 
@@ -632,6 +643,16 @@ You failed to save him.";
 			say "[paragraph break]Your vision goes black. The blood has stopped flowing because your heart has stopped beating.
 You are dead.";
 			end the story;
+	if Player-wrist-bleeding is true:
+		increase Player-wrist-bleeding-turns by 1;
+		if Player-wrist-bleeding-turns is 1:
+			say "[paragraph break]Blood spurts from your severed wrist. You're losing blood fast! You need to bandage yourself NOW!";
+		otherwise if Player-wrist-bleeding-turns is 2:
+			play the sound of BodyFall;
+			say "[paragraph break]Too much blood loss. Your vision goes black.
+[paragraph break]You collapse to the floor, unconscious.
+[paragraph break]You will never wake up.";
+			end the story;
 	if Chamber-turns-elapsed is 10 and Puzzle-activated is false:
 		activate the puzzle.
 
@@ -649,20 +670,35 @@ Understand "bandage myself" or "bandage me" or "wrap myself" or "stop my bleedin
 "use gauze on myself" or "apply gauze to myself" or "close my wound" or "bandage my ankle" or "wrap my ankle" as bandaging yourself.
 
 Check bandaging yourself:
-	if Player-bleeding is false:
+	if Player-bleeding is false and Player-wrist-bleeding is false:
 		say "You're not bleeding." instead;
 	if the player does not carry the medical gauze:
 		say "You need something to stop the bleeding with." instead.
 
 Carry out bandaging yourself:
 	if the player carries the medical tape:
-		now Player-bandaged is true;
-		now Player-bleeding is false;
-		now the medical gauze is nowhere;
-		now the medical tape is nowhere;
-		display the Figure of MarcusBleedingImage;
-		play the sound of WoundClose;
-		say "You grit your teeth and wrap the gauze around your severed ankle, securing it tightly with the medical tape.
+		if Player-wrist-bleeding is true:
+			now Player-wrist-bleeding is false;
+			now Player-wrist-bleeding-turns is 0;
+			increase Medical-supplies-used by 1;
+			if Medical-supplies-used is 2:
+				now the medical gauze is nowhere;
+				now the medical tape is nowhere;
+			display the Figure of ArmBandageImage;
+			play the sound of WoundClose;
+			say "You grit your teeth and wrap the gauze around your severed wrist, securing it tightly with the medical tape.
+The bleeding slows and finally stops.
+You might actually survive this.";
+		otherwise:
+			now Player-bandaged is true;
+			now Player-bleeding is false;
+			increase Medical-supplies-used by 1;
+			if Medical-supplies-used is 2:
+				now the medical gauze is nowhere;
+				now the medical tape is nowhere;
+			display the Figure of MarcusBleedingImage;
+			play the sound of WoundClose;
+			say "You grit your teeth and wrap the gauze around your severed ankle, securing it tightly with the medical tape.
 The bleeding slows and finally stops.
 Your breathing stabilizes slightly. You might actually survive this.";
 	otherwise:
@@ -682,8 +718,10 @@ Carry out bandaging:
 	if the player carries the medical tape:
 		now the other prisoner is bandaged;
 		now the other prisoner is not-bleeding;
-		now the medical gauze is nowhere;
-		now the medical tape is nowhere;
+		increase Medical-supplies-used by 1;
+		if Medical-supplies-used is 2:
+			now the medical gauze is nowhere;
+			now the medical tape is nowhere;
 		display the Figure of MarcusBleedingImage;
 		play the sound of WoundClose;
 		say "You quickly wrap the gauze around [prisoner-name-possessive] severed ankle, securing it tightly with the medical tape.
@@ -822,10 +860,27 @@ Chapter 25 - Checking Sequence
 To check the sequence:
 	if the number of entries in Plate-sequence is 4:
 		if Plate-sequence is Correct-sequence:
-			say "[paragraph break]The plates flash GREEN in sequence. You hear a heavy CLUNK as the door mechanism unlocks.
-'You did it!' Marcus shouts. 'The door is open!'";
+			say "[paragraph break]The plates flash GREEN in sequence. You hear a heavy CLUNK as the door mechanism unlocks.";
 			now the chamber exit door is unlocked;
 			now the chamber exit door is puzzle-unlocked;
+			if Limb-type is "right hand":
+				say "[paragraph break]But as you take a step toward freedom, your vision blurs.
+Blood loss from both severed wrists is too severe.
+Everything goes dark before your eyes.";
+				play the sound of BodyFall;
+				say "[paragraph break]You collapse to the floor, unconscious.
+[paragraph break]You will never wake up.";
+				end the story;
+			otherwise if Limb-type is "left hand":
+				now Player-wrist-bleeding is true;
+				now Player-wrist-bleeding-turns is 0;
+				say "[paragraph break]But blood continues to pour from your severed wrist. The pain is overwhelming.
+You need to stop the bleeding before you can leave, or you won't make it.";
+				if the other prisoner is conscious:
+					say "[paragraph break]Marcus calls out: 'Use the medical supplies! Bandage yourself quickly!'";
+			otherwise:
+				if the other prisoner is conscious:
+					say "[paragraph break]'You did it!' Marcus shouts. 'The door is open!'";
 		otherwise:
 			now Player-lost-limb is true;
 			now Plate-sequence is {};
@@ -893,6 +948,7 @@ Figure of MedicalChamberImage is the file "medical_chamber.png".
 Figure of MarcusBleedingImage is the file "marcus_bleeding.png".
 Figure of PressurePlatesImage is the file "pressure_plates.png".
 Figure of CutLegImage is the file "cut_leg.png".
+Figure of ArmBandageImage is the file "arm-bandage.png".
 
 
 
@@ -921,4 +977,7 @@ When play begins:
 	say "A distorted voice fills the room.";
 	play the sound of TapeVoice;
 	display the Figure of CellImage.
+
+When play ends:
+	play the sound of GameOverMusic.
 
