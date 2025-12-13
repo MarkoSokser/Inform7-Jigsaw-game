@@ -56,6 +56,10 @@ Sound of Screaming is the file "screaming.ogg".
 Sound of GameOver is the file "gameover.ogg".
 Sound of BodyFall is the file "body_fall.ogg".
 Sound of GameOverMusic is the file "game_over_music.ogg".
+Sound of JigsawVoice is the file "game.ogg".
+Sound of SawTrap is the file "saw.ogg".
+Sound of ChairMove is the file "chair.ogg".
+Sound of Pressure is the file "pressure.ogg".
 
 
 
@@ -83,7 +87,7 @@ After looking in the Cell:
 		say "[line break]- A glowing button on the wall";
 	if the hand saw is in the Cell:
 		say "[line break]- A rusty hand saw";
-	if the exit door is revealed:
+	if the cell exit door is revealed:
 		say "[line break]- An exit door to the north".
 
 The Exit Hall is a room.
@@ -96,8 +100,8 @@ To the north, you can see a heavy metal door marked with biohazard symbols.
 Behind it, you hear the faint hum of fluorescent lights.".
 
 Rule for listing nondescript items when the location is the Exit Hall:
-	if the exit door is marked for listing:
-		now the exit door is not marked for listing;
+	if the cell exit door is marked for listing:
+		now the cell exit door is not marked for listing;
 	if the other prisoner is marked for listing:
 		now the other prisoner is not marked for listing.
 
@@ -106,7 +110,12 @@ After looking in the Exit Hall:
 		say "[paragraph break]Marcus lies unconscious on the cold concrete floor, his bandaged ankle still seeping blood.".
 
 The Medical Chamber is a room.
-The Medical Chamber is north of the Exit Hall.
+
+The medical chamber entrance door is a door.
+The medical chamber entrance door is north of the Exit Hall and south of the Medical Chamber.
+The medical chamber entrance door is open and unlocked.
+
+The description of the medical chamber entrance door is "A heavy metal door marked with biohazard symbols. [if open]It stands open, leading into the medical chamber[otherwise]It is closed[end if].".
 
 The description of the Medical Chamber is
 "You step into what appears to be an abandoned operating room.
@@ -129,9 +138,44 @@ After looking in the Medical Chamber:
 	if the other prisoner is in the Medical Chamber:
 		say "[paragraph break][description of the other prisoner]";
 	if Puzzle-activated is true:
-		say "[paragraph break]Four colored pressure plates (RED, BLUE, GREEN, and YELLOW) glow ominously on the floor near the exit door.";
+		say "[paragraph break]Four colored pressure plates (RED, BLUE, GREEN, and YELLOW) glow ominously on the floor near the chamber exit door.";
 	if the bloody note is in the Medical Chamber:
 		say "[paragraph break]You can see a bloody note on the floor.".
+
+The Observation Room is a room.
+The Observation Room is east of the chamber exit door.
+
+The description of the Observation Room is
+"You step into what appears to be a surveillance room.
+The walls are lined with cracked monitors, most displaying nothing but static.
+A few still flicker with grainy footage of empty corridors and cells.
+
+High on the far wall, thin beams of light pierce through an air vent grate.
+The light draws your attention upward - freedom might lie beyond that vent.
+
+A metal chair sits in the corner, and a filing cabinet stands against the wall.
+
+The room feels claustrophobic, as if it's watching you back.".
+
+The air vent is scenery in the Observation Room.
+The air vent is fixed in place.
+The description of the air vent is "High on the far wall, approximately 3 meters up, an air vent grate allows thin beams of light to pierce through. The vent looks like it could be large enough to crawl through - if you could reach it. [if Chair-positioned is true and Cabinet-positioned is true]The chair stacked on the cabinet creates a makeshift ladder that might allow you to reach the vent[otherwise if Chair-positioned is true]The chair is positioned beneath it, but it's not tall enough on its own[otherwise if Cabinet-positioned is true]The cabinet is positioned beneath it, but you'd need something else to boost yourself higher[otherwise]You'll need to position furniture beneath it to have any chance of reaching it[end if]."
+
+Understand "vent" or "grate" or "vent grate" or "air vent grate" as the air vent.
+
+The metal chair is a thing in the Observation Room.
+The metal chair can be positioned-under-vent or not-positioned.
+The metal chair is not-positioned.
+The description of the metal chair is "A sturdy metal chair with a welded frame. [if Chair-positioned is true]It's currently positioned directly beneath the air vent[otherwise]It looks heavy but movable[end if]."
+
+Understand "chair" or "sturdy chair" as the metal chair.
+
+The filing cabinet is a thing in the Observation Room.
+The filing cabinet can be positioned-under-vent or not-positioned.
+The filing cabinet is not-positioned.
+The description of the filing cabinet is "A heavy metal filing cabinet, about waist-high. [if Cabinet-positioned is true]It's positioned beneath the air vent[otherwise]Its weight makes it difficult to move, but not impossible[end if]."
+
+Understand "cabinet" or "metal cabinet" as the filing cabinet.
 
 
 
@@ -262,33 +306,43 @@ Chapter 8 - Objects That Appear Later
 The hand saw is a thing.
 The hand saw is nowhere.
 
-The exit door is a door.
-The exit door is north of the Cell and south of the Exit Hall.
-The exit door is closed and unlocked.
+The cell exit door is a door.
+The cell exit door is north of the Cell and south of the Exit Hall.
+The cell exit door is closed and unlocked.
 
-The exit door can be revealed or unrevealed.
-The exit door is unrevealed.
+To say cell door status:
+	if the cell exit door is collapsed:
+		say "The ceiling has crushed it completely, blocking any return";
+	otherwise if the cell exit door is open:
+		say "It stands open";
+	otherwise:
+		say "It stands closed".
 
-The exit door can be collapsed or standing.
-The exit door is standing.
+The description of the cell exit door is "A heavy steel door that led out of your cell. [cell door status].".
 
-Rule for listing nondescript items when the exit door is unrevealed:
-	if the exit door is marked for listing:
-		now the exit door is not marked for listing.
+The cell exit door can be revealed or unrevealed.
+The cell exit door is unrevealed.
 
-Report opening the exit door:
+The cell exit door can be collapsed or standing.
+The cell exit door is standing.
+
+Rule for listing nondescript items when the cell exit door is unrevealed:
+	if the cell exit door is marked for listing:
+		now the cell exit door is not marked for listing.
+
+Report opening the cell exit door:
 	do nothing instead.
 
 
 Chapter X - Hidden Exit
 
-Instead of going north from the Cell when the exit door is unrevealed:
+Instead of going north from the Cell when the cell exit door is unrevealed:
 	say "The wall is solid concrete. There is no exit there. Its not like this chain will let you".
-Instead of going south from the Cell when the exit door is unrevealed:
+Instead of going south from the Cell when the cell exit door is unrevealed:
 		say "The wall is solid concrete. There is no exit there. Its not like this chain will let you".
-Instead of going west from the Cell when the exit door is unrevealed:
+Instead of going west from the Cell when the cell exit door is unrevealed:
 		say "The wall is solid concrete. There is no exit there. Its not like this chain will let you".
-Instead of going east from the Cell when the exit door is unrevealed:
+Instead of going east from the Cell when the cell exit door is unrevealed:
 		say "The wall is solid concrete. There is no exit there. Its not like this chain will let you".
 
 
@@ -304,7 +358,7 @@ Instead of pushing the glowing button:
 		now Ceiling-pending is true;
 		now Turns-remaining is 6;
 		now the hand saw is in the Cell;
-		now the exit door is revealed;
+		now the cell exit door is revealed;
 		say "You press the button.[paragraph break]";
 		play the sound of ButtonPress;
 		say "[paragraph break]A section of the far wall collapses, revealing a heavy metal door.";
@@ -441,16 +495,16 @@ Every second counts.".
 
 Chapter 14 - Endings
 
-Instead of going through the exit door when the chain is in the Cell:
+Instead of going through the cell exit door when the chain is in the Cell:
 	say "The chain prevents you from reaching the door.".
 
-Before going through the exit door:
+Before going through the cell exit door:
 	if the other prisoner is being-dragged:
 		now the other prisoner is in the Exit Hall.
 
-Instead of going through the exit door:
+Instead of going through the cell exit door:
 	now Ceiling-descending is false;
-	now the exit door is collapsed;
+	now the cell exit door is collapsed;
 	if the other prisoner is being-dragged:
 		say "You throw yourself through the doorway, dragging him with you, as the ceiling crashes down behind you.";
 		say "You both survived - at a terrible cost.";
@@ -459,7 +513,7 @@ Instead of going through the exit door:
 		say "You survived - at a terrible cost.";
 	continue the action.
 
-Instead of going south from the Exit Hall when the exit door is collapsed:
+Instead of going south from the Exit Hall when the cell exit door is collapsed:
 	say "The ceiling has completely collapsed. There is no way back.".
 
 
@@ -487,6 +541,48 @@ Player-wrist-bleeding is false.
 
 Player-wrist-bleeding-turns is a number that varies.
 Player-wrist-bleeding-turns is 0.
+
+Observation-room-trap-activated is a truth state that varies.
+Observation-room-trap-activated is false.
+
+Chair-positioned is a truth state that varies.
+Chair-positioned is false.
+
+Cabinet-positioned is a truth state that varies.
+Cabinet-positioned is false.
+
+Player-hands-trapped is a number that varies.
+Player-hands-trapped is 0.
+
+Question-asked is a truth state that varies.
+Question-asked is false.
+
+Player-answered is a truth state that varies.
+Player-answered is false.
+
+Marcus-betrayed is a truth state that varies.
+Marcus-betrayed is false.
+
+Player-confessed is a truth state that varies.
+Player-confessed is false.
+
+Solo-escape-turns is a number that varies.
+Solo-escape-turns is 0.
+
+Betrayal-dying is a truth state that varies.
+Betrayal-dying is false.
+
+Betrayal-death-turns is a number that varies.
+Betrayal-death-turns is 0.
+
+Last-hand-dying is a truth state that varies.
+Last-hand-dying is false.
+
+Last-hand-death-turns is a number that varies.
+Last-hand-death-turns is 0.
+
+Solo-arm-trap-turns is a number that varies.
+Solo-arm-trap-turns is 0.
 
 
 
@@ -582,19 +678,27 @@ Chapter 17 - Entering Medical Chamber
 
 After going to the Medical Chamber for the first time:
 	display the Figure of MedicalChamberImage;
-	if Prisoner-cut is true:
-		now the other prisoner is in the Medical Chamber;
-		now the other prisoner is bleeding;
-		now Prisoner-bleeding-turns is 0;
-		play the sound of Bleeding;
-		if Player-cut is true:
+	if Prisoner-cut is true and the other prisoner is not dead:
+		if the other prisoner is in the Exit Hall or the other prisoner is being-dragged:
+			now the other prisoner is in the Medical Chamber;
+			now the other prisoner is bleeding;
+			now Prisoner-bleeding-turns is 0;
+			play the sound of Bleeding;
+			if Player-cut is true:
+				now Player-bleeding is true;
+				now Player-bleeding-turns is 0;
+				say "[paragraph break]As you enter the chamber, you notice both your severed ankle and [prisoner-name-possessive] severed ankle are bleeding heavily. Blood pools beneath you both, spreading across the floor.
+You need to stop the bleeding quickly, or neither of you will make it.";
+			otherwise:
+				say "[paragraph break]As you enter the chamber, you notice [prisoner-name-possessive] severed ankle is bleeding heavily. Blood pools beneath him, spreading across the floor.
+You need to do something quickly, or he won't make it.";
+		otherwise if Player-cut is true:
 			now Player-bleeding is true;
 			now Player-bleeding-turns is 0;
-			say "[paragraph break]As you enter the chamber, you notice both your severed ankle and [prisoner-name-possessive] severed ankle are bleeding heavily. Blood pools beneath you both, spreading across the floor.
-You need to stop the bleeding quickly, or neither of you will make it.";
-		otherwise:
-			say "[paragraph break]As you enter the chamber, you notice [prisoner-name-possessive] severed ankle is bleeding heavily. Blood pools beneath him, spreading across the floor.
-You need to do something quickly, or he won't make it.";
+			play the sound of Bleeding;
+			say "[paragraph break]As you enter the chamber, you notice your severed ankle is bleeding heavily. Blood pools beneath you, spreading across the floor.
+You need to stop the bleeding quickly, or you won't make it.
+[paragraph break]You are alone. The other prisoner... you left him behind.";
 	otherwise if Player-cut is true:
 		now Player-bleeding is true;
 		now Player-bleeding-turns is 0;
@@ -610,7 +714,7 @@ Chapter 18 - Bleeding Mechanic
 
 Every turn when the player is in the Medical Chamber:
 	increase Chamber-turns-elapsed by 1;
-	if the other prisoner is bleeding and the other prisoner is unbandaged:
+	if the other prisoner is in the Medical Chamber and the other prisoner is bleeding and the other prisoner is unbandaged and the other prisoner is not dead:
 		increase Prisoner-bleeding-turns by 1;
 		if Prisoner-bleeding-turns is 1:
 			say "[paragraph break]Blood continues to pour from [prisoner-name-possessive] wound. His breathing becomes more labored.";
@@ -643,6 +747,10 @@ You failed to save him.";
 			say "[paragraph break]Your vision goes black. The blood has stopped flowing because your heart has stopped beating.
 You are dead.";
 			end the story;
+	if Chamber-turns-elapsed is 10 and Puzzle-activated is false:
+		activate the puzzle.
+
+Every turn when the player is in the Observation Room:
 	if Player-wrist-bleeding is true:
 		increase Player-wrist-bleeding-turns by 1;
 		if Player-wrist-bleeding-turns is 1:
@@ -652,9 +760,7 @@ You are dead.";
 			say "[paragraph break]Too much blood loss. Your vision goes black.
 [paragraph break]You collapse to the floor, unconscious.
 [paragraph break]You will never wake up.";
-			end the story;
-	if Chamber-turns-elapsed is 10 and Puzzle-activated is false:
-		activate the puzzle.
+			end the story.
 
 
 
@@ -863,6 +969,9 @@ To check the sequence:
 			say "[paragraph break]The plates flash GREEN in sequence. You hear a heavy CLUNK as the door mechanism unlocks.";
 			now the chamber exit door is unlocked;
 			now the chamber exit door is puzzle-unlocked;
+			now the medical chamber entrance door is closed;
+			now the medical chamber entrance door is locked;
+			say "[paragraph break]Behind you, the entrance door SLAMS shut and locks with a mechanical THUNK. There is no going back.";
 			if Limb-type is "right hand":
 				say "[paragraph break]But as you take a step toward freedom, your vision blurs.
 Blood loss from both severed wrists is too severe.
@@ -949,6 +1058,8 @@ Figure of MarcusBleedingImage is the file "marcus_bleeding.png".
 Figure of PressurePlatesImage is the file "pressure_plates.png".
 Figure of CutLegImage is the file "cut_leg.png".
 Figure of ArmBandageImage is the file "arm-bandage.png".
+Figure of ObservationRoomImage is the file "observation_room.png".
+Figure of SawManImage is the file "saw_man.png".
 
 
 
@@ -981,3 +1092,653 @@ When play begins:
 When play ends:
 	play the sound of GameOverMusic.
 
+
+
+Chapter 29 - Observation Room Furniture Positioning
+
+Positioning furniture is an action applying to one thing.
+Understand "position [something] under vent" or "move [something] under vent" or 
+"push [something] under vent" or "drag [something] under vent" or
+"place [something] under vent" or "put [something] under vent" as positioning furniture.
+
+Check positioning furniture:
+	if the player is not in the Observation Room:
+		say "There's nothing to position here." instead;
+	if the noun is not the metal chair and the noun is not the filing cabinet:
+		say "That won't help you reach the vent." instead;
+	if Player-hands-trapped is 2:
+		say "Without hands, you can't move anything." instead;
+	if Player-hands-trapped is 1:
+		say "With only one hand, moving heavy furniture is extremely difficult, but you manage it with great effort.".
+
+Carry out positioning furniture:
+	if the noun is the metal chair:
+		if Chair-positioned is true:
+			say "The chair is already positioned under the vent.";
+		otherwise:
+			now Chair-positioned is true;
+			now the metal chair is positioned-under-vent;
+			play the sound of ChairMove;
+			say "You drag the metal chair across the floor, positioning it directly beneath the air vent. [if Cabinet-positioned is true]With the cabinet already in place, you carefully climb onto the cabinet and place the chair on top of it. The makeshift tower looks precarious but might work[otherwise]It's not tall enough on its own - you'll need something else[end if].";
+	otherwise if the noun is the filing cabinet:
+		if Cabinet-positioned is true:
+			say "The cabinet is already positioned under the vent.";
+		otherwise:
+			now Cabinet-positioned is true;
+			now the filing cabinet is positioned-under-vent;
+			play the sound of ChairMove;
+			say "You push the heavy filing cabinet with great effort, slowly moving it across the floor until it's positioned beneath the air vent. [if Chair-positioned is true]The chair is already there. You manage to stack the cabinet and chair together, creating a precarious tower[otherwise]It's sturdy, but you'll need to stack something on top to reach the vent[end if].".
+
+
+
+Chapter 30 - Reaching the Vent
+
+Reaching the vent is an action applying to nothing.
+Understand "reach vent" or "reach air vent" or "climb to vent" or 
+"climb up" or "climb tower" or "reach for vent" or "grab vent" as reaching the vent.
+
+Check reaching the vent:
+	if the player is not in the Observation Room:
+		say "There's no vent here." instead;
+	if Observation-room-trap-activated is true:
+		say "You already triggered the trap. There's no turning back now." instead;
+	if Chair-positioned is false or Cabinet-positioned is false:
+		say "You can't reach the vent without both the cabinet and chair positioned beneath it." instead.
+
+Carry out reaching the vent:
+	now Observation-room-trap-activated is true;
+	say "You carefully climb onto the filing cabinet, then step up onto the chair balanced on top.
+The tower wobbles dangerously, but you steady yourself.
+
+You reach toward the vent grate...
+
+SNAP!";
+	play the sound of SawTrap;
+	say "
+Hidden mechanisms activate instantly. Metal clamps shoot out from the wall, clamping around your wrist";
+	if Limb-type is "right hand" or Limb-type is "left hand":
+		if the other prisoner is in the Observation Room and the other prisoner is conscious:
+			now Player-hands-trapped is 1;
+			say "!
+
+You're trapped, suspended in the air, held by your single hand.
+
+The monitors flicker to life. A distorted figure appears on every screen - The Jigsaw Killer.";
+			play the sound of JigsawVoice;
+			display the Figure of SawManImage;
+			say "
+
+'Ah, you've already sacrificed so much. One hand gone, and now... the other is mine.'
+
+The mechanism begins to activate.
+
+'There is no escape this time. No questions. No deals. Just... the end.'
+
+You can try to STRUGGLE, but it's futile.";
+			now Last-hand-dying is true;
+			now Last-hand-death-turns is 1;
+			play the sound of SawTrap;
+		otherwise:
+			now Player-hands-trapped is 1;
+			say "!
+
+You're trapped, suspended in the air, held by your single hand.
+
+The monitors flicker to life. A distorted figure appears on every screen - The Jigsaw Killer.";
+			play the sound of JigsawVoice;
+			display the Figure of SawManImage;
+			say "
+
+'Ah, you've come this far alone... but now your sacrifice has become your doom.'
+
+The mechanism begins to activate.
+
+'One hand already gone, and now this one too. There is no escape. No way out. Just... the end.'
+
+You can try to STRUGGLE, but it's futile.";
+			now Last-hand-dying is true;
+			now Last-hand-death-turns is 1;
+			play the sound of SawTrap;
+	otherwise:
+		if the other prisoner is in the Observation Room and the other prisoner is conscious:
+			now Player-hands-trapped is 2;
+			say "s!
+
+BOTH your wrists are locked in the mechanisms! You're suspended in the air, completely helpless.
+
+The monitors flicker to life. A distorted figure appears on every screen - The Jigsaw Killer.";
+			play the sound of JigsawVoice;
+			display the Figure of SawManImage;
+			say "
+
+'Welcome to your final test,' the voice rasps. 'You've learned about sacrifice. About pain. But have you learned about TRUST?
+
+Both your hands are locked in place. In exactly 5 minutes, these mechanisms will sever them both. You will fall, and with no hands left, you will bleed out in seconds.
+
+But there is a way to survive...'
+
+The voice pauses for dramatic effect.
+
+'I will ask you ONE question. Answer correctly, and the mechanism releases. Answer incorrectly... and you die.
+
+However, your companion knows the answer. You may ask him for help.
+
+But here's the twist: If you ask him, HE must decide whether to help you or save himself. 
+If he tells you the truth, you both go free. 
+If he lies to save himself, you die and he escapes alone.
+
+The choice is yours. Do you trust him with your life?'
+
+[paragraph break]The question appears on all the monitors:
+
+'WHAT IS THE ONE THING THAT CAN BE GIVEN, BUT NEVER TAKEN BACK?'";
+			play the sound of SawTrap;
+		otherwise:
+			now Player-hands-trapped is 1;
+			now Solo-arm-trap-turns is 0;
+			say "!
+
+Metal clamps shoot out and lock around your entire right arm - from shoulder to wrist! You're held firmly in place.
+
+The monitors flicker to life. A distorted figure appears on every screen - The Jigsaw Killer.";
+			play the sound of JigsawVoice;
+			display the Figure of SawManImage;
+			say "
+
+'Welcome to your final test. You've come this far alone. Impressive.
+
+Your arm is locked in place. Answer my question correctly, and you go free.
+
+Answer incorrectly... and this mechanism will pull you into the saw blades behind you. You'll be torn apart.'
+
+The voice pauses.
+
+'There is one other way... you can sacrifice your arm. Cut it off and escape. But with only one arm left, survival becomes... difficult.
+
+The choice is yours.'
+
+[paragraph break]The question appears on all the monitors:
+
+'WHAT IS THE ONE THING THAT CAN BE GIVEN, BUT NEVER TAKEN BACK?'
+
+[paragraph break]You can ANSWER the question or use your SAW to cut your arm.";
+			play the sound of SawTrap;
+	now Question-asked is true.
+
+Chapter 31 - The Impossible Question Timer and Solo Escape
+
+Every turn when Observation-room-trap-activated is true and Player-hands-trapped is greater than 0 and Last-hand-dying is false:
+	if the other prisoner is in the Observation Room and the other prisoner is conscious and Question-asked is true and Player-answered is false:
+		say "[paragraph break]The monitors display: 'ANSWER THE QUESTION OR ASK YOUR COMPANION. TIME IS RUNNING OUT.'";
+	otherwise if the other prisoner is not in the Observation Room and Player-hands-trapped is 1:
+		increase Solo-arm-trap-turns by 1;
+		if Solo-arm-trap-turns is 1:
+			say "[paragraph break]The monitors display: 'ANSWER THE QUESTION OR CUT YOUR ARM. YOU HAVE 3 MOVES LEFT.'";
+		otherwise if Solo-arm-trap-turns is 2:
+			say "[paragraph break]The monitors flash red: 'TIME IS RUNNING OUT! 2 MOVES LEFT!'";
+		otherwise if Solo-arm-trap-turns is 3:
+			say "[paragraph break]The monitors flash red rapidly: 'FINAL WARNING! 1 MOVE LEFT!'";
+		otherwise if Solo-arm-trap-turns is greater than 3:
+			say "[paragraph break]The monitors go dark.
+
+'TIME'S UP,' the voice rasps.
+
+The mechanism activates.
+
+You feel the clamps pulling you backward - straight into the spinning saw blades!
+
+You scream as the blades tear into your back, ripping through flesh and bone.";
+			play the sound of SawTrap;
+			play the sound of Screaming;
+			play the sound of BodyFall;
+			say "
+
+There is no mercy. No escape.
+
+The blades consume you.
+
+This is the end.";
+			end the story.
+
+
+
+Chapter 32 - Solo Escape With Saw
+
+Cutting hand with saw is an action applying to nothing.
+Understand "cut my hand" or "cut my wrist" or "saw my hand" or "saw my wrist" or "cut my arm" or "saw my arm" or
+"use saw" or "cut myself with saw" or "saw through wrist" or "saw through arm" or
+"cut hand" or "cut wrist" or "cut arm" or "saw hand" or "saw wrist" or "saw arm" or
+"use saw on arm" or "use saw on hand" or "use saw on wrist" or "use the saw" or "saw off arm" or "cut off arm" as cutting hand with saw.
+
+Check cutting hand with saw:
+	if the player is not in the Observation Room:
+		say "There's nothing to cut." instead;
+	if Observation-room-trap-activated is false:
+		say "You're not trapped." instead;
+	if the other prisoner is in the Observation Room:
+		say "You need to answer the question or ask Marcus for help." instead;
+	if the hand saw is not carried by the player:
+		say "You don't have anything to cut with." instead;
+	if Player-hands-trapped is 2:
+		say "With both hands trapped, you can't use the saw." instead;
+	if Player-hands-trapped is 0:
+		say "You're not trapped anymore." instead.
+
+Carry out cutting hand with saw:
+	if the other prisoner is in the Observation Room:
+		say "You need to work with Marcus, not harm yourself!";
+		stop the action;
+	say "You pull out the rusty hand saw from your pocket.
+
+With your free hand, you bring it to your trapped arm and begin cutting through the flesh and bone.";
+	play the sound of NPCCut;
+	say "
+The pain is indescribable. The saw blade tears through muscle, grinds against bone.
+
+But you don't stop.
+
+Blood sprays everywhere.
+
+CRACK!
+
+Your arm falls away. You collapse to the ground, free but bleeding heavily from the shoulder.";
+	now Player-hands-trapped is 0;
+	now Observation-room-trap-activated is false;
+	if Medical-supplies-used is 2:
+		play the sound of BodyFall;
+		say "[paragraph break]Blood pours from your severed shoulder. You have no medical supplies left!
+
+You try to stop the bleeding with pressure, but it's not enough.
+
+Your vision fades as you collapse.
+
+You survived so much... but you can't survive this.";
+		end the story;
+	otherwise:
+		now Player-wrist-bleeding is true;
+		now Player-wrist-bleeding-turns is 0;
+		say "[paragraph break]You need to bandage your shoulder IMMEDIATELY or you will bleed out!
+
+You have [if Medical-supplies-used is 0]medical supplies available[otherwise]ONE use of medical supplies left[end if]. Use them now!
+
+[paragraph break]The question monitor goes dark. The door at the far end of the room unlocks with a heavy CLUNK.
+
+You are free. But at what cost?".
+
+
+
+Chapter 33 - Answering The Question
+
+Answering question is an action applying to one topic.
+Understand "answer [text]" or "say [text]" or "the answer is [text]" as answering question.
+
+Check answering question:
+	if the player is not in the Observation Room:
+		say "There's no question to answer." instead;
+	if Observation-room-trap-activated is false:
+		say "You haven't triggered the trap yet." instead;
+	if Player-answered is true:
+		say "You already answered." instead.
+
+Carry out answering question:
+	now Player-answered is true;
+	let the answer be "[the topic understood]";
+	if the answer matches the text "trust" or the answer matches the text "trust.":
+		say "You shout: 'TRUST!'
+
+The monitors flash green.
+
+The mechanical clamps release instantly. You fall, catching yourself on the furniture below.
+
+'CORRECT,' the voice booms. 'You've learned the lesson. Trust is given freely, but once broken, it can never be restored.'
+
+The door at the far end of the room unlocks with a heavy CLUNK.
+
+You are free.";
+		now Player-hands-trapped is 0;
+		now Observation-room-trap-activated is false;
+		if the other prisoner is in the Observation Room:
+			say "[paragraph break]Marcus stares at you in disbelief. 'You... you did it. We're free!'";
+	otherwise:
+		play the sound of TrapFail;
+		play the sound of Screaming;
+		say "You shout: '[the answer]!'
+
+The monitors flash RED.
+
+'WRONG,' the voice declares.
+
+The mechanisms activate.";
+		if the other prisoner is not in the Observation Room and Player-hands-trapped is 1:
+			say "
+
+The mechanism begins to pull you backward!
+
+You feel the clamps dragging your arm toward the spinning saw blades behind you.
+
+You scream as the blades tear into your flesh.
+
+There is no mercy. No escape.
+
+The saw rips through muscle, bone, and sinew.";
+			play the sound of BodyFall;
+			say "
+
+Your body goes limp as the blades consume you.
+
+This is the end.";
+			end the story;
+		otherwise:
+			say "
+
+[if Player-hands-trapped is 2]Both blades cut through your wrists simultaneously. You fall, hitting the ground hard.
+
+Blood spurts from both severed wrists. There is no way to stop it.
+
+[otherwise]The blade cuts through your single remaining wrist. You fall.
+
+Blood pours from the stump. With no hands left, you can't even try to stop it.
+
+[end if]Your vision goes dark.
+
+This is the end.";
+			end the story.
+
+
+
+Chapter 34 - Asking Marcus For Help
+
+Asking Marcus for help is an action applying to nothing.
+Understand "ask marcus for help" or "ask marcus" or "ask marcus about answer" or 
+"ask marcus about question" or "marcus help" or "help marcus" as asking Marcus for help.
+
+Check asking Marcus for help:
+	if the player is not in the Observation Room:
+		say "Marcus isn't here." instead;
+	if the other prisoner is not in the Observation Room:
+		say "Marcus isn't here." instead;
+	if the other prisoner is unconscious:
+		say "Marcus is unconscious." instead;
+	if the other prisoner is dead:
+		say "Marcus is dead." instead;
+	if Observation-room-trap-activated is false:
+		say "There's nothing to ask him about." instead;
+	if Player-answered is true:
+		say "You already answered the question." instead.
+
+Carry out asking Marcus for help:
+	now Player-answered is true;
+	play the sound of Pressure;
+	say "You look at Marcus desperately.
+
+'Marcus! Do you know the answer?! Please!'
+
+Marcus stares at you, his face conflicted. Sweat beads on his forehead.
+
+The monitors display: 'HE KNOWS THE ANSWER. WILL HE SAVE YOU... OR HIMSELF?'
+
+Marcus's voice trembles: 'I... I do know it. I remember... from before.'
+
+He pauses, looking between you and the chamber exit door.
+
+'But if I tell you... we both go free. If I don't...'
+
+He's considering betraying you.
+
+[paragraph break]You can see the internal struggle in his eyes.
+
+What do you say?
+
+(Type 'confess your sins' or 'lie to marcus')".
+
+
+
+Chapter 35 - Player's Final Choice
+
+Confessing is an action applying to nothing.
+Understand "confess" or "confess your sins" or "confess sins" or "tell truth" or "be honest" as confessing.
+
+Check confessing:
+	if the player is not in the Observation Room:
+		say "There's nothing to confess." instead;
+	if Observation-room-trap-activated is false:
+		say "You haven't triggered the trap yet." instead;
+	if Player-answered is false:
+		say "You need to ask Marcus for help first." instead;
+	if Player-confessed is true or Marcus-betrayed is true:
+		say "It's too late. The choice has been made." instead.
+
+Carry out confessing:
+	now Player-confessed is true;
+	say "You take a deep breath.
+
+'Marcus... I need to tell you something.'
+
+Your voice cracks.
+
+'In the cell... when I had to choose... I almost left you behind. I thought about saving only myself. Part of me wanted to.'
+
+Tears stream down your face.
+
+'But I didn't. I saved you. And if I could do it again... I'd make the same choice. Because you're worth saving.'
+
+Marcus's eyes widen. His expression softens.
+
+'You... you're telling the truth.'
+
+He steps closer.
+
+'The answer is TRUST,' he says clearly. 'The thing that can be given but never taken back is TRUST.'
+
+The monitors flash GREEN.
+
+The mechanical clamps release. You fall, catching yourself.
+
+'CORRECT,' the voice booms.
+
+Marcus helps you down from the furniture.
+
+'Thank you,' he says quietly. 'Thank you for being honest. Thank you for saving me.'
+
+The observation exit door unlocks with a heavy CLUNK.
+
+You both survived.";
+	now Player-hands-trapped is 0;
+	now Observation-room-trap-activated is false.
+
+
+
+Lying to Marcus is an action applying to nothing.
+Understand "lie" or "lie to marcus" or "deceive" or "manipulate" as lying to Marcus.
+
+Check lying to Marcus:
+	if the player is not in the Observation Room:
+		say "There's no one to lie to." instead;
+	if Observation-room-trap-activated is false:
+		say "You haven't triggered the trap yet." instead;
+	if Player-answered is false:
+		say "You need to ask Marcus for help first." instead;
+	if Player-confessed is true or Marcus-betrayed is true:
+		say "It's too late. The choice has been made." instead.
+
+Carry out lying to Marcus:
+	now Marcus-betrayed is true;
+	say "You force a calm expression.
+
+'Marcus, listen to me. I saved you in the cell, didn't I? I could have left you to die, but I didn't. That has to count for something.'
+
+You're trying to manipulate him.
+
+'You owe me your life. Now it's time to repay that debt. Tell me the answer. You know we'll both get out of here.'
+
+Marcus looks at you carefully. His eyes narrow.
+
+'You're... you're lying,' he says slowly. 'I can see it in your eyes.'
+
+His expression hardens.
+
+'You didn't save me out of kindness. You saved me because you thought you'd need me. As leverage. As a tool.'
+
+He steps back toward the exit.
+
+He walks to the observation exit door. It unlocks for him.
+
+'Now you'll never have mine.'
+
+He leaves.
+
+The monitors flash RED.
+
+'BETRAYAL COMPLETE,' the voice announces.
+
+The mechanisms activate.";
+	play the sound of Screaming;
+	say "
+
+[if Player-hands-trapped is 2]Both blades cut through your wrists. You fall.
+
+[otherwise]The blade severs your remaining hand. You fall.
+
+[end if]Blood pours from your wounds. You can't stop it.
+
+Marcus's footsteps fade into the distance.
+
+[paragraph break]You can try to STRUGGLE or SHOUT, but time is running out...";
+	now Betrayal-dying is true;
+	now Betrayal-death-turns is 1;
+	now Player-hands-trapped is 0.
+
+
+Struggling is an action applying to nothing.
+Understand "struggle" or "fight" or "resist" as struggling.
+
+Check struggling:
+	if Betrayal-dying is false and Last-hand-dying is false:
+		say "There's nothing to struggle against." instead.
+
+Carry out struggling:
+	if Betrayal-dying is true:
+		say "You try to move, to fight, to do something... anything.
+
+But your struggle is in vain. The blood loss is too severe. Your body won't respond.
+
+You're dying.";
+		now Betrayal-death-turns is 0;
+	otherwise if Last-hand-dying is true:
+		say "You pull against the mechanism with all your remaining strength.
+
+But it's futile.
+
+The mechanism activates.";
+		play the sound of NPCCut;
+		say "
+
+Your last hand is severed.
+
+You fall to the ground.";
+		now Last-hand-death-turns is 0.
+
+
+Shouting is an action applying to nothing.
+Understand "shout" or "scream" or "yell" or "call for help" or "cry for help" as shouting.
+
+Check shouting:
+	if Betrayal-dying is false:
+		say "There's no reason to shout." instead.
+
+Carry out shouting:
+	say "You scream with everything you have left.
+
+'HELP! SOMEONE! ANYONE!'
+
+Your voice echoes through the empty room.
+
+But no one hears. No one is coming. You're alone.";
+	now Betrayal-death-turns is 0.
+
+
+Instead of doing anything when Betrayal-dying is true:
+	if looking:
+		continue the action;
+	otherwise:
+		say "You're too weak to do that.".
+
+Instead of doing anything when Last-hand-dying is true:
+	if looking or struggling:
+		continue the action;
+	otherwise:
+		say "You're trapped. The only thing you can do is STRUGGLE.".
+
+Every turn when Betrayal-dying is true:
+	if Betrayal-death-turns is greater than 0:
+		decrease Betrayal-death-turns by 1;
+	otherwise:
+		say "[paragraph break]Your vision darkens. The blood loss is too much.";
+		play the sound of BodyFall;
+		end the story.
+
+Every turn when Last-hand-dying is true:
+	if Last-hand-death-turns is greater than 0:
+		decrease Last-hand-death-turns by 1;
+	otherwise:
+		say "[paragraph break]With no hands, you cannot stop the bleeding.
+
+Your vision fades.
+
+This is the end.";
+		play the sound of BodyFall;
+		end the story.
+
+
+
+Chapter 36 - Entering Observation Room With Marcus
+
+Before going to the Observation Room from the Medical Chamber:
+	if the other prisoner is in the Medical Chamber and the other prisoner is conscious:
+		now the other prisoner is in the Observation Room;
+	continue the action.
+
+After going to the Observation Room for the first time:
+	display the Figure of ObservationRoomImage;
+	if the other prisoner is in the Observation Room:
+		say "[paragraph break]Marcus limps in behind you, leaning against the wall for support.
+'Another room... another trap,' he mutters. 'We need to be careful.'";
+	stop the action.
+
+
+
+Chapter 37 - Final Exit
+
+The observation exit door is a door.
+The observation exit door is east of the Observation Room and west of the Freedom.
+The observation exit door is closed and locked.
+
+The observation exit door can be trap-unlocked or trap-locked.
+The observation exit door is trap-locked.
+
+The observation exit door can be trap-unlocked or trap-locked.
+The observation exit door is trap-locked.
+
+Every turn when Player-hands-trapped is 0 and the player is in the Observation Room and Observation-room-trap-activated is true and the observation exit door is trap-locked:
+	now the observation exit door is unlocked;
+	now the observation exit door is open;
+	now the observation exit door is trap-unlocked.
+
+The Freedom is a room.
+The Freedom is east of the observation exit door.
+
+The description of the Freedom is "You step out into cool night air. Behind you, the nightmare facility looms in darkness.
+
+For a moment, you think you're free.
+
+The horrors you endured will never leave you, but you survived.
+
+[if the other prisoner is in the Freedom]Marcus stands beside you, breathing heavily. You both made it out alive.[otherwise]You made it out alone. Marcus... he didn't survive.[end if]
+
+But as your eyes adjust to the darkness, you realize... this isn't the outside.
+
+You're in another chamber.".
+
+Before going to the Freedom:
+	if the other prisoner is in the Observation Room and the other prisoner is conscious and the other prisoner is alive:
+		now the other prisoner is in the Freedom.
