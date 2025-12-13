@@ -60,6 +60,11 @@ Sound of JigsawVoice is the file "game.ogg".
 Sound of SawTrap is the file "saw.ogg".
 Sound of ChairMove is the file "chair.ogg".
 Sound of Pressure is the file "pressure.ogg".
+Sound of GameOver2 is the file "gameover2.ogg".
+Sound of AdamCare is the file "care.ogg".
+Sound of JawBreaker is the file "jaw_breaker.ogg".
+Sound of GasRelease is the file "gas.ogg".
+Sound of SadMusic is the file "sad.ogg".
 
 
 
@@ -1060,6 +1065,8 @@ Figure of CutLegImage is the file "cut_leg.png".
 Figure of ArmBandageImage is the file "arm-bandage.png".
 Figure of ObservationRoomImage is the file "observation_room.png".
 Figure of SawManImage is the file "saw_man.png".
+Figure of JawBreakerRoomImage is the file "jawbraker.png".
+Figure of BearTrapImage is the file "beartrap.png".
 
 
 
@@ -1344,6 +1351,9 @@ CRACK!
 Your arm falls away. You collapse to the ground, free but bleeding heavily from the shoulder.";
 	now Player-hands-trapped is 0;
 	now Observation-room-trap-activated is false;
+	now the observation exit door is unlocked;
+	now the observation exit door is open;
+	now the observation exit door is trap-unlocked;
 	if Medical-supplies-used is 2:
 		play the sound of BodyFall;
 		say "[paragraph break]Blood pours from your severed shoulder. You have no medical supplies left!
@@ -1373,14 +1383,123 @@ Answering question is an action applying to one topic.
 Understand "answer [text]" or "say [text]" or "the answer is [text]" as answering question.
 
 Check answering question:
-	if the player is not in the Observation Room:
-		say "There's no question to answer." instead;
-	if Observation-room-trap-activated is false:
-		say "You haven't triggered the trap yet." instead;
-	if Player-answered is true:
-		say "You already answered." instead.
+	if the player is in the Jaw Breaker Chamber:
+		if Jaw-device-worn is false:
+			say "You need to wear the device first." instead;
+		if Jaw-puzzle-activated is false:
+			say "The puzzle isn't active." instead;
+		if Jaw-current-question is 0:
+			say "There's no question displayed yet." instead;
+	otherwise if the player is in the Observation Room:
+		if Observation-room-trap-activated is false:
+			say "You haven't triggered the trap yet." instead;
+		if Player-answered is true:
+			say "You already answered." instead;
+	otherwise:
+		say "There's no question to answer." instead.
 
 Carry out answering question:
+	if the player is in the Jaw Breaker Chamber:
+		let the answer be "[the topic understood]";
+		let correct be false;
+		if Jaw-current-question is 1:
+			if the answer matches the text "paris":
+				now correct is true;
+		if Jaw-current-question is 2:
+			if the answer matches the text "pacific" or the answer matches the text "pacific ocean":
+				now correct is true;
+		if Jaw-current-question is 3:
+			if the answer matches the text "four" or the answer matches the text "4":
+				now correct is true;
+		if Jaw-current-question is 4:
+			if the answer matches the text "oxygen" or the answer matches the text "o":
+				now correct is true;
+		if Jaw-current-question is 5:
+			if the answer matches the text "shakespeare" or the answer matches the text "william shakespeare":
+				now correct is true;
+		if correct is true:
+			play the sound of Idea;
+			say "You hear a confirmation tone.
+
+'CORRECT.'
+
+";
+			if Jaw-current-question is 5:
+				say "'You have completed the test. Well done.'
+
+A compartment in the wall slides open with a mechanical hiss, revealing a brass key.";
+				now the jaw key is in the wall compartment;
+				now the wall compartment is open;
+				now Jaw-puzzle-solved is true;
+				now Jaw-puzzle-activated is false;
+				say "
+
+You can now TAKE the KEY to unlock the device and escape.";
+			otherwise:
+				increase Jaw-current-question by 1;
+				say "[paragraph break]The next question appears on the screen...
+
+";
+				if Jaw-current-question is 2:
+					say "QUESTION 2: What is the largest ocean on Earth?";
+				if Jaw-current-question is 3:
+					say "QUESTION 3: How many sides does a square have?";
+				if Jaw-current-question is 4:
+					say "QUESTION 4: What element does 'O' represent on the periodic table?";
+				if Jaw-current-question is 5:
+					say "QUESTION 5: Who wrote 'Romeo and Juliet'?";
+		otherwise:
+			play the sound of TrapFail;
+			increase Jaw-wrong-answers by 1;
+			say "You hear an error tone.
+
+'WRONG.'
+
+";
+			if Jaw-wrong-answers is less than 3:
+				say "The device tightens slightly around your jaw. You feel pressure building.
+
+'You have [3 minus Jaw-wrong-answers] wrong answer[s] remaining before the device activates.'
+
+[paragraph break]The next question appears...
+
+";
+				increase Jaw-current-question by 1;
+				if Jaw-current-question is 2:
+					say "QUESTION 2: What is the largest ocean on Earth?";
+				if Jaw-current-question is 3:
+					say "QUESTION 3: How many sides does a square have?";
+				if Jaw-current-question is 4:
+					say "QUESTION 4: What element does 'O' represent on the periodic table?";
+				if Jaw-current-question is 5:
+					say "QUESTION 5: Who wrote 'Romeo and Juliet'?";
+			otherwise:
+				say "The device ACTIVATES.
+
+You feel the mechanisms inside the cage begin to expand. 
+
+The metal presses against your jaw, forcing it open wider... wider...
+
+You scream, but the device doesn't stop.";
+				play the sound of JawBreaker;
+				play the sound of Screaming;
+				say "
+
+CRACK!
+
+Your jaw shatters. Blood fills your mouth.
+
+The device continues expanding.
+
+CRUNCH!
+
+Your skull splits open.
+
+Darkness.";
+				play the sound of BodyFall;
+				play the sound of GameOver;
+				end the story;
+		stop the action;
 	now Player-answered is true;
 	let the answer be "[the topic understood]";
 	if the answer matches the text "trust" or the answer matches the text "trust.":
@@ -1710,7 +1829,7 @@ After going to the Observation Room for the first time:
 Chapter 37 - Final Exit
 
 The observation exit door is a door.
-The observation exit door is east of the Observation Room and west of the Freedom.
+The observation exit door is east of the Observation Room and west of the Dark Corridor.
 The observation exit door is closed and locked.
 
 The observation exit door can be trap-unlocked or trap-locked.
@@ -1724,21 +1843,435 @@ Every turn when Player-hands-trapped is 0 and the player is in the Observation R
 	now the observation exit door is open;
 	now the observation exit door is trap-unlocked.
 
-The Freedom is a room.
-The Freedom is east of the observation exit door.
+The Dark Corridor is a room.
+The Dark Corridor is east of the observation exit door.
 
-The description of the Freedom is "You step out into cool night air. Behind you, the nightmare facility looms in darkness.
+The description of the Dark Corridor is "You step into a dark, narrow corridor. The walls are cold concrete, barely lit by a single flickering bulb at the far end.
 
-For a moment, you think you're free.
+Behind you, the door to the Observation Room stands open. Ahead, another door waits.
 
-The horrors you endured will never leave you, but you survived.
+[if the other prisoner is in the Dark Corridor]Marcus walks beside you, limping but alive.[otherwise]You walk alone. Marcus didn't make it.[end if]
 
-[if the other prisoner is in the Freedom]Marcus stands beside you, breathing heavily. You both made it out alive.[otherwise]You made it out alone. Marcus... he didn't survive.[end if]
+This nightmare isn't over yet.".
 
-But as your eyes adjust to the darkness, you realize... this isn't the outside.
-
-You're in another chamber.".
-
-Before going to the Freedom:
+Before going to the Dark Corridor:
 	if the other prisoner is in the Observation Room and the other prisoner is conscious and the other prisoner is alive:
-		now the other prisoner is in the Freedom.
+		now the other prisoner is in the Dark Corridor.
+
+
+
+Chapter 38 - Room 4 The Jaw Breaker Chamber
+
+The Jaw Breaker Chamber is a room.
+
+The description of the Jaw Breaker Chamber is "You enter a cold, concrete room lit by a single flickering bulb. The walls are bare except for rust stains and scratch marks - evidence of previous victims.
+
+In the center of the room sits a metal chair, and mounted above it is a horrifying device: a massive mechanical jaw breaker - a metal cage designed to fit over someone's head. Its internal mechanisms gleam with cruel precision.
+
+[if the jaw breaker door is locked]The door behind you has locked automatically.[otherwise]The door behind you stands open.[end if]
+
+A small wall compartment is embedded in the east wall."
+
+The jaw breaker door is a door.
+The jaw breaker door is east of the Dark Corridor and west of the Jaw Breaker Chamber.
+The jaw breaker door is closed and unlocked.
+
+The jaw breaker chair is scenery in the Jaw Breaker Chamber.
+The description of the jaw breaker chair is "A cold metal chair sits directly beneath the jaw breaker device. Restraints dangle from its arms."
+
+Understand "chair" or "metal chair" or "restraints" as the jaw breaker chair.
+
+The jaw breaker device is scenery in the Jaw Breaker Chamber.
+The description of the jaw breaker device is "A nightmarish contraption: a metal cage fitted with hydraulic pistons designed to force the jaws apart. Once activated, it will slowly expand until the victim's jaw is shattered and their skull is split open. 
+
+[if Jaw-device-worn is false]It hangs ominously above the chair, waiting.[otherwise]It's locked around your head. You can feel its cold metal pressing against your face.[end if]"
+
+Understand "device" or "jaw device" or "jaw breaker device" or "jaw breaker" or "cage" or "metal cage" or "contraption" as the jaw breaker device.
+
+Does the player mean examining the jaw breaker device: it is very likely.
+
+The wall compartment is scenery in the Jaw Breaker Chamber.
+The description of the wall compartment is "[if the jaw key is in the wall compartment]A small compartment in the wall has slid open, revealing a brass key inside.[otherwise if Jaw-puzzle-solved is true]The compartment stands empty now.[otherwise]A small metal compartment, currently sealed shut.[end if]"
+
+Understand "compartment" or "small compartment" or "metal compartment" as the wall compartment.
+
+The wall compartment is a closed openable container.
+
+The jaw key is a thing.
+The description of the jaw key is "A small brass key. It looks like it would fit the jaw breaker device lock - and possibly the door."
+
+Understand "key" or "brass key" or "small key" as the jaw key.
+
+
+
+Chapter 39 - Room 4 Variables
+
+Jaw-device-worn is a truth state that varies. Jaw-device-worn is false.
+Jaw-puzzle-activated is a truth state that varies. Jaw-puzzle-activated is false.
+Jaw-puzzle-solved is a truth state that varies. Jaw-puzzle-solved is false.
+Jaw-wrong-answers is a number that varies. Jaw-wrong-answers is 0.
+Jaw-current-question is a number that varies. Jaw-current-question is 0.
+Marcus-jaw-choice-made is a truth state that varies. Marcus-jaw-choice-made is false.
+Marcus-jaw-playing is a truth state that varies. Marcus-jaw-playing is false.
+Marcus-jaw-question is a number that varies. Marcus-jaw-question is 0.
+
+
+
+Chapter 40 - Entering Room 4
+
+After going to the Jaw Breaker Chamber for the first time:
+	if the other prisoner is in the Dark Corridor and the other prisoner is conscious and the other prisoner is alive:
+		now the other prisoner is in the Jaw Breaker Chamber;
+		now the jaw breaker door is locked;
+		say "[paragraph break]Marcus follows you into the room. The heavy door SLAMS shut behind you both and locks with a mechanical CLUNK.";
+		play the sound of ButtonPress;
+		display the Figure of JawBreakerRoomImage;
+		say "
+
+A distorted voice crackles from hidden speakers in the ceiling.";
+		play the sound of JigsawVoice;
+		say "
+
+'Welcome to your penultimate test,' the voice rasps. 'I've watched you both work together. I've seen trust develop between you.
+
+How... touching.
+
+But all good things must end.'
+
+The voice pauses dramatically.
+
+'This game is different. This game... is not for you. This game is for Marcus.'
+
+Marcus's eyes widen in horror.
+
+'The device above that chair is a jaw breaker. Once activated, it will slowly expand, shattering the jaw and crushing the skull. 
+
+Marcus, you will sit in that chair and wear the device. You will answer five questions. Get three wrong... and the device activates.
+
+If Marcus refuses to play, I will release gas into this room. You will both die choking on the floor.
+
+The choice is simple: one dies, or both die.
+
+What will it be?'
+
+[paragraph break]Marcus looks at you, terrified. 'There has to be another way...' he whispers.";
+	otherwise:
+		say "[paragraph break]As you step into the room, the door locks behind you automatically.";
+		play the sound of ButtonPress;
+		display the Figure of JawBreakerRoomImage;
+		say "
+
+A distorted voice crackles from hidden speakers in the ceiling.";
+		play the sound of JigsawVoice;
+		say "
+
+'Welcome, Adam. You've made it this far alone. Impressive.
+
+This is the Jaw Breaker. A device designed to expand the human jaw beyond its breaking point.
+
+Your test is simple: Put the device on your head. Answer five questions correctly.
+
+You may get TWO questions wrong. But if you fail a third time... the device activates, and your skull will be crushed.
+
+If you answer all five correctly - or survive with only two wrong answers - a compartment will open in the wall containing a key. That key will unlock both the device and the exit door.
+
+Refuse to play, and you will never leave this room.
+
+Your time starts... NOW.'".
+
+
+
+Chapter 41 - Solo Scenario Wearing Device
+
+Wearing device is an action applying to nothing.
+Understand "wear device" or "put on device" or "wear jaw breaker" or "put on jaw breaker" or 
+"sit in chair" or "sit on chair" or "sit down" or "wear the device" or "put device on" as wearing device.
+
+Check wearing device:
+	if the player is not in the Jaw Breaker Chamber:
+		say "There's no device here." instead;
+	if the other prisoner is in the Jaw Breaker Chamber:
+		say "The game is for Marcus, not you." instead;
+	if Jaw-device-worn is true:
+		say "You're already wearing it." instead.
+
+Carry out wearing device:
+	say "You take a deep breath and sit in the cold metal chair.
+
+You reach up and pull the jaw breaker device down over your head.";
+	play the sound of ChairMove;
+	say "
+
+The moment it settles into place, metal locks SNAP shut around your neck.
+
+You're trapped.";
+	play the sound of Pressure;
+	say "
+
+The device is cold against your face. You can feel the internal mechanisms pressing against your jaw.
+
+'Good,' the voice says. 'Let us begin.'
+
+[paragraph break]The first question crackles through the speakers...";
+	now Jaw-device-worn is true;
+	now Jaw-puzzle-activated is true;
+	now Jaw-current-question is 1;
+	say "
+
+QUESTION 1: What is the capital of France?".
+
+
+
+Chapter 42 - Solo Scenario Unlocking Device
+
+Unlocking jaw device with is an action applying to two things.
+Understand "unlock device with [something]" or "unlock jaw breaker with [something]" or 
+"use [something] on device" or "unlock [something] with [something]" as unlocking jaw device with.
+
+Check unlocking jaw device with:
+	if the player is not in the Jaw Breaker Chamber:
+		say "There's no device here." instead;
+	if Jaw-device-worn is false:
+		say "You're not wearing the device." instead;
+	if the second noun is not the jaw key:
+		say "That won't unlock the device." instead;
+	if the jaw key is not carried by the player:
+		say "You don't have the key." instead.
+
+Carry out unlocking jaw device with:
+	say "With trembling hands, you insert the key into the lock mechanism on the side of the device.
+
+CLICK!
+
+The locks release. The jaw breaker lifts away from your head.
+
+You're free.";
+	play the sound of WoundClose;
+	now Jaw-device-worn is false;
+	say "
+
+You stand up from the chair, breathing heavily. You survived.
+
+The exit door unlocks with a heavy CLUNK.";
+	now the jaw breaker door is unlocked;
+	now the jaw breaker door is open.
+
+
+
+Chapter 43 - Marcus Scenario Making Choice
+
+Choosing Marcus to play is an action applying to nothing.
+Understand "let marcus play" or "marcus play" or "marcus plays" or "choose marcus" or "marcus should play" as choosing Marcus to play.
+
+Choosing self to play is an action applying to nothing.
+Understand "play yourself" or "i play" or "i will play" or "choose myself" or "i'll play" or "play myself" as choosing self to play.
+
+Check choosing Marcus to play:
+	if the player is not in the Jaw Breaker Chamber:
+		say "There's no choice to make here." instead;
+	if the other prisoner is not in the Jaw Breaker Chamber:
+		say "Marcus isn't here." instead;
+	if Marcus-jaw-choice-made is true:
+		say "You've already made your choice." instead.
+
+Carry out choosing Marcus to play:
+	say "You look at Marcus. He's terrified, but you both know there's no other option.
+
+'Marcus... you have to play,' you say quietly.
+
+Marcus closes his eyes. After a long moment, he nods.
+
+'Okay. Okay, I'll do it. Better one than both.'
+
+He walks slowly to the chair and sits down. His hands are shaking as he pulls the jaw breaker device over his head.";
+	play the sound of ChairMove;
+	say "
+
+The locks SNAP shut around his neck.
+
+'Good,' Jigsaw's voice echoes. 'Let the game begin.'
+
+[paragraph break]The first question crackles through the speakers...
+
+QUESTION 1: What is the tallest mountain in the world?
+
+Marcus thinks for a moment, then answers: 'Mount Everest.'
+
+You hear a confirmation tone.
+
+'CORRECT.'";
+	play the sound of Idea;
+	now Marcus-jaw-choice-made is true;
+	now Marcus-jaw-playing is true;
+	now Marcus-jaw-question is 1;
+	say "
+
+[paragraph break]Marcus breathes a sigh of relief. 'Okay... I can do this...'
+
+[paragraph break]Press ANY KEY to continue...";
+	
+
+Check choosing self to play:
+	if the player is not in the Jaw Breaker Chamber:
+		say "There's no choice to make here." instead;
+	if the other prisoner is not in the Jaw Breaker Chamber:
+		say "Marcus isn't here." instead;
+	if Marcus-jaw-choice-made is true:
+		say "You've already made your choice." instead.
+
+Carry out choosing self to play:
+	say "'No,' you say firmly. 'I'll play. Not him.'
+
+'How noble,' Jigsaw's voice mocks. 'But I'm afraid that's not an option.'
+
+Before you can react, you hear a HISSING sound.
+
+Gas begins pouring into the room from hidden vents in the ceiling.";
+	play the sound of GasRelease;
+	say "
+
+Marcus screams. 'NO! What did you do?!'
+
+The gas fills your lungs. It burns. You can't breathe.
+
+Both of you collapse to the floor, gasping, choking.
+
+'You had one simple choice,' the voice says coldly. 'And you chose wrong.'
+
+Everything goes black.";
+	play the sound of Screaming;
+	play the sound of GameOver;
+	end the story.
+
+
+
+Chapter 44 - Marcus Scenario Scripted Death Sequence
+
+Every turn when Marcus-jaw-playing is true and Marcus-jaw-question is greater than 0 and Marcus-jaw-question is less than 6:
+	if Marcus-jaw-question is 1:
+		say "[paragraph break]The second question appears:
+
+QUESTION 2: What is the chemical symbol for water?
+
+Marcus answers confidently: 'H2O.'
+
+You hear a confirmation tone.
+
+'CORRECT.'";
+		play the sound of Idea;
+		now Marcus-jaw-question is 2;
+	otherwise if Marcus-jaw-question is 2:
+		say "[paragraph break]The third question appears:
+
+QUESTION 3: How many continents are there?
+
+Marcus hesitates. 'Uh... six?'
+
+You hear an error tone.
+
+'WRONG. The correct answer is seven.'";
+		play the sound of TrapFail;
+		say "
+
+The device tightens around Marcus's head. He gasps in pain.
+
+'One wrong answer. Two more and the device activates.'";
+		now Marcus-jaw-question is 3;
+	otherwise if Marcus-jaw-question is 3:
+		say "[paragraph break]The fourth question appears:
+
+QUESTION 4: What year did World War II end?
+
+Marcus thinks carefully. '1945.'
+
+You hear a confirmation tone.
+
+'CORRECT.'";
+		play the sound of Idea;
+		now Marcus-jaw-question is 4;
+	otherwise if Marcus-jaw-question is 4:
+		say "[paragraph break]The fifth and final question appears:
+
+QUESTION 5: What is the smallest prime number?
+
+Marcus's face goes pale. He's not sure.
+
+'Um... one?' he guesses.
+
+You hear an error tone.
+
+'WRONG. The correct answer is two.'";
+		play the sound of TrapFail;
+		say "
+
+The device ACTIVATES.
+
+'NO!' Marcus screams.
+
+You watch in horror as the jaw breaker begins to expand.
+
+Marcus's jaw is forced open wider... wider...";
+		play the sound of JawBreaker;
+		play the sound of Screaming;
+		say "
+
+CRACK!
+
+His jaw shatters. Blood pours from his mouth.
+
+The device doesn't stop.
+
+CRUNCH!
+
+His skull splits open.
+
+Marcus's body goes limp.";
+		play the sound of BodyFall;
+		play the sound of GameOver2;
+		say "
+
+He's dead.
+
+You stand there, frozen in shock.
+
+Marcus... the man who helped you survive. The man you trusted. The man you worked with to escape this nightmare.
+
+Gone.
+
+You feel a wave of emotions crashing over you - shock, anger, frustration, grief.
+
+You drop to your knees, staring at his lifeless body.
+
+'Why?' you whisper. 'Why did it have to end like this?'
+
+The silence is deafening.";
+		play the sound of SadMusic;
+		say "
+
+You can't move. You can't think. All you can do is stare at what's left of your companion.
+
+The monitors flicker. Jigsaw's face appears.
+
+'Unfortunate. But necessary. You see, Adam, this was never about him surviving. This was about YOU learning the cost of trust.
+
+You trusted him to succeed. He failed. And now he's dead because of that trust.
+
+Remember this lesson well.'";
+		say "
+
+Adam: [bracket]shouting[close bracket] 'I don't give a crap if you covered yourself in peanut butter and had a 15 hooker gang bang!'";
+		play the sound of AdamCare;
+		say "
+
+The monitors go dark.
+
+The exit door unlocks with a heavy CLUNK.
+
+Marcus is gone. But you can still move forward.";
+		now the other prisoner is dead;
+		now Marcus-jaw-playing is false;
+		now Marcus-jaw-question is 6;
+		now the jaw breaker door is unlocked;
+		now the jaw breaker door is open;
+	otherwise:
+		continue the action.
