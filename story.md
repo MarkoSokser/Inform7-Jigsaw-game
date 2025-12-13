@@ -1510,6 +1510,9 @@ The door at the far end of the room unlocks with a heavy CLUNK.
 You are free.";
 		now Player-hands-trapped is 0;
 		now Observation-room-trap-activated is false;
+		now the observation exit door is unlocked;
+		now the observation exit door is open;
+		now the observation exit door is trap-unlocked;
 		if the other prisoner is in the Observation Room:
 			say "[paragraph break]Marcus stares at you in disbelief. 'You... you did it. We're free!'";
 	otherwise:
@@ -1657,7 +1660,10 @@ The observation exit door unlocks with a heavy CLUNK.
 
 You both survived.";
 	now Player-hands-trapped is 0;
-	now Observation-room-trap-activated is false.
+	now Observation-room-trap-activated is false;
+	now the observation exit door is unlocked;
+	now the observation exit door is open;
+	now the observation exit door is trap-unlocked.
 
 
 
@@ -1908,6 +1914,10 @@ Jaw-current-question is a number that varies. Jaw-current-question is 0.
 Marcus-jaw-choice-made is a truth state that varies. Marcus-jaw-choice-made is false.
 Marcus-jaw-playing is a truth state that varies. Marcus-jaw-playing is false.
 Marcus-jaw-question is a number that varies. Marcus-jaw-question is 0.
+Gas-released is a truth state that varies. Gas-released is false.
+Gas-death-turns is a number that varies. Gas-death-turns is 0.
+Marcus-death-sequence is a truth state that varies. Marcus-death-sequence is false.
+Marcus-death-turn is a number that varies. Marcus-death-turn is 0.
 
 
 
@@ -2082,28 +2092,14 @@ He walks slowly to the chair and sits down. His hands are shaking as he pulls th
 	play the sound of ChairMove;
 	say "
 
-The locks SNAP shut around his neck.
-
-'Good,' Jigsaw's voice echoes. 'Let the game begin.'
-
-[paragraph break]The first question crackles through the speakers...
-
-QUESTION 1: What is the tallest mountain in the world?
-
-Marcus thinks for a moment, then answers: 'Mount Everest.'
-
-You hear a confirmation tone.
-
-'CORRECT.'";
-	play the sound of Idea;
-	now Marcus-jaw-choice-made is true;
-	now Marcus-jaw-playing is true;
-	now Marcus-jaw-question is 1;
+The locks SNAP shut around his neck.";
+	play the sound of Pressure;
 	say "
 
-[paragraph break]Marcus breathes a sigh of relief. 'Okay... I can do this...'
-
-[paragraph break]Press ANY KEY to continue...";
+'Good,' Jigsaw's voice echoes. 'Let the game begin.'";
+	now Marcus-jaw-choice-made is true;
+	now Marcus-jaw-playing is true;
+	now Marcus-jaw-question is 0.
 	
 
 Check choosing self to play:
@@ -2115,15 +2111,16 @@ Check choosing self to play:
 		say "You've already made your choice." instead.
 
 Carry out choosing self to play:
+	now Marcus-jaw-choice-made is true;
 	say "'No,' you say firmly. 'I'll play. Not him.'
 
 'How noble,' Jigsaw's voice mocks. 'But I'm afraid that's not an option.'
 
-Before you can react, you hear a HISSING sound.
-
-Gas begins pouring into the room from hidden vents in the ceiling.";
+Before you can react, you hear a HISSING sound.";
 	play the sound of GasRelease;
 	say "
+
+Gas begins pouring into the room from hidden vents in the ceiling.
 
 Marcus screams. 'NO! What did you do?!'
 
@@ -2131,19 +2128,49 @@ The gas fills your lungs. It burns. You can't breathe.
 
 Both of you collapse to the floor, gasping, choking.
 
-'You had one simple choice,' the voice says coldly. 'And you chose wrong.'
+Your vision blurs. You try to crawl toward the door, but your body won't respond.
+
+Marcus is next to you, convulsing, his face turning blue.";
+	now Gas-released is true;
+	now Gas-death-turns is 0.
+
+Every turn when Gas-released is true:
+	if Gas-death-turns is 0:
+		say "[paragraph break]You can try to STRUGGLE or SHOUT, but time is running out...";
+		increase Gas-death-turns by 1;
+	otherwise if Gas-death-turns is 1:
+		say "[paragraph break]'You had one simple choice,' the voice says coldly. 'And you chose wrong.'
 
 Everything goes black.";
-	play the sound of Screaming;
-	play the sound of GameOver;
-	end the story.
+		play the sound of Screaming;
+		play the sound of GameOver;
+		end the story.
+
+Instead of doing anything when Gas-released is true:
+	if looking or struggling or shouting:
+		continue the action;
+	otherwise:
+		say "You're choking on the gas. You can barely move.".
 
 
 
 Chapter 44 - Marcus Scenario Scripted Death Sequence
 
-Every turn when Marcus-jaw-playing is true and Marcus-jaw-question is greater than 0 and Marcus-jaw-question is less than 6:
-	if Marcus-jaw-question is 1:
+Every turn when Marcus-jaw-playing is true and Marcus-jaw-question is less than 6:
+	if Marcus-jaw-question is 0:
+		say "[paragraph break]The first question crackles through the speakers...
+
+QUESTION 1: What is the tallest mountain in the world?
+
+Marcus thinks for a moment, then answers: 'Mount Everest.'
+
+You hear a confirmation tone.
+
+'CORRECT.'
+
+[paragraph break]Marcus breathes a sigh of relief. 'Okay... I can do this...'";
+		now Marcus-jaw-question is 1;
+	otherwise if Marcus-jaw-question is 1:
 		say "[paragraph break]The second question appears:
 
 QUESTION 2: What is the chemical symbol for water?
@@ -2152,8 +2179,8 @@ Marcus answers confidently: 'H2O.'
 
 You hear a confirmation tone.
 
-'CORRECT.'";
-		play the sound of Idea;
+'CORRECT.'
+";
 		now Marcus-jaw-question is 2;
 	otherwise if Marcus-jaw-question is 2:
 		say "[paragraph break]The third question appears:
@@ -2181,8 +2208,8 @@ Marcus thinks carefully. '1945.'
 
 You hear a confirmation tone.
 
-'CORRECT.'";
-		play the sound of Idea;
+'CORRECT.'
+";
 		now Marcus-jaw-question is 4;
 	otherwise if Marcus-jaw-question is 4:
 		say "[paragraph break]The fifth and final question appears:
@@ -2207,6 +2234,10 @@ You watch in horror as the jaw breaker begins to expand.
 
 Marcus's jaw is forced open wider... wider...";
 		play the sound of JawBreaker;
+		say "
+
+";
+		display the Figure of BearTrapImage;
 		play the sound of Screaming;
 		say "
 
@@ -2222,10 +2253,17 @@ His skull splits open.
 
 Marcus's body goes limp.";
 		play the sound of BodyFall;
-		play the sound of GameOver2;
-		say "
+		now Marcus-jaw-playing is false;
+		now Marcus-death-sequence is true;
+		now Marcus-death-turn is 0;
+		now Marcus-jaw-question is 6.
 
-He's dead.
+Every turn when Marcus-death-sequence is true:
+	if Marcus-death-turn is 0:
+		say "[paragraph break]Press any key to continue...";
+		increase Marcus-death-turn by 1;
+	otherwise if Marcus-death-turn is 1:
+		say "[paragraph break]He's dead.
 
 You stand there, frozen in shock.
 
@@ -2241,9 +2279,12 @@ You drop to your knees, staring at his lifeless body.
 
 The silence is deafening.";
 		play the sound of SadMusic;
-		say "
-
-You can't move. You can't think. All you can do is stare at what's left of your companion.
+		increase Marcus-death-turn by 1;
+	otherwise if Marcus-death-turn is 2:
+		say "[paragraph break]Press any key to continue...";
+		increase Marcus-death-turn by 1;
+	otherwise if Marcus-death-turn is 3:
+		say "[paragraph break]You can't move. You can't think. All you can do is stare at what's left of your companion.
 
 The monitors flicker. Jigsaw's face appears.
 
@@ -2252,9 +2293,12 @@ The monitors flicker. Jigsaw's face appears.
 You trusted him to succeed. He failed. And now he's dead because of that trust.
 
 Remember this lesson well.'";
-		say "
-
-Adam: [bracket]shouting[close bracket] 'I don't give a crap if you covered yourself in peanut butter and had a 15 hooker gang bang!'";
+		increase Marcus-death-turn by 1;
+	otherwise if Marcus-death-turn is 4:
+		say "[paragraph break]Press any key to continue...";
+		increase Marcus-death-turn by 1;
+	otherwise if Marcus-death-turn is 5:
+		say "[paragraph break]Adam: [bracket]shouting[close bracket] 'I don't give a crap if you covered yourself in peanut butter and had a 15 hooker gang bang!'";
 		play the sound of AdamCare;
 		say "
 
@@ -2264,9 +2308,12 @@ The exit door unlocks with a heavy CLUNK.
 
 Marcus is gone. But you can still move forward.";
 		now the other prisoner is dead;
-		now Marcus-jaw-playing is false;
-		now Marcus-jaw-question is 6;
 		now the jaw breaker door is unlocked;
 		now the jaw breaker door is open;
+		now Marcus-death-sequence is false.
+
+Instead of doing anything when Marcus-death-sequence is true:
+	if looking:
+		continue the action;
 	otherwise:
-		continue the action.
+		say "You're too shocked to do anything but wait.".
