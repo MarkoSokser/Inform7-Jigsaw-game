@@ -1379,10 +1379,10 @@ You are free. But at what cost?".
 
 Chapter 33 - Answering The Question
 
-Answering question is an action applying to one topic.
-Understand "answer [text]" or "say [text]" or "the answer is [text]" as answering question.
+Responding to question is an action applying to one topic.
+Understand "answer [text]" or "respond [text]" or "say [text]" or "the answer is [text]" as responding to question.
 
-Check answering question:
+Check responding to question:
 	if the player is in the Jaw Breaker Chamber:
 		if Jaw-device-worn is false:
 			say "You need to wear the device first." instead;
@@ -1398,27 +1398,21 @@ Check answering question:
 	otherwise:
 		say "There's no question to answer." instead.
 
-Carry out answering question:
+Carry out responding to question:
 	if the player is in the Jaw Breaker Chamber:
-		let the answer be "[the topic understood]";
+		let the answer be "[the topic understood in lower case]";
 		let correct be false;
-		if Jaw-current-question is 1:
-			if the answer matches the text "paris":
-				now correct is true;
-		if Jaw-current-question is 2:
-			if the answer matches the text "pacific" or the answer matches the text "pacific ocean":
-				now correct is true;
-		if Jaw-current-question is 3:
-			if the answer matches the text "four" or the answer matches the text "4":
-				now correct is true;
-		if Jaw-current-question is 4:
-			if the answer matches the text "oxygen" or the answer matches the text "o":
-				now correct is true;
-		if Jaw-current-question is 5:
-			if the answer matches the text "shakespeare" or the answer matches the text "william shakespeare":
-				now correct is true;
+		if Jaw-current-question is 1 and the answer matches the text "paris":
+			now correct is true;
+		if Jaw-current-question is 2 and (the answer matches the text "pacific" or the answer matches the text "pacific ocean"):
+			now correct is true;
+		if Jaw-current-question is 3 and (the answer matches the text "four" or the answer matches the text "4"):
+			now correct is true;
+		if Jaw-current-question is 4 and (the answer matches the text "oxygen" or the answer matches the text "o"):
+			now correct is true;
+		if Jaw-current-question is 5 and (the answer matches the text "shakespeare" or the answer matches the text "william shakespeare"):
+			now correct is true;
 		if correct is true:
-			play the sound of Idea;
 			say "You hear a confirmation tone.
 
 'CORRECT.'
@@ -1445,7 +1439,7 @@ You can now TAKE the KEY to unlock the device and escape.";
 				if Jaw-current-question is 3:
 					say "QUESTION 3: How many sides does a square have?";
 				if Jaw-current-question is 4:
-					say "QUESTION 4: What element does 'O' represent on the periodic table?";
+					say "QUESTION 4: What element does 'Au' represent on the periodic table?";
 				if Jaw-current-question is 5:
 					say "QUESTION 5: Who wrote 'Romeo and Juliet'?";
 		otherwise:
@@ -1470,7 +1464,7 @@ You can now TAKE the KEY to unlock the device and escape.";
 				if Jaw-current-question is 3:
 					say "QUESTION 3: How many sides does a square have?";
 				if Jaw-current-question is 4:
-					say "QUESTION 4: What element does 'O' represent on the periodic table?";
+					say "QUESTION 4: What element does 'Au' represent on the periodic table?";
 				if Jaw-current-question is 5:
 					say "QUESTION 5: Who wrote 'Romeo and Juliet'?";
 			otherwise:
@@ -2024,37 +2018,38 @@ QUESTION 1: What is the capital of France?".
 
 Chapter 42 - Solo Scenario Unlocking Device
 
-Unlocking jaw device with is an action applying to two things.
-Understand "unlock device with [something]" or "unlock jaw breaker with [something]" or 
-"use [something] on device" or "unlock [something] with [something]" as unlocking jaw device with.
-
-Check unlocking jaw device with:
+Instead of unlocking the jaw breaker device with something:
 	if the player is not in the Jaw Breaker Chamber:
-		say "There's no device here." instead;
-	if Jaw-device-worn is false:
-		say "You're not wearing the device." instead;
-	if the second noun is not the jaw key:
-		say "That won't unlock the device." instead;
-	if the jaw key is not carried by the player:
-		say "You don't have the key." instead.
-
-Carry out unlocking jaw device with:
-	say "With trembling hands, you insert the key into the lock mechanism on the side of the device.
+		say "There's no device here.";
+	otherwise if Jaw-device-worn is false:
+		say "You're not wearing the device.";
+	otherwise if the second noun is not the jaw key:
+		say "That won't unlock the device.";
+	otherwise if the jaw key is not carried by the player:
+		say "You don't have the key.";
+	otherwise:
+		say "With trembling hands, you insert the key into the lock mechanism on the side of the device.
 
 CLICK!
 
 The locks release. The jaw breaker lifts away from your head.
 
 You're free.";
-	play the sound of WoundClose;
-	now Jaw-device-worn is false;
-	say "
+		now Jaw-device-worn is false;
+		say "
 
 You stand up from the chair, breathing heavily. You survived.
 
 The exit door unlocks with a heavy CLUNK.";
-	now the jaw breaker door is unlocked;
-	now the jaw breaker door is open.
+		now the jaw breaker door is unlocked;
+		now the jaw breaker door is open.
+
+Unlocking jaw device with is an action applying to two things.
+Understand "unlock device with [something]" or "unlock jaw breaker with [something]" or 
+"use [something] on device" or "use [something] on jaw breaker" or
+"insert [something] into device" or "use key on device" as unlocking jaw device with.
+
+Does the player mean unlocking jaw device with the jaw key: it is very likely.
 
 
 
