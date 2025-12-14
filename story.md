@@ -1996,6 +1996,19 @@ The freedom door is closed and locked.
 
 The description of the freedom door is "A green-painted steel door marked 'EXIT - FREEDOM'. [if locked]It's locked[otherwise]It stands unlocked, offering escape[end if]."
 
+The Exit Hallway is a room.
+The Exit Hallway is north of the freedom door.
+The description of the Exit Hallway is "You step through the green door and find yourself in a long, concrete hallway. At the far end, sunlight pours in from an open exit. You are free.
+
+[paragraph break]You limp forward, feeling the weight of every choice, every scar. But you survived. You made it out alive.
+
+[paragraph break]THE END
+
+(You chose freedom.)".
+
+After going to the Exit Hallway:
+	end the story saying "You escaped. You survived. But the scars remain.".
+
 The revenge door is a door.
 The revenge door is south of the Control Room.
 The revenge door is closed and locked.
@@ -2653,6 +2666,7 @@ And that makes all the difference.
 Every turn when Kill-sequence-countdown is greater than 0:
 	decrease Kill-sequence-countdown by 1;
 	if Kill-sequence-countdown is 3:
+		play the sound of PuppetLaugh;
 		say "[paragraph break]Then...
 
 A compartment in the wall suddenly slides open with a mechanical CLICK.
@@ -2666,7 +2680,6 @@ Its eyes glow red. Its mouth opens...
 'HAHAHAHAHA! I WANT TO PLAY A GAME!'
 
 The mechanical laugh echoes through the room.";
-		play the sound of PuppetLaugh;
 		say "
 
 [paragraph break](Press Z to continue)";
