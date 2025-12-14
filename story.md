@@ -65,6 +65,14 @@ Sound of AdamCare is the file "care.ogg".
 Sound of JawBreaker is the file "jaw_breaker.ogg".
 Sound of GasRelease is the file "gas.ogg".
 Sound of SadMusic is the file "sad.ogg".
+Sound of AliveSound is the file "alive.ogg".
+Sound of DoorOpen is the file "door.ogg".
+Sound of Keyboard is the file "keyboard.ogg".
+Sound of SelfDestruct is the file "self_destruct.ogg".
+Sound of PuppetLaugh is the file "puppetlaugh.ogg".
+Sound of Kill is the file "kill.ogg".
+Sound of AlarmSound is the file "alarm.ogg".
+Sound of Explosion is the file "explosion.ogg".
 
 
 
@@ -1067,6 +1075,9 @@ Figure of ObservationRoomImage is the file "observation_room.png".
 Figure of SawManImage is the file "saw_man.png".
 Figure of JawBreakerRoomImage is the file "jawbraker.png".
 Figure of BearTrapImage is the file "beartrap.png".
+Figure of FinalCorridorImage is the file "coridor.png".
+Figure of ControlRoomImage is the file "final_test.png".
+Figure of JigsawChamberImage is the file "jigsaw_man.png".
 
 
 
@@ -1413,13 +1424,14 @@ Carry out responding to question:
 		if Jaw-current-question is 5 and (the answer matches the text "shakespeare" or the answer matches the text "william shakespeare"):
 			now correct is true;
 		if correct is true:
+			increase Jaw-correct-answers by 1;
 			say "You hear a confirmation tone.
 
 'CORRECT.'
 
 ";
-			if Jaw-current-question is 5:
-				say "'You have completed the test. Well done.'
+			if Jaw-correct-answers is at least 3:
+				say "'You have answered [Jaw-correct-answers] questions correctly. You have passed the test.'
 
 A compartment in the wall slides open with a mechanical hiss, revealing a brass key.";
 				now the jaw key is in the wall compartment;
@@ -1431,7 +1443,9 @@ A compartment in the wall slides open with a mechanical hiss, revealing a brass 
 You can now TAKE the KEY to unlock the device and escape.";
 			otherwise:
 				increase Jaw-current-question by 1;
-				say "[paragraph break]The next question appears on the screen...
+				say "[paragraph break]You have [Jaw-correct-answers] correct answer[s]. You need 3 correct answers to pass.
+
+[paragraph break]The next question appears on the screen...
 
 ";
 				if Jaw-current-question is 2:
@@ -1454,6 +1468,8 @@ You can now TAKE the KEY to unlock the device and escape.";
 				say "The device tightens slightly around your jaw. You feel pressure building.
 
 'You have [3 minus Jaw-wrong-answers] wrong answer[s] remaining before the device activates.'
+
+[paragraph break]You have [Jaw-correct-answers] correct answer[s]. You need 3 correct answers to pass.
 
 [paragraph break]The next question appears...
 
@@ -1821,8 +1837,7 @@ After going to the Observation Room for the first time:
 	display the Figure of ObservationRoomImage;
 	if the other prisoner is in the Observation Room:
 		say "[paragraph break]Marcus limps in behind you, leaning against the wall for support.
-'Another room... another trap,' he mutters. 'We need to be careful.'";
-	stop the action.
+'Another room... another trap,' he mutters. 'We need to be careful.'".
 
 
 
@@ -1910,6 +1925,7 @@ Jaw-device-worn is a truth state that varies. Jaw-device-worn is false.
 Jaw-puzzle-activated is a truth state that varies. Jaw-puzzle-activated is false.
 Jaw-puzzle-solved is a truth state that varies. Jaw-puzzle-solved is false.
 Jaw-wrong-answers is a number that varies. Jaw-wrong-answers is 0.
+Jaw-correct-answers is a number that varies. Jaw-correct-answers is 0.
 Jaw-current-question is a number that varies. Jaw-current-question is 0.
 Marcus-jaw-choice-made is a truth state that varies. Marcus-jaw-choice-made is false.
 Marcus-jaw-playing is a truth state that varies. Marcus-jaw-playing is false.
@@ -1918,6 +1934,128 @@ Gas-released is a truth state that varies. Gas-released is false.
 Gas-death-turns is a number that varies. Gas-death-turns is 0.
 Marcus-death-sequence is a truth state that varies. Marcus-death-sequence is false.
 Marcus-death-turn is a number that varies. Marcus-death-turn is 0.
+
+
+
+Chapter 39b - Room 5 Transition Corridor
+
+The Final Corridor is a room.
+
+The description of the Final Corridor is "[if the other prisoner is dead]You step through the doorway, leaving Marcus's body behind. The corridor ahead is dimly lit by emergency lights. Blood still drips from your wounds, both physical and emotional.
+
+You can see a heavy steel door at the end of the corridor, marked with a red biohazard symbol. Beyond it, you sense something... final.[otherwise]You step through the doorway into a dimly lit corridor. Emergency lights flicker overhead, casting long shadows on the concrete walls.
+
+At the end of the corridor, you can see a heavy steel door marked with a red biohazard symbol. This feels like the end of something.[end if]"
+
+The final corridor door is a door.
+The final corridor door is east of the Jaw Breaker Chamber and west of the Final Corridor.
+The final corridor door is closed and locked.
+
+The final entrance door is a door.
+The final entrance door is east of the Final Corridor and west of the Control Room.
+The final entrance door is closed and unlocked.
+
+The description of the final entrance door is "A massive steel door marked with WARNING symbols and biohazard signs. [if open]It stands open, revealing the room beyond[otherwise]It's closed, but unlocked[end if].".
+
+
+
+Chapter 39c - Room 5 The Final Control Room
+
+The Control Room is a room.
+
+The description of the Control Room is "You enter what appears to be the heart of this nightmare - a surveillance control room filled with monitors, cables, and machinery.
+
+Dozens of screens line the walls, displaying footage from all the rooms you've passed through: the cell, the medical chamber, the observation room, the jaw breaker chamber. You can see your own journey played back in silent horror.
+
+In the center of the room sits a large computer terminal with a keyboard and screen. The screen displays:
+
+'FINAL TEST INITIALIZED. PROVE YOU HAVE LEARNED THE LESSON.'
+
+To the north, you see a green door marked 'EXIT - FREEDOM'.
+To the south, you see a red door marked 'JIGSAW - INNER SANCTUM'.
+
+Both doors are locked. The terminal seems to control them."
+
+The computer terminal is scenery in the Control Room.
+The computer terminal is fixed in place.
+
+The description of the computer terminal is "A large computer terminal with a glowing screen and keyboard. The screen displays: '[terminal-display]'
+
+[if Final-puzzle-solved is false]You can TYPE commands into the terminal.[otherwise]The terminal has unlocked both doors. Your choice awaits.[end if]"
+
+Understand "terminal" or "computer" or "screen" or "keyboard" as the computer terminal.
+
+The wall monitors are scenery in the Control Room.
+The description of the wall monitors is "Dozens of monitors display surveillance footage from every room of this facility. You can see your own blood stains, Marcus's body, the traps you survived. It's all been recorded. Watched. Orchestrated."
+
+Understand "monitors" or "screens" or "footage" as the wall monitors.
+
+The freedom door is a door.
+The freedom door is north of the Control Room.
+The freedom door is closed and locked.
+
+The description of the freedom door is "A green-painted steel door marked 'EXIT - FREEDOM'. [if locked]It's locked[otherwise]It stands unlocked, offering escape[end if]."
+
+The revenge door is a door.
+The revenge door is south of the Control Room.
+The revenge door is closed and locked.
+
+The description of the revenge door is "A red-painted steel door marked 'JIGSAW - INNER SANCTUM'. [if locked]It's locked[otherwise]It stands unlocked, offering... revenge[end if]."
+
+
+
+Chapter 39d - Room 5 Variables
+
+Final-puzzle-solved is a truth state that varies. Final-puzzle-solved is false.
+Terminal-code-entered is a truth state that varies. Terminal-code-entered is false.
+Terminal-approached is a truth state that varies. Terminal-approached is false.
+Screen-examined is a truth state that varies. Screen-examined is false.
+Alarm-active is a truth state that varies. Alarm-active is false.
+Explosion-countdown is a number that varies. Explosion-countdown is 0.
+Code-attempts is a number that varies. Code-attempts is 0.
+Revenge-chosen is a truth state that varies. Revenge-chosen is false.
+Freedom-chosen is a truth state that varies. Freedom-chosen is false.
+Freedom-ending-countdown is a number that varies. Freedom-ending-countdown is 0.
+Revenge-ending-countdown is a number that varies. Revenge-ending-countdown is 0.
+Mercy-ending-countdown is a number that varies. Mercy-ending-countdown is 0.
+Kill-sequence-countdown is a number that varies. Kill-sequence-countdown is 0.
+
+To say terminal-display:
+	if Final-puzzle-solved is false:
+		if Code-attempts is 0:
+			say "FINAL TEST INITIALIZED.
+
+I have tested your body. I have tested your mind. I have tested your morality.
+
+Now I test your understanding.
+
+Throughout your journey, you have encountered four key lessons:
+- What you gave up to survive
+- Who you relied on or betrayed  
+- What you endured
+- The decisions that defined you
+
+Enter the four-word code that represents these lessons. Format: WORD1 WORD2 WORD3 WORD4
+
+Type: CODE (your answer)";
+		otherwise if Code-attempts is less than 3:
+			say "INCORRECT. [3 minus Code-attempts] ATTEMPTS REMAINING.
+
+Think carefully. What were the core lessons?
+
+Type: CODE (your answer)";
+		otherwise:
+			say "FAILED. TOO MANY INCORRECT ATTEMPTS.";
+	otherwise:
+		say "TEST COMPLETED.
+
+You have proven you understand the game.
+
+Now choose your ending:
+- NORTH: Exit to freedom. Survive. Forget.
+- SOUTH: Confront Jigsaw. Revenge. Death.
+
+Both doors are unlocked. The choice is yours.".
 
 
 
@@ -2051,12 +2189,14 @@ You're free.";
 You stand up from the chair, breathing heavily. You survived.
 
 The exit door unlocks with a heavy CLUNK.";
-		now the jaw breaker door is unlocked;
-		now the jaw breaker door is open.
+		now the final corridor door is unlocked;
+		now the final corridor door is open.
 
 Unlocking jaw device with is an action applying to two things.
 Understand "unlock device with [something]" or "unlock jaw breaker with [something]" or 
+"unlock jaw device with [something]" or
 "use [something] on device" or "use [something] on jaw breaker" or
+"use [something] on jaw device" or
 "insert [something] into device" or "use key on device" as unlocking jaw device with.
 
 Does the player mean unlocking jaw device with the jaw key: it is very likely.
@@ -2308,8 +2448,8 @@ The exit door unlocks with a heavy CLUNK.
 
 Marcus is gone. But you can still move forward.";
 		now the other prisoner is dead;
-		now the jaw breaker door is unlocked;
-		now the jaw breaker door is open;
+		now the final corridor door is unlocked;
+		now the final corridor door is open;
 		now Marcus-death-sequence is false.
 
 Instead of doing anything when Marcus-death-sequence is true:
@@ -2317,3 +2457,514 @@ Instead of doing anything when Marcus-death-sequence is true:
 		continue the action;
 	otherwise:
 		say "You're too shocked to do anything but wait.".
+
+
+
+Chapter 45 - Room 5 Entry
+
+After going to the Final Corridor for the first time:
+	display the Figure of FinalCorridorImage;
+	if the other prisoner is dead:
+		say "[paragraph break]You pause and look back one last time. Marcus's broken body lies in the jaw breaker chamber behind you.
+
+He died because he trusted you. Or did he die because you trusted him?
+
+The questions haunt you as you move forward.
+
+[paragraph break]Ahead, you see the final door. Whatever awaits you beyond... this is the end.";
+	otherwise:
+		say "[paragraph break]You've made it this far. Alone, wounded, but alive.
+
+The final door looms ahead. Whatever waits beyond... you're ready."
+
+After going to the Control Room for the first time:
+	display the Figure of ControlRoomImage;
+	play the sound of AliveSound;
+	say "[paragraph break]You step into the control room. Monitors line the walls, surveillance equipment hums with dormant power.
+
+In the center of the room stands a large computer terminal.
+
+You can APPROACH the terminal or EXAMINE it."
+
+
+
+Chapter 45b - Approaching Terminal
+
+Approaching terminal is an action applying to nothing.
+Understand "approach terminal" or "approach computer" or "go to terminal" or "walk to terminal" as approaching terminal.
+
+Check approaching terminal:
+	if the player is not in the Control Room:
+		say "There's no terminal here." instead;
+	if Terminal-approached is true:
+		say "You're already at the terminal." instead.
+
+Carry out approaching terminal:
+	now Terminal-approached is true;
+	play the sound of SelfDestruct;
+	say "You approach the terminal. As you get closer, the screen flickers to life.
+
+";
+	say "All the monitors around the room suddenly activate. Jigsaw's face appears on every screen.
+
+'Welcome to the end, Adam. You have survived every trap, every test, every choice I set before you.
+
+[if the other prisoner is dead]Marcus is dead. Whether by your hand or by fate, he is gone. You learned the price of trust... or the cost of betrayal.[otherwise]You came here alone, carrying only your own sins and sacrifices.[end if]
+
+But survival is not the same as understanding.
+
+To leave this place, you must prove you have learned the lessons. Solve the final puzzle at the terminal.
+
+And then... you will face one last choice.
+
+Will you walk away... or will you seek revenge?
+
+Choose wisely, Adam. Your life depends on it.'
+
+The screens go dark.
+
+[paragraph break]You can now EXAMINE the SCREEN to see the final test.".
+
+Instead of examining the computer terminal:
+	if Terminal-approached is false:
+		try approaching terminal;
+	otherwise:
+		say "[description of the computer terminal]".
+
+The terminal screen is scenery in the Control Room.
+The description of the terminal screen is "The screen glows with text and data.".
+
+Understand "screen" or "monitor" or "display" as the terminal screen.
+
+Examining screen is an action applying to nothing.
+Understand "examine screen" or "look at screen" or "read screen" or "x screen" as examining screen.
+
+Check examining screen:
+	if the player is not in the Control Room:
+		say "There's no screen here." instead;
+	if Terminal-approached is false:
+		say "You need to approach the terminal first." instead;
+	if Screen-examined is true:
+		say "[terminal-display]" instead.
+
+Carry out examining screen:
+	now Screen-examined is true;
+	say "You lean closer to the terminal screen. Text begins to scroll across it:
+
+[terminal-display]
+
+";
+	play the sound of AlarmSound;
+	now Alarm-active is true;
+	say "[paragraph break]Suddenly, an alarm begins to blare throughout the facility! Red lights flash.
+
+You can now TYPE your answer into the terminal.".
+
+Every turn when Alarm-active is true:
+	if Final-puzzle-solved is true:
+		now Alarm-active is false;
+	otherwise if the player is not in the Control Room:
+		now Alarm-active is false;
+	otherwise:
+		play the sound of AlarmSound.
+
+Every turn when Explosion-countdown is greater than 0:
+	decrease Explosion-countdown by 1;
+	if Explosion-countdown is 1:
+		say "The entire facility explodes in a massive fireball.
+
+You are consumed by the flames.
+
+[paragraph break](Press Z to continue)";
+	otherwise if Explosion-countdown is 0:
+		say "[paragraph break]THE END
+
+(You failed the final test)";
+		end the story.
+
+Every turn when Freedom-ending-countdown is greater than 0:
+	decrease Freedom-ending-countdown by 1;
+	if Freedom-ending-countdown is 1:
+		say "You climb the stairs, leaving the nightmare behind.
+
+[paragraph break]---
+
+You emerge into an abandoned warehouse district. The sun is setting. You're covered in blood, missing parts of yourself, but you're ALIVE.
+
+You hear sirens in the distance. Help is coming.
+
+[if the other prisoner is dead]Marcus didn't make it. That weight will stay with you forever.[otherwise]You survived alone. Against all odds.[end if]
+
+But you survived.
+
+Jigsaw is still out there. Still killing. Still testing.
+
+But you're free.
+
+[paragraph break](Press Z to continue)";
+	otherwise if Freedom-ending-countdown is 0:
+		say "[paragraph break]THE END
+
+(You chose SURVIVAL over REVENGE)";
+		end the story finally.
+
+Every turn when Revenge-ending-countdown is greater than 0:
+	decrease Revenge-ending-countdown by 1;
+	if Revenge-ending-countdown is 1:
+		say "The entire facility explodes in a massive fireball.
+
+You and Jigsaw die together in the flames.
+
+[paragraph break](Press Z to continue)";
+	otherwise if Revenge-ending-countdown is 0:
+		say "[paragraph break]THE END
+
+(You chose REVENGE over SURVIVAL)";
+		if the other prisoner is dead:
+			say "[line break]Marcus has been avenged but at the cost of your own life.";
+		otherwise:
+			say "[line break]You ended the killer but you paid the ultimate price.";
+		end the story finally.
+
+Every turn when Mercy-ending-countdown is greater than 0:
+	decrease Mercy-ending-countdown by 1;
+	if Mercy-ending-countdown is 1:
+		say "You climb the stairs, emerging into daylight.
+
+---
+
+You emerge into daylight. Free. Alive.
+
+[if the other prisoner is dead]Marcus is gone. That pain will never fully heal.[otherwise]You survived, scarred but unbroken.[end if]
+
+But you chose life over death. Mercy over revenge.
+
+And that makes all the difference.
+
+[paragraph break](Press Z to continue)";
+	otherwise if Mercy-ending-countdown is 0:
+		say "[paragraph break]THE END
+
+(You chose SURVIVAL and MERCY)
+
+(You spared the dying man and walked away free)";
+		end the story finally.
+
+Every turn when Kill-sequence-countdown is greater than 0:
+	decrease Kill-sequence-countdown by 1;
+	if Kill-sequence-countdown is 3:
+		say "[paragraph break]Then...
+
+A compartment in the wall suddenly slides open with a mechanical CLICK.
+
+A small figure emerges on a mechanical track - a miniature PUPPET on a tricycle, dressed like Jigsaw.
+
+Its eyes glow red. Its mouth opens...
+
+'HAHAHAHAHA! I WANT TO PLAY A GAME!'
+
+'HAHAHAHAHA! I WANT TO PLAY A GAME!'
+
+The mechanical laugh echoes through the room.";
+		play the sound of PuppetLaugh;
+		say "
+
+[paragraph break](Press Z to continue)";
+	otherwise if Kill-sequence-countdown is 2:
+		say "'Congratulations, Adam. You killed me. But did you really think... it would be that SIMPLE?
+
+This facility is rigged with EXPLOSIVES. The moment my heart stopped... you triggered the failsafe.
+
+I told you what would happen. You CHOSE this.
+
+Welcome to your GRAVE!'
+
+[paragraph break]BEEEEEEEEP.
+
+An alarm blares throughout the facility. Red lights flash.
+
+A computerized voice echoes: 'HEART RATE ZERO DETECTED. SELF-DESTRUCT SEQUENCE ACTIVATED. DETONATION IN 10 SECONDS.'
+
+[paragraph break]10...
+9...
+8...
+
+You run for the door, but it SLAMS shut and locks.
+
+7...
+6...
+5...
+
+There is no escape.
+
+4...
+3...
+2...
+
+[if the other prisoner is dead]You'll see Marcus soon.[otherwise]At least you took him with you.[end if]
+
+1...
+
+[paragraph break]BOOM.";
+		now Alarm-active is false;
+		play the sound of Explosion;
+		say "
+
+[paragraph break](Press Z to continue)";
+	otherwise if Kill-sequence-countdown is 1:
+		now Revenge-ending-countdown is 2;
+		now Kill-sequence-countdown is 0.
+
+
+
+Chapter 46 - Terminal Code Entry
+
+Entering code is an action applying to one topic.
+Understand "code [text]" or "type [text]" or "enter [text]" or "type code [text]" or "enter code [text]" as entering code.
+
+Check entering code:
+	if the player is not in the Control Room:
+		say "There's nothing to type on here." instead;
+	if Terminal-approached is false:
+		say "You need to approach the terminal first." instead;
+	if Screen-examined is false:
+		say "You should examine the screen first to see the puzzle." instead;
+	if Final-puzzle-solved is true:
+		say "The puzzle is already solved. Both doors are unlocked." instead;
+	if Code-attempts is at least 3:
+		say "The terminal has locked you out after too many failed attempts.";
+		play the sound of TrapFail;
+		play the sound of SelfDestruct;
+		say "[paragraph break]The terminal screen flashes RED.
+
+A computerized voice echoes: 'INCORRECT. SELF-DESTRUCT SEQUENCE INITIATED.'";
+		play the sound of AlarmSound;
+		say "
+
+Alarms blare. Red lights flash throughout the facility.
+
+'You failed to learn,' Jigsaw's voice echoes. 'And now... it ends.'
+
+[paragraph break]10...
+9...
+8...
+
+The walls shake violently.
+
+7...
+6...
+5...
+
+You run for the door, but it's too late.
+
+4...
+3...
+2...
+1...
+
+[paragraph break]BOOM.";
+		now Alarm-active is false;
+		play the sound of Explosion;
+		now Explosion-countdown is 2;
+		say "
+
+[paragraph break](Press Z to continue)";
+		stop the action.
+
+Carry out entering code:
+	play the sound of Keyboard;
+	let the answer be the topic understood in lower case;
+	if the answer is "sacrifice trust pain choice" or the answer is "sacrifice trust pain choices":
+		now Final-puzzle-solved is true;
+		now Alarm-active is false;
+		now the freedom door is unlocked;
+		now the revenge door is unlocked;
+		play the sound of ButtonPress;
+		say "The terminal screen flashes GREEN.
+
+'CORRECT. YOU HAVE LEARNED THE LESSONS.'
+
+You hear heavy locks disengaging. Both doors - north and south - unlock simultaneously.
+
+The terminal displays your final choice:
+
+'FREEDOM lies to the NORTH. Walk away. Survive. Live with your scars.
+
+REVENGE lies to the SOUTH. Confront me. Kill me. Die with me.
+
+The choice is yours, Adam. I will not stop you either way.
+
+What kind of person will you be?'";
+	otherwise:
+		increase Code-attempts by 1;
+		play the sound of TrapFail;
+		play the sound of AlarmSound;
+		say "The terminal screen flashes RED.
+
+'INCORRECT. [3 minus Code-attempts] ATTEMPTS REMAINING.'
+
+[if Code-attempts is 1]Think carefully. What were the FOUR core lessons of your journey?[otherwise if Code-attempts is 2]This is your LAST chance. Four words. Four lessons.[end if]".
+
+
+
+Chapter 47 - Freedom Ending
+
+Instead of going north from the Control Room:
+	if the freedom door is unlocked:
+		now Freedom-chosen is true;
+		say "You stand before the green door marked FREEDOM.
+
+[if the other prisoner is dead]Marcus's face flashes in your mind. His death. His trust. His betrayal. His sacrifice.[otherwise]You think of everything you endured. Every cut, every choice, every moment of pain.[end if]
+
+You reach for the door handle...
+
+...and pull it open.";
+		play the sound of DoorOpen;
+		now Freedom-ending-countdown is 2;
+		say "
+
+[paragraph break]Beyond the door is a staircase leading up. You can see daylight filtering down from above.
+
+Fresh air. Freedom. Life.
+
+The weight of the nightmare begins to lift from your shoulders.
+
+[paragraph break](Press Z to continue)";
+	otherwise:
+		say "The door is still locked. You need to solve the terminal puzzle first.".
+
+
+
+Chapter 48 - Revenge Ending
+
+Jigsaw's Chamber is a room.
+Jigsaw's Chamber is south of the revenge door.
+
+The description of Jigsaw's Chamber is "You enter a small, dimly lit room. Medical equipment lines the walls - ventilators, monitors, IV drips. The air smells of antiseptic and death.
+
+In the center of the room, strapped to a medical bed, is a frail man in his 60s. His skin is pale, almost gray. Tubes run from his arms. His breathing is labored.
+
+This is him. Jigsaw. The monster who orchestrated everything.
+
+But he looks... human. Dying. Weak.
+
+He turns his head slowly to look at you. His eyes are calm, almost serene.
+
+'Hello, Adam,' he rasps. 'I knew you would come.'"
+
+Jigsaw is a man in Jigsaw's Chamber.
+Jigsaw is fixed in place.
+
+The description of Jigsaw is "An old, dying man strapped to a medical bed. This is the Jigsaw Killer - the architect of your suffering. 
+
+He looks at you with calm, knowing eyes.
+
+You could KILL him. End this. Avenge Marcus."
+
+Understand "killer" or "man" or "old man" or "jigsaw killer" as Jigsaw.
+
+Instead of going south from the Control Room:
+	if the revenge door is unlocked:
+		now Revenge-chosen is true;
+		say "[if the other prisoner is dead]Marcus's face burns in your mind. His screams. His death. His trust that you FAILED.
+
+You chose revenge.[otherwise]You chose revenge over survival.[end if]
+
+You pull open the red door and step through.";
+		continue the action;
+	otherwise:
+		say "The door is still locked. You need to solve the terminal puzzle first.".
+
+After going to Jigsaw's Chamber for the first time:
+	display the Figure of JigsawChamberImage;
+	say "[paragraph break]He speaks, his voice barely a whisper:
+
+'You came for revenge. I expected nothing less. [if the other prisoner is dead]Marcus's death weighs on you. Good. It should.[otherwise]You seek to end the one who hurt you. I understand.[end if]
+
+But before you kill me, know this: I am already dying. Cancer. Inoperable. I have weeks, maybe days left.
+
+You can end my suffering early. But this facility... it's rigged to explode if my heart stops. A failsafe.
+
+Kill me, and we both die. You'll have your revenge, but you'll never see daylight again.
+
+Or... you can walk away. Let me die slowly, painfully, as I deserve. And you live.
+
+The choice, Adam, is yours.'
+
+[paragraph break]You can KILL JIGSAW or LEAVE."
+
+Killing jigsaw is an action applying to nothing.
+Understand "kill jigsaw" or "murder jigsaw" or "strangle jigsaw" or "end jigsaw" or "kill him" or "murder him" or "strangle him" or "kill" or "attack jigsaw" or "attack him" as killing jigsaw.
+
+Check killing jigsaw:
+	if the player is not in Jigsaw's Chamber:
+		say "Violence isn't the answer to this one." instead.
+
+Carry out killing jigsaw:
+	say "[if the other prisoner is dead]'This is for Marcus,' you snarl through clenched teeth.[otherwise]'This ends NOW,' you growl.[end if]
+
+Your hands close around his frail throat with brutal force.
+
+He doesn't resist. He simply watches you with those calm, knowing eyes - even now, in control.
+
+That infuriates you MORE.
+
+You SQUEEZE. Hard. Your fingers dig deep into his flesh, crushing his windpipe.
+
+His eyes bulge. His face turns purple. Blood vessels burst in his eyes.
+
+His body convulses, tubes ripping from his arms. Medical monitors SHRIEK in alarm.
+
+You don't let go. You squeeze HARDER.
+
+His breathing becomes desperate, wet, gurgling... then stops.
+
+His body goes limp.
+
+His heart stops beating.
+
+[paragraph break]For a moment, there is only silence.
+
+The monster is dead. By YOUR hands.
+
+[if the other prisoner is dead]Marcus is avenged.[otherwise]It's finally OVER.[end if]";
+	play the sound of Kill;
+	now Kill-sequence-countdown is 5;
+	say "
+
+[paragraph break](Press Z to continue)".
+
+Leaving jigsaw is an action applying to nothing.
+Understand "leave" or "walk away" or "leave jigsaw" or "spare jigsaw" or "spare him" or "leave him" as leaving jigsaw.
+
+Check leaving jigsaw:
+	if the player is not in Jigsaw's Chamber:
+		say "There's nothing to leave." instead.
+
+Carry out leaving jigsaw:
+	say "You look at the dying man before you.
+
+[if the other prisoner is dead]Marcus is dead. Killing Jigsaw won't bring him back.[otherwise]Revenge won't heal your wounds.[end if]
+
+'I'm not going to give you what you want,' you say. 'You want me to become like you. A killer. 
+
+I refuse.
+
+You'll die slowly, painfully, alone. That's a better punishment than anything I could do.'
+
+[paragraph break]Jigsaw's expression doesn't change. He simply nods, almost... respectfully.
+
+'Perhaps you DID learn something after all, Adam. Go. Live. Remember.'
+
+[paragraph break]You turn and walk back through the control room. You exit through the green door marked FREEDOM.";
+	play the sound of DoorOpen;
+	now Mercy-ending-countdown is 2;
+	say "
+
+[paragraph break]Beyond the door is a staircase leading up. You can see daylight filtering down from above.
+
+Fresh air. Freedom. Life.
+
+The weight of the nightmare begins to lift from your shoulders.
+
+[paragraph break](Press Z to continue)".
