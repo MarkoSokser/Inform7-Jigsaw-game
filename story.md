@@ -1,5 +1,8 @@
 "Saw Escape Room" by "Marko Sokser"
 
+Include Basic Screen Effects by Emily Short.
+Include Basic Help Menu by Emily Short.
+
 Release along with an interpreter.
 Release along with a website.
 
@@ -213,7 +216,7 @@ Prisoner-bleeding-turns is a number that varies.
 Prisoner-bleeding-turns is 0.
 
 The description of the other prisoner is
-"[if the other prisoner is in the Cell]A man is chained beside you, his body limp and unnaturally still. His head hangs to one side. His breathing is shallow, barely noticeable.[otherwise if the other prisoner is in the Exit Hall][prisoner-name] lies unconscious on the cold concrete floor, his bandaged ankle still seeping blood.[otherwise if the other prisoner is in the Medical Chamber and the other prisoner is conscious][prisoner-name] sits against the wall, clutching his bandaged ankle. His face is pale but his eyes are alert, watching you with a mixture of fear and gratitude.[otherwise if the other prisoner is in the Medical Chamber and the other prisoner is bandaged][prisoner-name] lies unconscious on the chamber floor. His ankle is bandaged, and the bleeding has stopped. His breathing is shallow but stable.[otherwise if the other prisoner is in the Medical Chamber and the other prisoner is bleeding][prisoner-name] lies on the blood-slicked floor, unconscious. Blood pools rapidly beneath his severed ankle. He's dying![otherwise][prisoner-name] lies motionless on the floor.[end if]".
+"[if the other prisoner is in the Cell]A man is chained beside you, his body limp and unnaturally still. His head hangs to one side. His breathing is shallow, barely noticeable.[otherwise if the other prisoner is in the Exit Hall]The man lies unconscious on the cold concrete floor, his bandaged ankle still seeping blood.[otherwise if the other prisoner is in the Medical Chamber and the other prisoner is conscious][prisoner-name] sits against the wall, clutching his bandaged ankle. His face is pale but his eyes are alert, watching you with a mixture of fear and gratitude.[otherwise if the other prisoner is in the Medical Chamber and the other prisoner is bandaged][prisoner-name] lies unconscious on the chamber floor. His ankle is bandaged, and the bleeding has stopped. His breathing is shallow but stable.[otherwise if the other prisoner is in the Medical Chamber and the other prisoner is bleeding][prisoner-name] lies on the blood-slicked floor, unconscious. Blood pools rapidly beneath his severed ankle. He's dying![otherwise][prisoner-name] lies motionless on the floor.[end if]".
 
 After examining the other prisoner when the other prisoner is bleeding and the other prisoner is unbandaged and the other prisoner is in the Medical Chamber:
 	say "[paragraph break]BLOOD is pooling beneath his severed ankle. He is losing a lot of blood quickly!".
@@ -1105,10 +1108,28 @@ When play begins:
 	say "You regain consciousness to the sound of chains and distant machinery.[paragraph break]";
 	say "A distorted voice fills the room.";
 	play the sound of TapeVoice;
-	display the Figure of CellImage.
+	display the Figure of CellImage;
+	say "[paragraph break](Type HELP for list of commands)[line break]".
 
 When play ends:
 	play the sound of GameOverMusic.
+
+Chapter 15b - Help Menu Content
+
+Table of Basic Help Options (continued)
+title	subtable	description	toggle
+"Commands"	Table of General Commands	"List of available commands"	--
+"About"	--	"About this game"	--
+
+Table of General Commands
+title	subtable	description	toggle
+"Movement"	--	"Use N, S, E, W (or NORTH, SOUTH, EAST, WEST) to move between rooms."	--
+"Interaction"	--	"LOOK or L - Look around[line break]EXAMINE (object) or X (object) - Examine something[line break]TAKE (object) - Pick up an object[line break]USE (object) - Use an object[line break]INVENTORY or I - Check what you're carrying"	--
+"Special Commands"	--	"SAW LEG - Cut your leg (Cell)[line break]STEP ON (color) PLATE - Medical Chamber puzzle[line break]BANDAGE MYSELF/MARCUS - Stop bleeding[line break]RESPOND (answer) - Answer questions[line break]APPROACH TERMINAL - Control Room[line break]EXAMINE SCREEN - View final puzzle[line break]CODE (text) - Enter terminal code[line break]KILL JIGSAW - Attack Jigsaw[line break]LEAVE - Exit scene"	--
+"Tips"	--	"Read all descriptions carefully[line break]Some puzzles have limited attempts[line break]Your choices affect the ending[line break]Type WAIT or Z to skip a turn"	--
+
+Carry out requesting the story file version:
+	say "Saw Escape Room - Version 1.0[line break]A horror interactive fiction inspired by the Saw films.[line break][line break]Created by Marko Sokser, 2025." instead.
 
 
 
@@ -2491,6 +2512,8 @@ The questions haunt you as you move forward.
 The final door looms ahead. Whatever waits beyond... you're ready."
 
 After going to the Control Room for the first time:
+	clear the screen;
+	wait for any key;
 	display the Figure of ControlRoomImage;
 	play the sound of AliveSound;
 	say "[paragraph break]You step into the control room. Monitors line the walls, surveillance equipment hums with dormant power.
