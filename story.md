@@ -778,6 +778,18 @@ Every turn when the player is in the Observation Room:
 [paragraph break]You will never wake up.";
 			end the story.
 
+Every turn:
+	if Player-wrist-bleeding is true and the player is not in the Observation Room:
+		increase Player-wrist-bleeding-turns by 1;
+		if Player-wrist-bleeding-turns is 1:
+			say "[paragraph break]Blood spurts from your severed wrist. You're losing blood fast! You need to bandage yourself NOW!";
+		otherwise if Player-wrist-bleeding-turns is 2:
+			play the sound of BodyFall;
+			say "[paragraph break]Too much blood loss. Your vision goes black.
+[paragraph break]You collapse to the floor, unconscious.
+[paragraph break]You will never wake up.";
+			end the story.
+
 
 
 
