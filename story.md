@@ -400,11 +400,12 @@ Chapter 10 - The Descending Ceiling
 Every turn when Ceiling-descending is true:
 	decrease Turns-remaining by 1;
 	if Turns-remaining is 0:
-		play the sound of DeathCrush;
 		say "[paragraph break]The ceiling comes down with terrible finality.";
 		say "There is no escape.";
 		say "[paragraph break]Everything goes black.";
-		end the story;
+		play the sound of DeathCrush;
+		now Death-countdown is 2;
+		now Death-type is "ceiling";
 	otherwise:
 		say "The ceiling grinds lower, showering you with dust and fragments of concrete.".
 
@@ -602,6 +603,12 @@ Last-hand-death-turns is 0.
 
 Solo-arm-trap-turns is a number that varies.
 Solo-arm-trap-turns is 0.
+
+Death-countdown is a number that varies.
+Death-countdown is 0.
+
+Death-type is a text that varies.
+Death-type is "".
 
 
 
@@ -1061,7 +1068,8 @@ The counter updates: 'SPECIMENS: 6 / 6'
 Everything goes black.";
 				play the sound of Screaming;
 				play the sound of GameOver;
-				end the story finally.
+				now Death-countdown is 2;
+				now Death-type is "medical".
 
 
 
@@ -1109,6 +1117,27 @@ Blue flows first, Red burns second, Yellow warns third, Green grows last.
 BLUE - RED - YELLOW - GREEN'".
 
 Understand "note" or "hint" or "clue" or "paper" as the bloody note.
+
+
+
+
+Chapter 14b - Death Sequence Handler
+
+Every turn when Death-countdown is greater than 0:
+	decrease Death-countdown by 1;
+	if Death-countdown is 1:
+		say "[paragraph break][bold type]*** Press any key to continue ***[roman type]";
+	otherwise if Death-countdown is 0:
+		if Death-type is "ceiling":
+			end the story;
+		otherwise if Death-type is "medical":
+			end the story finally;
+		otherwise if Death-type is "observation":
+			end the story;
+		otherwise if Death-type is "jaw":
+			end the story;
+		otherwise:
+			end the story.
 
 
 
@@ -1522,16 +1551,9 @@ You can now TAKE the KEY to unlock the device and escape.";
 				if Jaw-current-question is 5:
 					say "QUESTION 5: Who wrote 'Romeo and Juliet'?";
 			otherwise:
-				say "The device ACTIVATES.
-
-You feel the mechanisms inside the cage begin to expand. 
-
-The metal presses against your jaw, forcing it open wider... wider...
-
-You scream, but the device doesn't stop.";
-				play the sound of JawBreaker;
-				play the sound of Screaming;
 				say "
+
+You scream, but the device doesn't stop.
 
 CRACK!
 
@@ -1544,9 +1566,10 @@ CRUNCH!
 Your skull splits open.
 
 Darkness.";
-				play the sound of BodyFall;
-				play the sound of GameOver;
-				end the story;
+				display the Figure of BearTrapImage;
+				play the sound of JawBreaker;
+				now Death-countdown is 2;
+				now Death-type is "jaw";
 		stop the action;
 	let the answer be "[the topic understood]";
 	if the answer matches the text "trust" or the answer matches the text "trust.":
@@ -1590,7 +1613,6 @@ You can try again.";
 
 The mechanisms activate.";
 			if the other prisoner is not in the Observation Room and Player-hands-trapped is 1:
-				play the sound of Screaming;
 				say "
 
 The mechanism begins to pull you backward!
@@ -1602,15 +1624,16 @@ You scream as the blades tear into your flesh.
 There is no mercy. No escape.
 
 The saw rips through muscle, bone, and sinew.";
-				play the sound of BodyFall;
 				say "
 
 Your body goes limp as the blades consume you.
 
 This is the end.";
-				end the story;
-			otherwise:
 				play the sound of Screaming;
+				play the sound of GameOver;
+				now Death-countdown is 2;
+				now Death-type is "observation";
+			otherwise:
 				say "
 
 [if Player-hands-trapped is 2]Both blades cut through your wrists simultaneously. You fall, hitting the ground hard.
@@ -1624,7 +1647,10 @@ Blood pours from the stump. With no hands left, you can't even try to stop it.
 [end if]Your vision goes dark.
 
 This is the end.";
-				end the story.
+				play the sound of Screaming;
+				play the sound of GameOver;
+				now Death-countdown is 2;
+				now Death-type is "observation".
 
 
 
@@ -2174,7 +2200,7 @@ A distorted voice crackles from hidden speakers in the ceiling.";
 
 This is the Jaw Breaker. A device designed to expand the human jaw beyond its breaking point.
 
-Your test is simple: Put the device on your head. Answer five questions correctly.
+Your test is simple: Sit on the chair. Put the device on your head. Answer five questions correctly.
 
 You may get TWO questions wrong. But if you fail a third time... the device activates, and your skull will be crushed.
 
