@@ -118,6 +118,9 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - ✅ Posebne akcije (approach, examine screen, kill, leave)
 - ✅ Prikaz slika za svaku sobu
 - ✅ Reprodukcija zvukova za svaki događaj
+- ✅ In-game pomoćni meni (HELP komanda)
+- ✅ Screen effects (wait for any key, clear screen)
+- ✅ Ekstenzije: Basic Help Menu i Basic Screen Effects by Emily Short
 
 ### Mehaničke funkcionalnosti
 - ✅ Rezanje noge ili ankla (saw leg/ankle)
@@ -396,6 +399,65 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - `take [objekt]`, `get [objekt]` - Uzmi objekt
 - `drop [objekt]` - Ispusti objekt
 - `wait`, `z` - Čekaj jednu rundu
+- `help` - Prikaži pomoćni meni sa svim komandama
+- `about` / `version` - Prikaži informacije o igri
+
+### Help sistem (Novo u verziji 1.0)
+
+**HELP komanda:**
+Pritiskom na `HELP` otvara se pomoćni meni koji prikazuje:
+
+**Sekcija: Commands**
+- **Movement**: N, S, E, W (ili NORTH, SOUTH, EAST, WEST) za kretanje
+- **Interaction**: 
+  - LOOK ili L - Pogledaj oko sebe
+  - EXAMINE (object) ili X (object) - Ispitaj nešto
+  - TAKE (object) - Uzmi objekt
+  - USE (object) - Koristi objekt
+  - INVENTORY ili I - Provjeri inventar
+- **Special Commands**: Komande specifične za pojedine sobe:
+  - SAW LEG - Prereži nogu (Cell)
+  - STEP ON (color) PLATE - Pritisni ploču (Medical Chamber)
+  - BANDAGE MYSELF/MARCUS - Zavijaj ranu
+  - RESPOND (answer) - Odgovori na pitanje
+  - APPROACH TERMINAL - Pristupi terminalu (Control Room)
+  - EXAMINE SCREEN - Pogledaj ekran
+  - CODE (text) - Unesi kod
+  - KILL JIGSAW - Napadni Jigsawa
+  - LEAVE - Napusti scenu
+- **Tips**:
+  - Čitaj sve opise pažljivo
+  - Neke zagonetke imaju ograničen broj pokušaja
+  - Tvoji izbori utječu na završetak
+  - Koristi WAIT ili Z za preskakanje turna
+
+**Sekcija: About**
+Prikazuje:
+- Naziv igre: "Saw Escape Room - Version 1.0"
+- Opis: "A horror interactive fiction inspired by the Saw films."
+- Autor: "Created by Marko Sokser, 2025"
+
+**Tehnička implementacija:**
+- Koristi **Basic Help Menu by Emily Short** ekstenziju
+- Tabele: `Table of Basic Help Options` i `Table of General Commands`
+- Help prompt se prikazuje na početku igre: "(Type HELP for list of commands)"
+
+### Screen Effects (Novo u verziji 1.0)
+
+Igra koristi **Basic Screen Effects by Emily Short** ekstenziju za dramatične efekte:
+
+**Dostupne komande:**
+- `wait for any key` - Pauza, čeka pritisak bilo koje tipke
+- `clear the screen` - Čisti ekran prije nove scene
+
+**Trenutna implementacija:**
+- Nakon rezanja noge u Cell-u: wait for any key + clear screen
+- Pri ulasku u Control Room: clear screen + wait for any key
+
+**Korisničko iskustvo:**
+- Dramatične pauze između ključnih scena
+- Čist prelaz između važnih momenata
+- Daje igraču vremena da procesuira važne događaje
 
 ### Specifične komande po sobama
 
@@ -1209,6 +1271,118 @@ Svi sinonimi za akcije:
 - Umire od raka
 - Može biti ubijen ili pošteđen
 - Ima failsafe (eksplozija ako umre)
+
+### Doors (Vrata)
+
+1. Cell entrance (Cell ↔ Exit Hall)
+
+---
+
+## 15. EKSTENZIJE I TEHNIČKA POBOLJŠANJA (Verzija 1.0)
+
+### Basic Help Menu by Emily Short
+
+**Svrha:**
+Pruža igraču pristup pomoćnom meniju sa svim dostupnim komandama i informacijama o igri.
+
+**Implementacija:**
+```inform7
+Include Basic Help Menu by Emily Short.
+
+Table of Basic Help Options
+title         subtable                description     toggle
+"Commands"    Table of General Commands    --        --
+"About"       --                      "Game info"     --
+
+Table of General Commands
+title              subtable    description                                    toggle
+"Movement"         --          "N, S, E, W for movement"                    --
+"Interaction"      --          "LOOK, EXAMINE, TAKE, USE, INVENTORY"       --
+"Special Commands" --          "SAW LEG, STEP ON PLATE, BANDAGE, etc."     --
+"Tips"            --          "Read carefully, choices matter"             --
+```
+
+**Funkcionalnost:**
+- Pristup pomoći: `HELP` komanda
+- Pregled informacija: `ABOUT` ili `VERSION` komanda
+- Organizovane sekcije sa svim komandama
+- Savjeti za igrače koji su novi u text adventures
+- Automatski prompt na početku igre: "(Type HELP for list of commands)"
+
+**Korist za igrača:**
+- Eliminira zbunjenost oko dostupnih komandi
+- Brz pregled svih mogućih akcija
+- Reference za specifične komande po sobama
+- Informacije o verziji i autoru
+
+### Basic Screen Effects by Emily Short
+
+**Svrha:**
+Dodaje dramatične vizuelne efekte za ključne momente u igri.
+
+**Dostupne komande:**
+- `wait for any key` - Pauza do pritiska bilo koje tipke
+- `clear the screen` - Čisti terminal prije nove scene
+- `show the current quotation` - Prikazuje citat
+- `center [text]` - Centrira tekst na ekranu
+
+**Trenutna implementacija u igri:**
+
+**1. Cell - Nakon rezanja noge:**
+```inform7
+wait for any key;
+clear the screen;
+```
+Daje igraču trenutak da procesuira težinu odluke prije nego što nastavi.
+
+**2. Control Room - Pri ulasku:**
+```inform7
+clear the screen;
+wait for any key;
+```
+Stvara dramtičan prelaz u finalnu sobu.
+
+**Efekat na gameplay:**
+- Jača emocionalni uticaj ključnih scena
+- Daje vremena igraču da razmisli o odlukama
+- Čistiji prijelazi između važnih momenata
+- Dramatična pauza prije revelation momenata
+
+**Potencijalne buduće implementacije:**
+- Nakon Marcus smrti (pauza prije nastavka)
+- Prije Jigsaw monologa (build-up tenzije)
+- Nakon puzzle rješenja (trenutak slave)
+- Pri ulasku u Jigsaw's Chamber (finalni build-up)
+
+### Zašto ove ekstenzije?
+
+**Basic Help Menu:**
+- Text adventures mogu biti zbunjujuće za nove igrače
+- Dokumentacija u igri eliminiše potrebu za eksternim vodičima
+- Povećava accessibility i user-friendliness
+- Profesionalan touch za igru
+
+**Basic Screen Effects:**
+- Dodaje kinematski kvalitet tekst avanturi
+- Pomaže u emocionalnom pacing-u
+- Daje "težinu" ključnim momentima
+- Moderne text adventures koriste ove tehnike za bolje iskustvo
+
+### Tehnički detalji implementacije
+
+**Help Menu tabele:**
+- `Table of Basic Help Options` - glavni meni
+- `Table of General Commands` - detaljne komande
+- `Carry out requesting the story file version` - custom About sekcija
+
+**Screen Effects lokacije:**
+- Nakon `cutting yourself` akcije (Cell)
+- U `After going to the Control Room for the first time` pravilu
+
+**Kompatibilnost:**
+- Obje ekstenzije su kompatibilne sa Glulx format
+- Testirano sa Inform 7 build 6M62
+- Ne interferiraju sa postojećim mehanikama igre
 
 ### Doors (Vrata)
 
