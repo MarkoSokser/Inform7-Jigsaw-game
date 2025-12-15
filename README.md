@@ -7,20 +7,20 @@
 "Saw Escape Room" je mračna, intenzivna tekstualna avantura gdje se igrač budi zarobljen u nizu smrtonosnih soba. Svaka soba predstavlja test - fizički, mentalni ili moralni. Svaka odluka ima posljedice. Hoćete li preživjeti?
 
 ### Tema i atmosfera
-- 🎭 **Horror survival** - Napetost i strah u svakom koraku
-- 🧩 **Moralni izbori** - Odluke koje definiraju vašu žrtvu ili žrtvovanje drugih
-- 🔍 **Logičke zagonetke** - Razmišljanje pod pritiskom
-- 🎬 **Saw inspired** - Autentična atmosfera filmske franšize
+-  **Horror survival** - Napetost i strah u svakom koraku
+-  **Moralni izbori** - Odluke koje definiraju vašu žrtvu ili žrtvovanje drugih
+-  **Logičke zagonetke** - Razmišljanje pod pritiskom
+-  **Saw inspired** - Autentična atmosfera filmske franšize
 
 ### Karakteristike
-- ✅ **Jedinstvene sobe** sa različitim izazovima
-- ✅ **Različiti završeci** ovisno o vašim odlukama
-- ✅ **Zvučni efekati** za potpunu atmosferu
-- ✅ **Slike** koje vizualiziraju scene
-- ✅ **NPC pratilac (Marcus)** - hoće li preživjeti ovisi o vama
-- ✅ **Višestruki scenariji smrti** - svaka pogreška je fatalna
-- ✅ **Kompleksne zagonetke** - od colour plates do trivia kvizova
-- ✅ **In-game help sistem** - HELP komanda za sve komande
+-  **Jedinstvene sobe** sa različitim izazovima
+-  **Različiti završeci** ovisno o vašim odlukama
+-  **Zvučni efekati** za potpunu atmosferu
+-  **Slike** koje vizualiziraju scene
+-  **NPC pratilac (Marcus)** - hoće li preživjeti ovisi o vama
+-  **Višestruki scenariji smrti** - svaka pogreška je fatalna
+-  **Kompleksne zagonetke** - od colour plates do trivia kvizova
+-  **In-game help sistem** - HELP komanda za sve komande
 
 ---
 
@@ -96,8 +96,8 @@
 Za kreiranje release verzije:
 1. U Inform 7 IDE, idite na: Release → Release
 2. Odaberite opcije:
-   - ✅ Release along with an interpreter
-   - ✅ Release along with a website
+   -  Release along with an interpreter
+   -  Release along with a website
 3. Release će biti kreiran u `[project]/Build/Output/` folderu
 
 ---
