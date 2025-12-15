@@ -1,8 +1,8 @@
-# JIGSAW INFORM 7 - KOMPLETAN RAZVOJNI PRIRUČNIK
+# JIGSAW INFORM 7 - PRIRUČNIK
 
-**Verzija:** 1.0 (Finalna)  
-**Datum:** 14. decembar 2025  
-**Autor:** Razvojni tim
+**Verzija:** 1.1 (Ažurirano)  
+**Datum:** 15. prosinca 2025  
+**Autor:** Marko Sokser
 
 ---
 
@@ -18,9 +18,9 @@
 8. [Logika i algoritmi](#8-logika-i-algoritmi)
 9. [Završeci igre](#9-završeci-igre)
 10. [Razvojne odluke i izmjene](#10-razvojne-odluke-i-izmjene)
-11. [Bugfixevi i optimizacije](#11-bugfixevi-i-optimizacije)
-12. [Walkthrough primjeri](#12-walkthrough-primjeri)
-13. [Tehnička implementacija](#13-tehnička-implementacija)
+11. [Izvori zvukova i slika](#11-izvori-zvukova-i-slika )
+12. [Death delay sistem](#12-death-delay-sistem)
+
 
 ---
 
@@ -45,12 +45,12 @@ Ova igra je tekstualna avantura u stilu "Saw" filmova, gdje igrač preuzima ulog
 ## 2. PRIČA I NARATIV
 
 ### Početak
-Igrač (Adam) se budi zarobljen u ćeliji. Ne zna kako je dospeo tu. Čuje distorzirani glas (Jigsaw Killer) koji objašnjava da mora proći kroz niz testova kako bi zaslužio život.
+Igrač (Adam) se budi zarobljen u ćeliji. Ne zna kako je došao tu. Čuje  glas (Jigsaw Killer) koji objašnjava da mora proći kroz niz testova kako bi zaslužio život.
 
 ### Razvoj
 Kroz sobe, igrač se suočava s:
-- **Cell (Ćelija)**: Spuštajući se strop pokušava ga smrskati, mora odlučiti - prerezati nogu ili ne
-- **Medical Chamber**: Zagonetka s bojama i mogućnost prebandažiranja rane
+- **Cell (Ćelija)**: Spuštajući  strop pokušava ga smrskati, mora odlučiti - prerezati nogu ili ne
+- **Medical Chamber**: Zagonetka s bojama i mogućnost previjanja rane
 - **Observation Room**: Test povjerenja - može li vjerovati Marcusu ili odlučiti samostalno
 - **Jaw Breaker Chamber**: Brutalni trivia kviz s death device na glavi
 - **Control Room**: Finalni test - unos ključnih riječi
@@ -100,37 +100,41 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 ## 4. KOMPLETNA LISTA FUNKCIONALNOSTI
 
 ### Osnovne funkcionalnosti
-- ✅ Kretanje po sobama (n, s, e, w)
-- ✅ Pregledavanje objekata (examine, look at, read)
-- ✅ Uzimanje i korištenje predmeta (take, use, drop)
-- ✅ Otvaranje i otključavanje vrata (open, unlock)
-- ✅ Interakcija s NPC-em (Marcus)
-- ✅ Prikaz inventara (inventory, i)
+-  Kretanje po sobama (n, s, e, w)
+-  Pregledavanje objekata (examine, look at, read)
+-  Uzimanje i korištenje predmeta (take, use, drop)
+-  Otvaranje i otključavanje vrata (open, unlock)
+-  Interakcija s NPC-em (Marcus)
+-  Prikaz inventara (inventory, i)
 
 ### Napredne funkcionalnosti
-- ✅ Višestruki završeci (3 različita kraja)
-- ✅ Dinamičko otključavanje vrata
-- ✅ Brojanje pokušaja u zagonetkama
-- ✅ Petlje zvuka (alarm loop)
-- ✅ Animirane sekvence (odbrojavanje, eksplozija)
-- ✅ Pratnja NPC-a kroz sobe
-- ✅ Kondicionale rute (Marcus živ/mrtav)
-- ✅ Posebne akcije (approach, examine screen, kill, leave)
-- ✅ Prikaz slika za svaku sobu
-- ✅ Reprodukcija zvukova za svaki događaj
-- ✅ In-game pomoćni meni (HELP komanda)
-- ✅ Screen effects (wait for any key, clear screen)
-- ✅ Ekstenzije: Basic Help Menu i Basic Screen Effects by Emily Short
+-  Višestruki završeci (3 različita kraja)
+-  Dinamičko otključavanje vrata
+-  Brojanje pokušaja u zagonetkama
+-  Petlje zvuka (alarm loop)
+-  Animirane sekvence (odbrojavanje, eksplozija)
+-  Pratnja NPC-a kroz sobe
+-  Kondicionale rute (Marcus živ/mrtav)
+-  Posebne akcije (approach, examine screen, kill, leave)
+-  Prikaz slika za svaku sobu (13 slika)
+-  Reprodukcija zvukova za svaki događaj (37 zvukova)
+-  In-game pomoćni meni (HELP komanda)
+-  Screen effects (wait for any key, clear screen)
+-  Ekstenzije: Basic Help Menu i Basic Screen Effects by Emily Short
+-  Delayed death sequences (Death-countdown sistem)
+-  Conditional ending displays (samo jedan ending se prikazuje)
+-  Puppet reveal sequence nakon ubijanja Jigsawa
+-  Freedom ending sa slikom (freedom.png)
 
 ### Mehaničke funkcionalnosti
-- ✅ Rezanje noge ili ankla (saw leg/ankle)
-- ✅ Bandažiranje (bandage myself/marcus)
-- ✅ Trivia kviz s brojanjem točnih/netočnih odgovora
-- ✅ Unos koda na terminalu (code/type/enter)
-- ✅ Pristupanje terminalu (approach terminal)
-- ✅ Pregled ekrana (examine screen)
-- ✅ Ubijanje Jigsawa (kill jigsaw)
-- ✅ Napuštanje scene (leave)
+-  Rezanje noge ili ankla (saw leg/ankle)
+-  Bandažiranje (bandage myself/marcus)
+-  Trivia kviz s brojanjem točnih/netočnih odgovora
+-  Unos koda na terminalu (code/type/enter)
+-  Pristupanje terminalu (approach terminal)
+-  Pregled ekrana (examine screen)
+-  Ubijanje Jigsawa (kill jigsaw)
+-  Napuštanje scene (leave)
 
 ---
 
@@ -148,15 +152,6 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - Rezati nogu (SAW LEG) - igrač ostaje bez noge ali preživljava
 - Rezati ruku/ankle (SAW ANKLE) - alternativa
 - Čekati (WAIT) - smrt
-
-**Zvukovi:**
-- tape.ogg (Jigsaw govor)
-- ceiling_move.ogg (strop se spušta)
-- self_cut.ogg (rezanje)
-- death_crush.ogg (smrt)
-
-**Slika:**
-- cell.png
 
 **Ishodi:**
 - Rezanje → preživljavanje, krvarenje, prolaz u Exit Hall
@@ -182,18 +177,6 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - Nakon određenog broja turnova → smrt
 - Rješenje: BANDAGE MYSELF ili BANDAGE MARCUS
 
-**Zvukovi:**
-- puzzle_activate.ogg (aktivacija zagonetke)
-- plate_blue/red/yellow/green.ogg (svaka ploča)
-- bleeding.ogg (krvarenje)
-- wound_close.ogg (bandažiranje)
-
-**Slike:**
-- medical_chamber.png
-- pressure_plates.png
-- cut_leg.png
-- marcus_bleeding.png
-
 **Ishodi:**
 - Točan redoslijed → otključavanje vrata
 - Krivi redoslijed → alarm, pokušaj ponovo
@@ -214,14 +197,6 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - Jigsaw postavlja pitanje: "Što može biti dano, ali nikad uzeto natrag?"
 - Odgovor: TRUST
 - Ako Marcus nije tu, igrač može žrtvovati ruku (SAW ARM)
-
-**Zvukovi:**
-- saw.ogg (zamka za ruku)
-- screaming.ogg (bol)
-
-**Slike:**
-- observation_room.png
-- arm-bandage.png
 
 **Ishodi:**
 - Točan odgovor (TRUST) → oslobađanje, otključavanje vrata
@@ -253,15 +228,6 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - Igrač može izabrati sebe (I PLAY)
 - Ako Marcus igra i pogriješi 3 puta → Marcus umire brutalno
 
-**Zvukovi:**
-- jaw_breaker.ogg (aktivacija uređaja)
-- beartrap.ogg (smrt)
-- screaming.ogg (bol)
-
-**Slike:**
-- jawbraker.png (soba)
-- beartrap.png (Marcusova smrt)
-
 **Ishodi:**
 - 3 točna → ključ u zidu, otključavanje jaw breakera, prolaz dalje
 - 3 pogrešna → smrt (glava smrskana)
@@ -275,12 +241,6 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - Prijelazna zona prije Control Room
 - Refleksija o pređenom putu
 - Ako je Marcus mrtav, igrač tuguje
-
-**Zvukovi:**
-- Nema specifičnih
-
-**Slike:**
-- coridor.png
 
 **Ishodi:**
 - Nastavak u Control Room
@@ -311,16 +271,6 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - Svaki pogrešan unos → trap_fail.ogg
 - 3 pogrešna → self_destruct.ogg, eksplozija, smrt
 
-**Zvukovi:**
-- alive.ogg (ulazak)
-- self_destruct.ogg (pristup terminalu)
-- alarm.ogg (loop nakon examine screen)
-- keyboard.ogg (svaki unos)
-- explosion.ogg (smrt)
-- gameover.ogg (kraj)
-
-**Slike:**
-- final_test.png
 
 **Ishodi:**
 - Točan kod → otključavanje obje vrata
@@ -352,15 +302,6 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - LEAVE → povratak u Control Room
 - Igrač može izabrati NORTH (freedom door) → Exit Hallway
 
-**Zvukovi:**
-- kill.ogg (ubijanje)
-- puppetlaugh.ogg (lutka)
-- self_destruct.ogg (aktivacija)
-- alarm.ogg (eksplozija)
-- explosion.ogg (eksplozija)
-
-**Slike:**
-- jigsaw_man.png
 
 **Ishodi:**
 - Ubijanje → smrt oboje
@@ -374,12 +315,6 @@ Cell → Exit Hall → Medical Chamber → Observation Room → Dark Corridor
 - Dugačak hodnik sa sunčevom svjetlošću na kraju
 - Igrač je slobodan
 - Igra završava s epilogom
-
-**Zvukovi:**
-- door.ogg (otvaranje vrata)
-
-**Slike:**
-- Nema (samo tekst)
 
 **Ishodi:**
 - Igra se završava s porukom: "You escaped. You survived. But the scars remain."
@@ -442,7 +377,7 @@ Prikazuje:
 - Tabele: `Table of Basic Help Options` i `Table of General Commands`
 - Help prompt se prikazuje na početku igre: "(Type HELP for list of commands)"
 
-### Screen Effects (Novo u verziji 1.0)
+### Screen Effects 
 
 Igra koristi **Basic Screen Effects by Emily Short** ekstenziju za dramatične efekte:
 
@@ -520,7 +455,7 @@ Igra koristi **Basic Screen Effects by Emily Short** ekstenziju za dramatične e
 | Zvuk | Datoteka | Korištenje |
 |------|----------|------------|
 | TapeVoice | tape.ogg | Jigsaw govor na početku |
-| ButtonPress | button_press.ogg | Pritisak dugmeta |
+| ButtonPress | button_press.ogg | Pritisak gumba |
 | CeilingMove | ceiling_move.ogg | Spuštanje stropa |
 | SelfCut | self_cut.ogg | Rezanje noge |
 | NPCCut | npc_cut.ogg | NPC rezanje |
@@ -557,7 +492,7 @@ Igra koristi **Basic Screen Effects by Emily Short** ekstenziju za dramatične e
 | AlarmSound | alarm.ogg | Alarm |
 | Explosion | explosion.ogg | Eksplozija |
 
-### Kompletna lista slika (13 slika)
+### Kompletna lista slika 
 
 | Slika | Datoteka | Korištenje |
 |-------|----------|------------|
@@ -835,268 +770,7 @@ Bandage myself:
 - Dodana Jigsaw's Chamber s moralnim izborom
 - Implementiran puppet failsafe
 
-### Faza 6: Bugfixevi i optimizacije
-- Ispravljen jaw_breaker.ogg (nije se čuo)
-- Ispravljena logika trivije (3 točna odgovora dovoljno)
-- Ispravljena observation room slika (nije se prikazivala)
-- Ispravljeni nazivi vrata (izbjegnuti konflikti)
-- Ispravljeni text substitution errori
-- Dodana approach terminal i examine screen akcije
-- Ispravljena leave akcija u Jigsaw's Chamber
-
 ---
-
-## 11. BUGFIXEVI I OPTIMIZACIJE
-
-### Bug #1: jaw_breaker.ogg se ne čuje (Room 4)
-**Problem:** Zvuk jaw_breaker.ogg se ne čuje kada Marcus umire.
-**Uzrok:** Više zvukova se svira istovremeno, jaw_breaker se prekriva.
-**Rješenje:** Odvojen jaw_breaker zvuk da svira prvi, samostalno, prije drugih zvukova.
-
-### Bug #2: Trivia kviz ne završava nakon 3 točna (Room 4)
-**Problem:** Ako igrač ima 3 točna i 2 pogrešna, kviz ne završava.
-**Uzrok:** Logika je gledala samo broj pitanja, ne broj točnih odgovora.
-**Rješenje:** Dodana varijabla Jaw-correct-answers, kviz završava čim igrač ima 3 točna.
-
-### Bug #3: Observation Room slika se ne prikazuje
-**Problem:** Slika observation_room.png se ne prikazuje pri ulasku.
-**Uzrok:** "stop the action" je sprječavao display komandu.
-**Rješenje:** Uklonjen "stop the action", promijenjen redoslijed prikaza.
-
-### Bug #4: Dark Corridor prikazuje krivu sliku
-**Problem:** Dark Corridor prikazuje FinalCorridorImage umjesto ništa.
-**Uzrok:** Copy-paste greška.
-**Rješenje:** Uklonjeno prikazivanje slike u Dark Corridor.
-
-### Bug #5: Inform 7 syntax error - door names
-**Problem:** "Control room entrance" i "jigsaw door" su u konfliktu s imenima soba.
-**Uzrok:** Inform 7 ne dozvoljava da vrata imaju nazive koji djelomično odgovaraju sobama.
-**Rješenje:** Preimenovana vrata: "final entrance door" i "revenge door".
-
-### Bug #6: Text substitution error
-**Problem:** [tekst] u say naredbama je tretiran kao substitucija.
-**Uzrok:** [ ] su rezervirani za Inform 7 substitucije.
-**Rješenje:** Zamijenjeno [ ] sa ( ) u svim tekstovima.
-
-### Bug #7: Comparison syntax error
-**Problem:** "is 3 or greater" nije validna Inform 7 sintaksa.
-**Uzrok:** Inform 7 ne podržava "or greater" u poređenju.
-**Rješenje:** Zamijenjeno sa "is at least 3".
-
-### Bug #8: Control Room alarm loop ne radi
-**Problem:** Alarm ne svira u petlji.
-**Uzrok:** Nije implementirana "Every turn" logika.
-**Rješenje:** Dodana varijabla Alarm-active i Every turn pravilo.
-
-### Bug #9: Freedom door "leads nowhere"
-**Problem:** Igrač ne može izaći kroz freedom door.
-**Uzrok:** Nedostaje Exit Hallway soba.
-**Rješenje:** Dodana Exit Hallway soba sjeverno od freedom door.
-
-### Bug #10: Leave u Jigsaw's Chamber završava igru odmah
-**Problem:** Igrač ne može izabrati freedom nakon što napusti Jigsawa.
-**Uzrok:** Leave akcija je automatski teleportirala igrača na izlaz.
-**Rješenje:** Promijenjeno da leave vraća igrača u Control Room.
-
-### Optimizacija #1: Zvuk self_destruct u Control Room
-**Problem:** Svira krivi zvuk (JigsawVoice umjesto self_destruct).
-**Uzrok:** JigsawVoice je odmah pratio self_destruct i prekrivao ga.
-**Rješenje:** Uklonjen JigsawVoice, ostao samo self_destruct.
-
-### Optimizacija #2: Explosion countdown
-**Problem:** Explosion se svira i igra odmah završava.
-**Uzrok:** Nije bilo pauze između explosion zvuka i game over.
-**Rješenje:** Dodana varijabla Explosion-countdown, čeka 1 turn prije game over.
-
-### Optimizacija #3: Alarm zvuk u Control Room
-**Problem:** Alarm svira samo jednom.
-**Uzrok:** Nije implementirana petlja.
-**Rješenje:** Dodano "Every turn when Alarm-active is true: play AlarmSound".
-
-### Optimizacija #4: Screen examine u Control Room
-**Problem:** Zagonetka se prikazuje odmah nakon approach terminal.
-**Uzrok:** Sve je bilo u jednoj akciji.
-**Rješenje:** Razdvojeno: approach terminal → Jigsaw govor, examine screen → zagonetka, alarm.
-
----
-
-## 12. WALKTHROUGH PRIMJERI
-
-### Walkthrough 1: Freedom (Solo)
-
-```
-START
-> look
-> saw leg
-> e
-> e
-> read note
-> step on blue plate
-> step on red plate
-> step on yellow plate
-> step on green plate
-> bandage myself
-> e
-> position chair
-> position cabinet
-> climb
-> respond trust
-> e
-> e
-> wear device
-> respond paris
-> respond pacific
-> respond four
-> respond oxygen
-(Završeno, 3 točna)
-> take key
-> unlock device with key
-> e
-> e
-> approach terminal
-> examine screen
-> code sacrifice trust pain choice
-> n
-THE END - Freedom
-```
-
-### Walkthrough 2: Revenge (Solo)
-
-```
-START
-> saw leg
-> e
-> e
-> step on blue plate
-> step on red plate
-> step on yellow plate
-> step on green plate
-> bandage myself
-> e
-> position chair
-> position cabinet
-> climb
-> respond trust
-> e
-> e
-> wear device
-> respond paris
-> respond pacific
-> respond four
-(Završeno, 3 točna)
-> take key
-> unlock device with key
-> e
-> e
-> approach terminal
-> examine screen
-> code sacrifice trust pain choice
-> s
-> kill jigsaw
-(Eksplozija)
-> z
-THE END - Revenge (Death)
-```
-
-### Walkthrough 3: Mercy (Solo)
-
-```
-START
-> saw leg
-> e
-> e
-> step on blue plate
-> step on red plate
-> step on yellow plate
-> step on green plate
-> bandage myself
-> e
-> position chair
-> position cabinet
-> climb
-> respond trust
-> e
-> e
-> wear device
-> respond paris
-> respond pacific
-> respond four
-(Završeno, 3 točna)
-> take key
-> unlock device with key
-> e
-> e
-> approach terminal
-> examine screen
-> code sacrifice trust pain choice
-> s
-> leave
-> n
-THE END - Freedom (Mercy)
-```
-
-### Walkthrough 4: Sa Marcusom (Incomplete - Marcus dies)
-
-```
-START
-> saw leg
-> e
-> e
-> step on blue plate
-> step on red plate
-> step on yellow plate
-> step on green plate
-> bandage myself
-> bandage marcus
-> e
-> position chair
-> position cabinet
-> climb
-> respond trust
-> e
-> e
-> let marcus play
-(Marcus igra trivia i umire)
-> e
-> e
-> approach terminal
-> examine screen
-> code sacrifice trust pain choice
-> n
-THE END - Freedom (Alone)
-```
-
----
-
-## 13. TEHNIČKA IMPLEMENTACIJA
-
-### Inform 7 Struktura
-
-**Chapters:**
-- Chapter 1: The Cell
-- Chapter 1b: Sounds
-- Chapter 15: Game Start
-- Chapter 17: Entering Medical Chamber
-- Chapter 27: Visual and Audio Cues
-- Chapter 28: Hints for the Puzzle
-- Chapter 29: Observation Room Furniture Positioning
-- Chapter 31: The Impossible Question Timer and Solo Escape
-- Chapter 36: Entering Observation Room With Marcus
-- Chapter 37: Final Exit
-- Chapter 38: Room 4 The Jaw Breaker Chamber
-- Chapter 39: Room 4 Variables
-- Chapter 39b: Room 5 Transition Corridor
-- Chapter 39c: Room 5 The Final Control Room
-- Chapter 39d: Room 5 Variables
-- Chapter 40: Entering Room 4
-- Chapter 42: Solo Scenario Unlocking Device
-- Chapter 43: Marcus Scenario Making Choice
-- Chapter 44: Marcus Death in Jaw Breaker
-- Chapter 45: Room 5 Entry
-- Chapter 45b: Approaching Terminal
-- Chapter 46: Terminal Code Entry
-- Chapter 47: Freedom Ending
-- Chapter 48: Revenge Ending
 
 ### Varijable (Variables)
 
@@ -1215,236 +889,118 @@ Svi sinonimi za akcije:
 
 ---
 
-## 14. DODATNI DETALJI
 
-### Predmeti (Objects)
+## 11. IZVORI ZVUKOVA I SLIKA
 
-**Cell:**
-- Rusty hand saw (ručna pila)
-- Chains (lanci)
-- Ceiling (strop)
+### Zvučni efekti
 
-**Medical Chamber:**
-- Red plate (crvena ploča)
-- Blue plate (plava ploča)
-- Yellow plate (žuta ploča)
-- Green plate (zelena ploča)
-- Bloody note (krvava bilješka)
-- Medical gauze (medicinska gaza)
-- Medical tape (medicinski flaster)
+Svi zvučni efekti korišteni u igri preuzeti su sa besplatnih izvora i slobodni su za komercijalnu upotrebu:
 
-**Observation Room:**
-- Metal chair (metalna stolica)
-- Filing cabinet (ormarić)
-- Air vent (ventilacija)
-- Monitors (monitori)
+**Izvori:**
+- **Pixabay** (https://pixabay.com/) - Besplatna banka zvukova sa Creative Commons licencom
+  - Uvjeti korištenja: Besplatno za komercijalnu i nekomercijalnu upotrebu, nije potrebna atribucija
+  - Zvukovi: većina ambient zvukova, alarmi, eksplozije, door sounds
+  
+- **Ovanisound** (https://ovanisound.com/policies/terms-of-service) - Besplatni zvučni efekti
+  - Uvjeti korištenja: Royalty-free zvukovi za upotrebu u projektima
+  - Zvukovi: horror sound effects, screaming, body fall, jaw breaker, specific trap sounds
 
-**Jaw Breaker Chamber:**
-- Jaw breaker device (uređaj za čeljust)
-- Metal chair (metalna stolica)
-- Wall compartment (odjeljak u zidu)
-- Jaw key (ključ)
+**Format:**
+- Svi zvukovi konvertovani u OGG format radi kompatibilnosti sa Glulx interpretatorom
+- Kvaliteta: 44.1kHz, stereo ili mono ovisno o izvoru
+- Optimizovano za brzo učitavanje
 
-**Control Room:**
-- Computer terminal (kompjuterski terminal)
-- Terminal screen (ekran terminala)
-- Freedom door (vrata slobode)
-- Revenge door (vrata osvete)
+### Vizuelni elementi (Slike)
 
-**Jigsaw's Chamber:**
-- Jigsaw (osoba)
-- Medical bed (medicinski krevet)
-- Monitors (monitori)
-- IV drips (infuzije)
+Sve slike korištene u igri kreirane su pomoću AI alata ili preuzete sa besplatnih izvora:
 
-### Likovi (Characters)
+**Izvori:**
 
-**Marcus (the other prisoner):**
-- Može biti živ ili mrtav
-- Može krvariti
-- Može igrati trivia kviz
-- Može pomoći u Observation Room
-- Prati igrača kroz sobe
+1. **SeaArt AI Generator** (https://www.seaart.ai/agent/d3cet1fngsas73f1hoj0)
+   - Uvjeti korištenja: AI-generirane slike slobodne za upotrebu
+   - Korišteno za: većinu scene images (cell, medical chamber, jaw breaker room, control room, jigsaw chamber)
+   - Stil: Dark, horror aesthetic, Saw-inspired
+   - Rezolucija: 1024x1024 ili veće, optimizovano za Glulx
 
-**Jigsaw:**
-- Fixed in place (vezan za krevet)
-- Umire od raka
-- Može biti ubijen ili pošteđen
-- Ima failsafe (eksplozija ako umre)
+2. **Besplatni izvori** (stock photo websites sa CC0 licencom)
+   - Pixabay, Unsplash, Pexels
 
-### Doors (Vrata)
 
-1. Cell entrance (Cell ↔ Exit Hall)
+**Format:**
+- Sve slike  u PNG format
+- Optimizirane za Glulx interpreter
+
+
+**Licenciranje:**
+- Svi zvukovi i slike korišteni su u skladu sa uvjetima besplatnih licenci
+- Projekt ne krši autorska prava
+- Za komercijalnu distribuciju, preporučuje se dodatna provjera licenci
 
 ---
 
-## 15. EKSTENZIJE I TEHNIČKA POBOLJŠANJA (Verzija 1.0)
+## 12. DEATH DELAY SISTEM
 
-### Basic Help Menu by Emily Short
+### Implementacija
 
-**Svrha:**
-Pruža igraču pristup pomoćnom meniju sa svim dostupnim komandama i informacijama o igri.
+Death delay sistem omogućava dramatičnu pauzu između opisa smrti i završetka igre, dajući igraču vremena da procesuira što se dogodilo.
 
-**Implementacija:**
+**Varijable:**
 ```inform7
-Include Basic Help Menu by Emily Short.
+Death-countdown is a number that varies.
+Death-countdown is 0.
 
-Table of Basic Help Options
-title         subtable                description     toggle
-"Commands"    Table of General Commands    --        --
-"About"       --                      "Game info"     --
-
-Table of General Commands
-title              subtable    description                                    toggle
-"Movement"         --          "N, S, E, W for movement"                    --
-"Interaction"      --          "LOOK, EXAMINE, TAKE, USE, INVENTORY"       --
-"Special Commands" --          "SAW LEG, STEP ON PLATE, BANDAGE, etc."     --
-"Tips"            --          "Read carefully, choices matter"             --
+Death-type is a text that varies.
+Death-type is "".
 ```
 
-**Funkcionalnost:**
-- Pristup pomoći: `HELP` komanda
-- Pregled informacija: `ABOUT` ili `VERSION` komanda
-- Organizovane sekcije sa svim komandama
-- Savjeti za igrače koji su novi u text adventures
-- Automatski prompt na početku igre: "(Type HELP for list of commands)"
-
-**Korist za igrača:**
-- Eliminira zbunjenost oko dostupnih komandi
-- Brz pregled svih mogućih akcija
-- Reference za specifične komande po sobama
-- Informacije o verziji i autoru
-
-### Basic Screen Effects by Emily Short
-
-**Svrha:**
-Dodaje dramatične vizuelne efekte za ključne momente u igri.
-
-**Dostupne komande:**
-- `wait for any key` - Pauza do pritiska bilo koje tipke
-- `clear the screen` - Čisti terminal prije nove scene
-- `show the current quotation` - Prikazuje citat
-- `center [text]` - Centrira tekst na ekranu
-
-**Trenutna implementacija u igri:**
-
-**1. Cell - Nakon rezanja noge:**
+**Handler:**
 ```inform7
-wait for any key;
-clear the screen;
+Every turn when Death-countdown is greater than 0:
+    decrease Death-countdown by 1;
+    if Death-countdown is 1:
+        say "[paragraph break][bold type]*** Press any key to continue ***[roman type]";
+    otherwise if Death-countdown is 0:
+        if Death-type is "ceiling":
+            end the story;
+        otherwise if Death-type is "medical":
+            end the story finally;
+        [... ostali death types ...]
 ```
-Daje igraču trenutak da procesuira težinu odluke prije nego što nastavi.
 
-**2. Control Room - Pri ulasku:**
-```inform7
-clear the screen;
-wait for any key;
-```
-Stvara dramtičan prelaz u finalnu sobu.
+**Kako radi:**
+1. Kada igrač umre, postavlja se `Death-countdown is 2` i `Death-type is "[tip smrti]"`
+2. Prikazuje se death scene tekst i zvukovi
+3. Turn 1: Countdown se smanjuje na 1, prikazuje se "Press any key to continue"
+4. Turn 2: Countdown dostiže 0, igra se završava prema tipu smrti
 
-**Efekat na gameplay:**
-- Jača emocionalni uticaj ključnih scena
-- Daje vremena igraču da razmisli o odlukama
-- Čistiji prijelazi između važnih momenata
-- Dramatična pauza prije revelation momenata
+**Implementirano za:**
+-  Cell ceiling death (Death-type: "ceiling")
+-  Medical Chamber death (Death-type: "medical")
+-  Observation Room deaths (Death-type: "observation")
+-  Jaw Breaker death (Death-type: "jaw")
 
-**Potencijalne buduće implementacije:**
-- Nakon Marcus smrti (pauza prije nastavka)
-- Prije Jigsaw monologa (build-up tenzije)
-- Nakon puzzle rješenja (trenutak slave)
-- Pri ulasku u Jigsaw's Chamber (finalni build-up)
 
-### Zašto ove ekstenzije?
+### Death scenariji bez delay sistema
 
-**Basic Help Menu:**
-- Text adventures mogu biti zbunjujuće za nove igrače
-- Dokumentacija u igri eliminiše potrebu za eksternim vodičima
-- Povećava accessibility i user-friendliness
-- Profesionalan touch za igru
+Određeni death scenariji ne koriste Death-countdown jer su tihi ili postupni:
 
-**Basic Screen Effects:**
-- Dodaje kinematski kvalitet tekst avanturi
-- Pomaže u emocionalnom pacing-u
-- Daje "težinu" ključnim momentima
-- Moderne text adventures koriste ove tehnike za bolje iskustvo
+**Bleeding deaths:**
+- Ankle bleeding (Cell/Medical Chamber)
+- Wrist bleeding (Observation Room/ostale sobe)
+- Shoulder bleeding (Observation Room)
+- Razlog: Postupna smrt, već ima countdown kroz bleeding-turns
 
-### Tehnički detalji implementacije
+**Betrayal/Last hand deaths:**
+- Betrayal dying (Observation Room)
+- Last hand dying (Observation Room)
+- Razlog: Koriste vlastiti countdown sistem (Betrayal-death-turns, Last-hand-death-turns)
 
-**Help Menu tabele:**
-- `Table of Basic Help Options` - glavni meni
-- `Table of General Commands` - detaljne komande
-- `Carry out requesting the story file version` - custom About sekcija
+**Struggle death:**
+- Backwards into saw (Observation Room)
+- Razlog: Trenutna smrt, dramatičan opis
 
-**Screen Effects lokacije:**
-- Nakon `cutting yourself` akcije (Cell)
-- U `After going to the Control Room for the first time` pravilu
-
-**Kompatibilnost:**
-- Obje ekstenzije su kompatibilne sa Glulx format
-- Testirano sa Inform 7 build 6M62
-- Ne interferiraju sa postojećim mehanikama igre
-
-### Doors (Vrata)
-
-1. Cell entrance (Cell ↔ Exit Hall)
-2. Chamber entrance (Exit Hall ↔ Medical Chamber)
-3. Chamber exit door (Medical Chamber ↔ Observation Room)
-4. Observation exit door (Observation Room ↔ Dark Corridor)
-5. Jaw breaker door (Dark Corridor ↔ Jaw Breaker Chamber)
-6. Final corridor door (Jaw Breaker Chamber ↔ Final Corridor)
-7. Final entrance door (Final Corridor ↔ Control Room)
-8. Freedom door (Control Room ↔ Exit Hallway)
-9. Revenge door (Control Room ↔ Jigsaw's Chamber)
+**Gas death:**
+- Gas release (Control Room/Gas Chamber scenario)
+- Razlog: Koristi vlastiti Gas-death-turns sistem
 
 ---
-
-## 15. ZAKLJUČAK I PREPORUKE
-
-### Što je postignuto
-✅ Kompletna tekstualna avantura s 10 soba  
-✅ Višestruki završeci (3 glavna)  
-✅ 35 zvučnih efekata  
-✅ 13 slika  
-✅ Kompleksne zagonetke  
-✅ NPC pratilac (Marcus)  
-✅ Moralni izbori  
-✅ Petlje zvuka  
-✅ Animirane sekvence  
-✅ Brojanje pokušaja  
-✅ Dinamičko otključavanje  
-
-### Što može biti dodano (buduća proširenja)
-- Više soba i zagonetki
-- Više NPC likova
-- Bodovni sustav
-- Achievements/Trofeje
-- Različiti nivoi težine
-- Više završetaka (npr. Marcus preživljava i izlazi s tobom)
-- Easter eggs
-- Više puzzle variacija
-
-### Preporuke za testiranje
-1. Testiraj sve tri završetka
-2. Testiraj sve scenarije smrti
-3. Testiraj sa Marcusom i solo
-4. Testiraj sve komande i sinonime
-5. Provjeri da svi zvukovi i slike rade
-6. Provjeri da petlje zvuka rade
-7. Provjeri brojanje pokušaja
-
-### Tehnička dokumentacija
-- Inform 7 verzija: 6M62 ili novija
-- Zvukovi: OGG format
-- Slike: PNG format
-- Kompatibilnost: Glulx interpreter
-
----
-
-**Kraj priručnika**
-
-Ovaj priručnik pokriva sve aspekte razvoja igre "Jigsaw" od početka do kraja, uključujući sve odluke, implementacije, bugfixeve i optimizacije. Služi kao kompletan vodič za razumijevanje i održavanje projekta.
-
-**Verzija dokumenta:** 1.0 Final  
-**Datum:** 14. decembar 2025  
-**Linije koda:** ~2900+ linija Inform 7 koda  
-**Trajanje razvoja:** Cijela sesija razgovora
