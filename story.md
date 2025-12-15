@@ -2468,12 +2468,11 @@ The device ACTIVATES.
 You watch in horror as the jaw breaker begins to expand.
 
 Marcus's jaw is forced open wider... wider...";
-		play the sound of JawBreaker;
 		say "
 
 ";
 		display the Figure of BearTrapImage;
-		play the sound of Screaming;
+		play the sound of JawBreaker;
 		say "
 
 CRACK!
@@ -2487,7 +2486,7 @@ CRUNCH!
 His skull splits open.
 
 Marcus's body goes limp.";
-		play the sound of BodyFall;
+		play the sound of JawBreaker;
 		now Marcus-jaw-playing is false;
 		now Marcus-death-sequence is true;
 		now Marcus-death-turn is 0;
