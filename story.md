@@ -76,6 +76,7 @@ Sound of PuppetLaugh is the file "puppetlaugh.ogg".
 Sound of Kill is the file "kill.ogg".
 Sound of AlarmSound is the file "alarm.ogg".
 Sound of Explosion is the file "explosion.ogg".
+Sound of Unlocking is the file "unlock.ogg".
 
 
 
@@ -2273,6 +2274,7 @@ The locks release. The jaw breaker lifts away from your head.
 
 You're free.";
 		now Jaw-device-worn is false;
+		play the sound of Unlocking;
 		say "
 
 You stand up from the chair, breathing heavily. You survived.
