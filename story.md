@@ -576,6 +576,9 @@ Question-asked is false.
 Player-answered is a truth state that varies.
 Player-answered is false.
 
+Observation-answer-attempts is a number that varies.
+Observation-answer-attempts is 0.
+
 Marcus-betrayed is a truth state that varies.
 Marcus-betrayed is false.
 
@@ -1382,7 +1385,7 @@ Carry out cutting hand with saw:
 	say "You pull out the rusty hand saw from your pocket.
 
 With your free hand, you bring it to your trapped arm and begin cutting through the flesh and bone.";
-	play the sound of NPCCut;
+	play the sound of SelfCut;
 	say "
 The pain is indescribable. The saw blade tears through muscle, grinds against bone.
 
@@ -1438,7 +1441,9 @@ Check responding to question:
 		if Observation-room-trap-activated is false:
 			say "You haven't triggered the trap yet." instead;
 		if Player-answered is true:
-			say "You already answered." instead;
+			say "You already answered correctly." instead;
+		if Observation-answer-attempts is at least 3:
+			say "You've used all your attempts." instead;
 	otherwise:
 		say "There's no question to answer." instead.
 
@@ -1543,9 +1548,9 @@ Darkness.";
 				play the sound of GameOver;
 				end the story;
 		stop the action;
-	now Player-answered is true;
 	let the answer be "[the topic understood]";
 	if the answer matches the text "trust" or the answer matches the text "trust.":
+		now Player-answered is true;
 		say "You shout: 'TRUST!'
 
 The monitors flash green.
@@ -1565,17 +1570,28 @@ You are free.";
 		if the other prisoner is in the Observation Room:
 			say "[paragraph break]Marcus stares at you in disbelief. 'You... you did it. We're free!'";
 	otherwise:
+		increase Observation-answer-attempts by 1;
 		play the sound of TrapFail;
-		play the sound of Screaming;
 		say "You shout: '[the answer]!'
 
 The monitors flash RED.
 
-'WRONG,' the voice declares.
+'WRONG,' the voice declares.";
+		if Observation-answer-attempts is less than 3:
+			say "
+
+The monitors display: 'INCORRECT. YOU HAVE [3 minus Observation-answer-attempts] ATTEMPT[s] REMAINING.'
+
+You can try again.";
+		otherwise:
+			say "
+
+'YOU HAVE FAILED,' the voice rasps.
 
 The mechanisms activate.";
-		if the other prisoner is not in the Observation Room and Player-hands-trapped is 1:
-			say "
+			if the other prisoner is not in the Observation Room and Player-hands-trapped is 1:
+				play the sound of Screaming;
+				say "
 
 The mechanism begins to pull you backward!
 
@@ -1586,15 +1602,16 @@ You scream as the blades tear into your flesh.
 There is no mercy. No escape.
 
 The saw rips through muscle, bone, and sinew.";
-			play the sound of BodyFall;
-			say "
+				play the sound of BodyFall;
+				say "
 
 Your body goes limp as the blades consume you.
 
 This is the end.";
-			end the story;
-		otherwise:
-			say "
+				end the story;
+			otherwise:
+				play the sound of Screaming;
+				say "
 
 [if Player-hands-trapped is 2]Both blades cut through your wrists simultaneously. You fall, hitting the ground hard.
 
@@ -1607,7 +1624,7 @@ Blood pours from the stump. With no hands left, you can't even try to stop it.
 [end if]Your vision goes dark.
 
 This is the end.";
-			end the story.
+				end the story.
 
 
 
