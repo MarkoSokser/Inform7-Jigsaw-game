@@ -1105,6 +1105,8 @@ Figure of BearTrapImage is the file "beartrap.png".
 Figure of FinalCorridorImage is the file "coridor.png".
 Figure of ControlRoomImage is the file "final_test.png".
 Figure of JigsawChamberImage is the file "jigsaw_man.png".
+Figure of FreedomImage is the file "freedom.png".
+Figure of PuppetImage is the file "puppet.png";
 
 
 
@@ -2084,7 +2086,9 @@ The description of the Exit Hallway is "You step through the green door and find
 (You chose freedom.)".
 
 After going to the Exit Hallway:
-	end the story saying "You escaped. You survived. But the scars remain.".
+	display the Figure of FreedomImage;
+	if Mercy-ending-countdown is 0:
+		now Freedom-ending-countdown is 2.
 
 The revenge door is a door.
 The revenge door is south of the Control Room.
@@ -2684,6 +2688,7 @@ Every turn when Freedom-ending-countdown is greater than 0:
 
 You emerge into an abandoned warehouse district. The sun is setting. You're covered in blood, missing parts of yourself, but you're ALIVE.
 
+
 You hear sirens in the distance. Help is coming.
 
 [if the other prisoner is dead]Marcus didn't make it. That weight will stay with you forever.[otherwise]You survived alone. Against all odds.[end if]
@@ -2746,6 +2751,7 @@ And that makes all the difference.
 Every turn when Kill-sequence-countdown is greater than 0:
 	decrease Kill-sequence-countdown by 1;
 	if Kill-sequence-countdown is 3:
+		display the Figure of PuppetImage;
 		play the sound of PuppetLaugh;
 		say "[paragraph break]Then...
 
@@ -2913,7 +2919,6 @@ You reach for the door handle...
 
 ...and pull it open.";
 		play the sound of DoorOpen;
-		now Freedom-ending-countdown is 2;
 		say "
 
 [paragraph break]Beyond the door is a staircase leading up. You can see daylight filtering down from above.
@@ -2923,6 +2928,7 @@ Fresh air. Freedom. Life.
 The weight of the nightmare begins to lift from your shoulders.
 
 [paragraph break](Press Z to continue)";
+		continue the action;
 	otherwise:
 		say "The door is still locked. You need to solve the terminal puzzle first.".
 
