@@ -76,6 +76,7 @@ Sound of PuppetLaugh is the file "puppetlaugh.ogg".
 Sound of Kill is the file "kill.ogg".
 Sound of AlarmSound is the file "alarm.ogg".
 Sound of Explosion is the file "explosion.ogg".
+Sound of Unlocking is the file "unlock.ogg".
 
 
 
@@ -400,11 +401,12 @@ Chapter 10 - The Descending Ceiling
 Every turn when Ceiling-descending is true:
 	decrease Turns-remaining by 1;
 	if Turns-remaining is 0:
-		play the sound of DeathCrush;
 		say "[paragraph break]The ceiling comes down with terrible finality.";
 		say "There is no escape.";
 		say "[paragraph break]Everything goes black.";
-		end the story;
+		play the sound of DeathCrush;
+		now Death-countdown is 2;
+		now Death-type is "ceiling";
 	otherwise:
 		say "The ceiling grinds lower, showering you with dust and fragments of concrete.".
 
@@ -576,6 +578,9 @@ Question-asked is false.
 Player-answered is a truth state that varies.
 Player-answered is false.
 
+Observation-answer-attempts is a number that varies.
+Observation-answer-attempts is 0.
+
 Marcus-betrayed is a truth state that varies.
 Marcus-betrayed is false.
 
@@ -599,6 +604,12 @@ Last-hand-death-turns is 0.
 
 Solo-arm-trap-turns is a number that varies.
 Solo-arm-trap-turns is 0.
+
+Death-countdown is a number that varies.
+Death-countdown is 0.
+
+Death-type is a text that varies.
+Death-type is "".
 
 
 
@@ -768,6 +779,18 @@ You are dead.";
 
 Every turn when the player is in the Observation Room:
 	if Player-wrist-bleeding is true:
+		increase Player-wrist-bleeding-turns by 1;
+		if Player-wrist-bleeding-turns is 1:
+			say "[paragraph break]Blood spurts from your severed wrist. You're losing blood fast! You need to bandage yourself NOW!";
+		otherwise if Player-wrist-bleeding-turns is 2:
+			play the sound of BodyFall;
+			say "[paragraph break]Too much blood loss. Your vision goes black.
+[paragraph break]You collapse to the floor, unconscious.
+[paragraph break]You will never wake up.";
+			end the story.
+
+Every turn:
+	if Player-wrist-bleeding is true and the player is not in the Observation Room:
 		increase Player-wrist-bleeding-turns by 1;
 		if Player-wrist-bleeding-turns is 1:
 			say "[paragraph break]Blood spurts from your severed wrist. You're losing blood fast! You need to bandage yourself NOW!";
@@ -1046,7 +1069,8 @@ The counter updates: 'SPECIMENS: 6 / 6'
 Everything goes black.";
 				play the sound of Screaming;
 				play the sound of GameOver;
-				end the story finally.
+				now Death-countdown is 2;
+				now Death-type is "medical".
 
 
 
@@ -1081,6 +1105,8 @@ Figure of BearTrapImage is the file "beartrap.png".
 Figure of FinalCorridorImage is the file "coridor.png".
 Figure of ControlRoomImage is the file "final_test.png".
 Figure of JigsawChamberImage is the file "jigsaw_man.png".
+Figure of FreedomImage is the file "freedom.png".
+Figure of PuppetImage is the file "puppet.png";
 
 
 
@@ -1094,6 +1120,27 @@ Blue flows first, Red burns second, Yellow warns third, Green grows last.
 BLUE - RED - YELLOW - GREEN'".
 
 Understand "note" or "hint" or "clue" or "paper" as the bloody note.
+
+
+
+
+Chapter 14b - Death Sequence Handler
+
+Every turn when Death-countdown is greater than 0:
+	decrease Death-countdown by 1;
+	if Death-countdown is 1:
+		say "[paragraph break][bold type]*** Press any key to continue ***[roman type]";
+	otherwise if Death-countdown is 0:
+		if Death-type is "ceiling":
+			end the story;
+		otherwise if Death-type is "medical":
+			end the story finally;
+		otherwise if Death-type is "observation":
+			end the story;
+		otherwise if Death-type is "jaw":
+			end the story;
+		otherwise:
+			end the story.
 
 
 
@@ -1370,7 +1417,7 @@ Carry out cutting hand with saw:
 	say "You pull out the rusty hand saw from your pocket.
 
 With your free hand, you bring it to your trapped arm and begin cutting through the flesh and bone.";
-	play the sound of NPCCut;
+	play the sound of SelfCut;
 	say "
 The pain is indescribable. The saw blade tears through muscle, grinds against bone.
 
@@ -1426,7 +1473,9 @@ Check responding to question:
 		if Observation-room-trap-activated is false:
 			say "You haven't triggered the trap yet." instead;
 		if Player-answered is true:
-			say "You already answered." instead;
+			say "You already answered correctly." instead;
+		if Observation-answer-attempts is at least 3:
+			say "You've used all your attempts." instead;
 	otherwise:
 		say "There's no question to answer." instead.
 
@@ -1505,16 +1554,9 @@ You can now TAKE the KEY to unlock the device and escape.";
 				if Jaw-current-question is 5:
 					say "QUESTION 5: Who wrote 'Romeo and Juliet'?";
 			otherwise:
-				say "The device ACTIVATES.
-
-You feel the mechanisms inside the cage begin to expand. 
-
-The metal presses against your jaw, forcing it open wider... wider...
-
-You scream, but the device doesn't stop.";
-				play the sound of JawBreaker;
-				play the sound of Screaming;
 				say "
+
+You scream, but the device doesn't stop.
 
 CRACK!
 
@@ -1527,13 +1569,14 @@ CRUNCH!
 Your skull splits open.
 
 Darkness.";
-				play the sound of BodyFall;
-				play the sound of GameOver;
-				end the story;
+				display the Figure of BearTrapImage;
+				play the sound of JawBreaker;
+				now Death-countdown is 2;
+				now Death-type is "jaw";
 		stop the action;
-	now Player-answered is true;
 	let the answer be "[the topic understood]";
 	if the answer matches the text "trust" or the answer matches the text "trust.":
+		now Player-answered is true;
 		say "You shout: 'TRUST!'
 
 The monitors flash green.
@@ -1553,17 +1596,27 @@ You are free.";
 		if the other prisoner is in the Observation Room:
 			say "[paragraph break]Marcus stares at you in disbelief. 'You... you did it. We're free!'";
 	otherwise:
+		increase Observation-answer-attempts by 1;
 		play the sound of TrapFail;
-		play the sound of Screaming;
 		say "You shout: '[the answer]!'
 
 The monitors flash RED.
 
-'WRONG,' the voice declares.
+'WRONG,' the voice declares.";
+		if Observation-answer-attempts is less than 3:
+			say "
+
+The monitors display: 'INCORRECT. YOU HAVE [3 minus Observation-answer-attempts] ATTEMPT[s] REMAINING.'
+
+You can try again.";
+		otherwise:
+			say "
+
+'YOU HAVE FAILED,' the voice rasps.
 
 The mechanisms activate.";
-		if the other prisoner is not in the Observation Room and Player-hands-trapped is 1:
-			say "
+			if the other prisoner is not in the Observation Room and Player-hands-trapped is 1:
+				say "
 
 The mechanism begins to pull you backward!
 
@@ -1574,15 +1627,17 @@ You scream as the blades tear into your flesh.
 There is no mercy. No escape.
 
 The saw rips through muscle, bone, and sinew.";
-			play the sound of BodyFall;
-			say "
+				say "
 
 Your body goes limp as the blades consume you.
 
 This is the end.";
-			end the story;
-		otherwise:
-			say "
+				play the sound of Screaming;
+				play the sound of GameOver;
+				now Death-countdown is 2;
+				now Death-type is "observation";
+			otherwise:
+				say "
 
 [if Player-hands-trapped is 2]Both blades cut through your wrists simultaneously. You fall, hitting the ground hard.
 
@@ -1595,7 +1650,10 @@ Blood pours from the stump. With no hands left, you can't even try to stop it.
 [end if]Your vision goes dark.
 
 This is the end.";
-			end the story.
+				play the sound of Screaming;
+				play the sound of GameOver;
+				now Death-countdown is 2;
+				now Death-type is "observation".
 
 
 
@@ -2028,7 +2086,9 @@ The description of the Exit Hallway is "You step through the green door and find
 (You chose freedom.)".
 
 After going to the Exit Hallway:
-	end the story saying "You escaped. You survived. But the scars remain.".
+	display the Figure of FreedomImage;
+	if Mercy-ending-countdown is 0:
+		now Freedom-ending-countdown is 2.
 
 The revenge door is a door.
 The revenge door is south of the Control Room.
@@ -2145,7 +2205,7 @@ A distorted voice crackles from hidden speakers in the ceiling.";
 
 This is the Jaw Breaker. A device designed to expand the human jaw beyond its breaking point.
 
-Your test is simple: Put the device on your head. Answer five questions correctly.
+Your test is simple: Sit on the chair. Put the device on your head. Answer five questions correctly.
 
 You may get TWO questions wrong. But if you fail a third time... the device activates, and your skull will be crushed.
 
@@ -2218,6 +2278,7 @@ The locks release. The jaw breaker lifts away from your head.
 
 You're free.";
 		now Jaw-device-worn is false;
+		play the sound of Unlocking;
 		say "
 
 You stand up from the chair, breathing heavily. You survived.
@@ -2627,6 +2688,7 @@ Every turn when Freedom-ending-countdown is greater than 0:
 
 You emerge into an abandoned warehouse district. The sun is setting. You're covered in blood, missing parts of yourself, but you're ALIVE.
 
+
 You hear sirens in the distance. Help is coming.
 
 [if the other prisoner is dead]Marcus didn't make it. That weight will stay with you forever.[otherwise]You survived alone. Against all odds.[end if]
@@ -2689,6 +2751,7 @@ And that makes all the difference.
 Every turn when Kill-sequence-countdown is greater than 0:
 	decrease Kill-sequence-countdown by 1;
 	if Kill-sequence-countdown is 3:
+		display the Figure of PuppetImage;
 		play the sound of PuppetLaugh;
 		say "[paragraph break]Then...
 
@@ -2856,7 +2919,6 @@ You reach for the door handle...
 
 ...and pull it open.";
 		play the sound of DoorOpen;
-		now Freedom-ending-countdown is 2;
 		say "
 
 [paragraph break]Beyond the door is a staircase leading up. You can see daylight filtering down from above.
@@ -2866,6 +2928,7 @@ Fresh air. Freedom. Life.
 The weight of the nightmare begins to lift from your shoulders.
 
 [paragraph break](Press Z to continue)";
+		continue the action;
 	otherwise:
 		say "The door is still locked. You need to solve the terminal puzzle first.".
 
