@@ -2,7 +2,7 @@
 
 **"Saw Escape Room"** - Interaktivna tekstualna avantura inspirirana Saw filmovima
 
-## 📖 O igri
+## O igri
 
 "Saw Escape Room" je mračna, intenzivna tekstualna avantura gdje se igrač budi zarobljen u nizu smrtonosnih soba. Svaka soba predstavlja test - fizički, mentalni ili moralni. Svaka odluka ima posljedice. Hoćete li preživjeti?
 
@@ -24,7 +24,7 @@
 
 ---
 
-## 🎮 Kako igrati
+## Kako igrati
 
 ### Osnovne komande
 
@@ -55,7 +55,7 @@
 
 ---
 
-## 💾 Instalacija i pokretanje
+## Instalacija i pokretanje
 
 ### Preuzimanje
 
@@ -102,7 +102,7 @@ Za kreiranje release verzije:
 
 ---
 
-## 🔧 Tehnički detalji
+##  Tehnički detalji
 
 ### Korištene tehnologije
 - **Engine:** Inform 7 (6M62)
@@ -117,7 +117,7 @@ Za kreiranje release verzije:
 -  Linux (Inform 7 IDE, Gargoyle)
 -  Web (može se igrati u browseru putem Quixe interpretera)
 
-## 🎮 Brzi start
+##  Brzi start
 
 ```bash
 # 1. Preuzmite projekat
@@ -135,4 +135,4 @@ git clone https://github.com/[username]/Inform7-Jigsaw-game.git
 
 ---
 
-**⚠️ UPOZORENJE:** Igra sadrži grafičke opise nasilja, torture i smrti. Preporučeno za publiku 18+ godina.
+** UPOZORENJE:** Igra sadrži grafičke opise nasilja, torture i smrti. Preporučeno za publiku 18+ godina.
