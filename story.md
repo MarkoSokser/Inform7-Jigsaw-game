@@ -2062,7 +2062,7 @@ The description of the computer terminal is "A large computer terminal with a gl
 
 [if Final-puzzle-solved is false]You can TYPE commands into the terminal.[otherwise]The terminal has unlocked both doors. Your choice awaits.[end if]"
 
-Understand "terminal" or "computer" or "screen" or "keyboard" as the computer terminal.
+Understand "terminal" or "computer" or "keyboard" or "computer terminal" as the computer terminal.
 
 The wall monitors are scenery in the Control Room.
 The description of the wall monitors is "Dozens of monitors display surveillance footage from every room of this facility. You can see your own blood stains, Marcus's body, the traps you survived. It's all been recorded. Watched. Orchestrated."
@@ -2587,7 +2587,7 @@ You can APPROACH the terminal or EXAMINE it."
 Chapter 45b - Approaching Terminal
 
 Approaching terminal is an action applying to nothing.
-Understand "approach terminal" or "approach computer" or "go to terminal" or "walk to terminal" as approaching terminal.
+Understand "approach terminal" or "approach the terminal" or "approach computer" or "approach the computer" or "approach computer terminal" or "approach the computer terminal" or "go to terminal" or "go to the terminal" or "walk to terminal" or "walk to the terminal" as approaching terminal.
 
 Check approaching terminal:
 	if the player is not in the Control Room:
@@ -2630,10 +2630,12 @@ Instead of examining the computer terminal:
 The terminal screen is scenery in the Control Room.
 The description of the terminal screen is "The screen glows with text and data.".
 
-Understand "screen" or "monitor" or "display" as the terminal screen.
+Understand "screen" or "terminal screen" or "the screen" or "monitor" or "display" as the terminal screen.
+
+Does the player mean examining the terminal screen: it is very likely.
 
 Examining screen is an action applying to nothing.
-Understand "examine screen" or "look at screen" or "read screen" or "x screen" as examining screen.
+Understand "examine screen" or "examine the screen" or "look at screen" or "look at the screen" or "read screen" or "read the screen" or "x screen" as examining screen.
 
 Check examining screen:
 	if the player is not in the Control Room:
