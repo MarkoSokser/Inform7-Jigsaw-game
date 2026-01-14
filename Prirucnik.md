@@ -1,11 +1,5 @@
 # JIGSAW INFORM 7 - PRIRUČNIK
 
-**Verzija:** 1.1 (Ažurirano)  
-**Datum:** 15. prosinca 2025  
-**Autor:** Marko Sokser
-
----
-
 ## SADRŽAJ
 
 1. [Uvod i tema](#1-uvod-i-tema)
@@ -1002,5 +996,7 @@ Određeni death scenariji ne koriste Death-countdown jer su tihi ili postupni:
 **Gas death:**
 - Gas release (Control Room/Gas Chamber scenario)
 - Razlog: Koristi vlastiti Gas-death-turns sistem
+
+---
 
 ---
