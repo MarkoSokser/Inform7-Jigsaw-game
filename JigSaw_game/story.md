@@ -630,7 +630,9 @@ The open cabinet is scenery.
 The open cabinet is fixed in place.
 The open cabinet is open.
 The open cabinet is not openable.
-The description of the open cabinet is "An open medical cabinet[if the medical gauze is in the open cabinet or the medical tape is in the open cabinet] containing various supplies[otherwise] that appears to be empty now[end if].".
+The description of the open cabinet is "An open medical cabinet[if the medical gauze is in the open cabinet or the medical tape is in the open cabinet] containing various supplies:[otherwise] that appears to be empty now.[end if][if the medical gauze is in the open cabinet]
+- Sterile medical gauze[end if][if the medical tape is in the open cabinet]
+- Surgical tape[end if]".
 
 Understand "cabinet" or "open cabinet" or "metal cabinet" as the open cabinet.
 
