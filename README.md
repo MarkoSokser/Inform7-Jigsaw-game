@@ -61,7 +61,7 @@
 
 1. **Preuzmite cijeli projekt:**
    ```bash
-   git clone https://github.com/[username]/Inform7-Jigsaw-game.git
+   git clone https://github.com/MarkoSokser/Inform7-Jigsaw-game.git
    cd Inform7-Jigsaw-game
    ```
 
@@ -70,35 +70,55 @@
    - Kliknite "Code" → "Download ZIP"
    - Raspakirajte na željenu lokaciju
 
+3. **Preporučeno - Release verzija:**
+   - Preuzmite folder `Jigsaw_game_relese`
+   - Sadrži već kompajliranu igru spremnu za igranje
+
 ### Potrebni alati
+
+#### Za igranje (Release verzija):
+
+**Glulx Interpreter:**
+- **Windows:** Windows Glulx ili Gargoyle (https://ccxvii.net/gargoyle/)
+- **macOS:** Gargoyle ili Spatterlight
+- **Linux:** Gargoyle
+- **Web browser:** Otvorite `Jigsaw_game_relese/Saw Escape Room.materials/Release/index.html`
+
+#### Za razvoj/modifikaciju (opciono):
 
 **Inform 7 IDE:**
 - Preuzmite sa: https://ganelson.github.io/inform-website/
 - Verzija: 6M62 ili novija
 - Platforme: Windows, macOS, Linux
 
-**Alternativno - Online:**
-- Možete koristiti online Inform 7 editor na https://inform7.com/
+### Pokretanje igre
 
-### Kompajliranje igre
+#### Metoda 1: Web browser (najlakše)
+
+1. Navigirajte do foldera `Jigsaw_game_relese/Saw Escape Room.materials/Release/`
+2. Dvostruki klik na `index.html`
+3. Igra će se pokrenuti u vašem web browseru
+
+#### Metoda 2: Standalone Interpreter
+
+1. Instalirajte Glulx interpreter (npr. Gargoyle)
+2. Otvorite fajl:
+   - `Jigsaw_game_relese/Saw Escape Room.materials/Release/Saw Escape Room.gblorb`
+   - Ili `Jigsaw_game_relese/Saw Escape Room.inform/Build/output.gblorb`
+3. Igra će se pokrenuti u interpreteru
+
+#### Metoda 3: Inform 7 IDE (za developere)
 
 1. **Otvorite Inform 7 IDE**
 2. **Otvorite projekat:**
-   - File → Open → Odaberite folder `Inform7-Jigsaw-game`
-3. **Kompajlirajte:**
-   - Kliknite "Go!"  (ili Ctrl+G / Cmd+G)
-   - Igra će se automatski kompajlirati u Glulx format
-4. **Igrajte:**
-   - Nakon uspješnog kompajliranja, igra će se automatski pokrenuti u interpreteru
-
-### Release verzija
-
-Za kreiranje release verzije:
-1. U Inform 7 IDE, idite na: Release → Release
-2. Odaberite opcije:
-   -  Release along with an interpreter
-   -  Release along with a website
-3. Release će biti kreiran u `[project]/Build/Output/` folderu
+   - File → Open
+   - Odaberite folder `Jigsaw_game_relese/Saw Escape Room.inform`
+3. **Igrajte postojeću verziju:**
+   - Release → Play in Browser
+   - Ili kliknite "Go!" za kompajliranje i igranje
+4. **Za modifikaciju:**
+   - Source tab sadrži `story.ni` sa izvornim kodom
+   - Nakon izmjena kliknite "Go!" za rekompajliranje
 
 ---
 
@@ -119,18 +139,31 @@ Za kreiranje release verzije:
 
 ##  Brzi start
 
+### Opcija 1: Instant Play (Web Browser)
 ```bash
 # 1. Preuzmite projekat
-git clone https://github.com/[username]/Inform7-Jigsaw-game.git
+git clone https://github.com/MarkoSokser/Inform7-Jigsaw-game.git
 
-# 2. Otvorite u Inform 7 IDE
-# File → Open → Odaberite folder projekta
+# 2. Navigirajte do release foldera
+cd "Jigsaw_game_relese/Saw Escape Room.materials/Release"
 
-# 3. Kompajlirajte i igrajte
-# Kliknite "Go!" (Ctrl+G)
+# 3. Otvorite index.html u browseru
+start index.html  # Windows
+# open index.html  # macOS
+# xdg-open index.html  # Linux
 
 # 4. Uživajte u igri!
 # Unesite: HELP za listu komandi
+```
+
+### Opcija 2: Standalone Interpreter
+```bash
+# 1. Preuzmite i instalirajte Gargoyle/Glulx interpreter
+
+# 2. Otvorite fajl:
+# Jigsaw_game_relese/Saw Escape Room.materials/Release/Saw Escape Room.gblorb
+
+# 3. Igrajte!
 ```
 
 ---
