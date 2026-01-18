@@ -75,6 +75,12 @@
    - Sadrži već kompajliranu igru spremnu za igranje
 
 ### Potrebni alati
+#### Za igranje i razvoj/modifikaciju (najbrzi i najlakši način da igrate igru jer ako otvorite samo release verziju direktno  u browseru slike i zvukovi neće raditi):
+
+**Inform 7 IDE:**
+- Preuzmite sa: https://ganelson.github.io/inform-website/
+- Verzija: 6M62 ili novija
+- Platforme: Windows, macOS, Linux
 
 #### Za igranje (Release verzija):
 
@@ -84,30 +90,11 @@
 - **Linux:** Gargoyle
 - **Web browser:** Otvorite `Jigsaw_game_relese/Saw Escape Room.materials/Release/index.html`
 
-#### Za razvoj/modifikaciju (opciono):
 
-**Inform 7 IDE:**
-- Preuzmite sa: https://ganelson.github.io/inform-website/
-- Verzija: 6M62 ili novija
-- Platforme: Windows, macOS, Linux
 
 ### Pokretanje igre
 
-#### Metoda 1: Web browser (najlakše)
-
-1. Navigirajte do foldera `Jigsaw_game_relese/Saw Escape Room.materials/Release/`
-2. Dvostruki klik na `index.html`
-3. Igra će se pokrenuti u vašem web browseru
-
-#### Metoda 2: Standalone Interpreter
-
-1. Instalirajte Glulx interpreter (npr. Gargoyle)
-2. Otvorite fajl:
-   - `Jigsaw_game_relese/Saw Escape Room.materials/Release/Saw Escape Room.gblorb`
-   - Ili `Jigsaw_game_relese/Saw Escape Room.inform/Build/output.gblorb`
-3. Igra će se pokrenuti u interpreteru
-
-#### Metoda 3: Inform 7 IDE (za developere)
+#### Metoda 1: Inform 7 IDE (sve fotografije i zvukovi rade odmah i imate mogućnost uredivanja koda)
 
 1. **Otvorite Inform 7 IDE**
 2. **Otvorite projekat:**
@@ -119,6 +106,23 @@
 4. **Za modifikaciju:**
    - Source tab sadrži `story.ni` sa izvornim kodom
    - Nakon izmjena kliknite "Go!" za rekompajliranje
+
+#### Metoda 2: Web browser (najlakše)
+
+1. Navigirajte do foldera `Jigsaw_game_relese/Saw Escape Room.materials/Release/`
+2. Dvostruki klik na `index.html`
+3. Igra će se pokrenuti u vašem web browseru
+4. Ali zvukovi i slike se ne prikazuju
+
+#### Metoda 2: Standalone Interpreter
+
+1. Instalirajte Glulx interpreter (npr. Gargoyle)
+2. Otvorite fajl:
+   - `Jigsaw_game_relese/Saw Escape Room.materials/Release/Saw Escape Room.gblorb`
+   - Ili `Jigsaw_game_relese/Saw Escape Room.inform/Build/output.gblorb`
+3. Igra će se pokrenuti u interpreteru
+
+
 
 ---
 
